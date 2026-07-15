@@ -1,54 +1,2587 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Data Structure Learning Platform</title>
-<style>body{margin:0;font-family:Tahoma;background:#f5f7f6;color:#263238}header{padding:22px;background:#2e7d32;color:white}.app{display:grid;grid-template-columns:240px 1fr}nav{background:white;padding:12px;height:calc(100vh - 90px);overflow:auto}nav button{width:100%;padding:10px;margin:4px 0;border:0;border-radius:8px;text-align:left;font-weight:bold;cursor:pointer}nav button.active{background:#fff3e0;color:#ef6c00}main{padding:20px}.panel{display:none;background:white;padding:20px;border-radius:14px}.panel.active{display:block}.controls{display:flex;gap:8px;flex-wrap:wrap;background:#e8f5e9;padding:12px;border-radius:10px}.controls input{padding:8px;border:1px solid #aaa;border-radius:7px}.controls button{padding:9px 12px;border:0;border-radius:7px;background:#ef6c00;color:white;font-weight:bold}.visual{margin-top:15px;padding:24px;border:2px dashed #ccd5d0;border-radius:10px;min-height:100px}.array{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.cell{position:relative;min-width:62px;height:62px;border:3px solid #90a4ae;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:bold;background:white}.idx{position:absolute;top:-19px;font-size:11px;color:#607d8b}.ptr{position:absolute;bottom:-19px;font-size:10px}.sorted{background:#c8e6c9;border-color:#2e7d32}.current{background:#fff3e0;border-color:#ef6c00}.compare{background:#e3f2fd;border-color:#1565c0}.status{margin-top:12px;padding:12px;background:#263238;color:white;border-radius:8px}.nodeRow{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}.node{padding:12px 16px;border:3px solid #2e7d32;border-radius:9px;background:white;font-weight:bold}.arrow{font-size:24px;color:#ef6c00}@media(max-width:760px){.app{grid-template-columns:1fr}nav{height:auto;display:flex;overflow:auto}nav button{min-width:170px}}
-.learning-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:end;background:#eef6ff;padding:14px;border-radius:12px;margin:14px 0}
-.speed-wrap{display:flex;flex-direction:column;gap:5px;font-weight:700}
-.speed-wrap input{width:180px}
-.learning-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:14px}
-.log-box{background:#111827;color:#e5e7eb;border-radius:12px;padding:12px;min-height:180px;max-height:260px;overflow:auto;font-family:Consolas,monospace;font-size:13px}
-.log-entry{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-.pseudo-line{display:block;padding:5px 8px;border-radius:6px}
-.pseudo-line.active{background:#fff3cd;color:#7a4b00;font-weight:700}
-.predict-box{background:#f3e5f5;border:1px solid #ce93d8;border-radius:12px;padding:14px;margin-top:14px}
-.predict-box input{min-width:140px}
-.feedback-good{color:#1b5e20;font-weight:700}
-.feedback-bad{color:#b71c1c;font-weight:700}
-.progress{height:12px;background:#e0e0e0;border-radius:999px;overflow:hidden;margin-top:12px}
-.progress>div{height:100%;background:linear-gradient(90deg,#43a047,#ef6c00);width:0%}
-@media(max-width:900px){.learning-grid{grid-template-columns:1fr}}
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Structure Interactive Learning Platform</title>
+<style>
+:root{--g:#2e7d32;--g2:#e8f5e9;--o:#ef6c00;--o2:#fff3e0;--b:#1565c0;--p:#7b1fa2;--r:#c62828;--d:#263238;--bg:#f4f7f5}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--d)}
+header{padding:22px;background:linear-gradient(135deg,var(--g),#43a047);color:#fff}header h1{margin:0 0 6px}
+.layout{display:grid;grid-template-columns:245px 1fr;min-height:calc(100vh - 90px)}
+aside{background:#fff;border-right:1px solid #ddd;padding:14px;overflow:auto}
+aside button{display:block;width:100%;border:0;border-radius:8px;padding:10px;text-align:left;margin:5px 0;background:#f5f7f6;font-weight:700;cursor:pointer}
+aside button.active,aside button:hover{background:var(--o2);color:var(--o)}
+main{padding:20px;max-width:1250px;width:100%}
+.panel{display:none;background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.panel.active{display:block}h2{color:var(--g);margin-top:0}
+.controls,.tools{display:flex;gap:9px;flex-wrap:wrap;align-items:end;padding:13px;border-radius:12px;margin:12px 0}
+.controls{background:var(--g2)}.tools{background:#e3f2fd}
+label{display:flex;flex-direction:column;gap:5px;font-weight:700;font-size:14px}
+input,select{padding:9px;border:1px solid #b0bec5;border-radius:8px;font-size:15px;min-width:100px}
+button.action{border:0;border-radius:8px;padding:10px 13px;color:#fff;background:var(--o);font-weight:700;cursor:pointer}
+button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{background:#546e7a}
+.visual{min-height:170px;border:2px dashed #cfd8dc;border-radius:12px;padding:32px 15px;background:#fafafa;overflow:auto}
+.array{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cell{position:relative;min-width:76px;height:78px;border:3px solid #90a4ae;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;transition:.35s}
+.cell.empty{background:#f1f3f4;color:#9e9e9e;border-style:dashed}.cell .idx{position:absolute;top:-22px;font-size:12px;color:#607d8b}
+.cell .ptr{position:absolute;bottom:-22px;font-size:11px;white-space:nowrap}.cell.front{border-color:var(--b);background:#e3f2fd}.cell.rear{border-color:var(--o);background:var(--o2)}.cell.top{border-color:var(--p);background:#f3e5f5}
+.status{background:#263238;color:#fff;border-radius:10px;padding:14px;min-height:54px;margin-top:14px}
+.log{background:#111827;color:#e5e7eb;border-radius:10px;padding:10px;height:210px;overflow:auto;font-family:Consolas,monospace;margin-top:12px}
+.log div{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}.card{text-align:center;background:#fff8e1;padding:12px;border-radius:10px}.card span{display:block;color:#607d8b;font-size:13px}.card strong{font-size:21px}
+.linked-stage{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;min-height:130px}
+.head-pointer{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--b)}.head-pointer .head-arrow{font-size:28px}
+.node-block{display:flex;align-items:center;gap:10px}.node-col{text-align:center}.node-label{font-size:11px;color:#607d8b;margin-bottom:4px}
+.node{border:3px solid var(--g);background:#fff;border-radius:10px;padding:12px 16px;font-weight:800;transition:.35s}
+.node.active-node{border-color:var(--o);background:var(--o2);transform:translateY(-6px)}
+.node.new-node{border-color:var(--p);background:#f3e5f5;animation:nodeIn .45s ease}
+.node.delete-node{border-color:var(--r);background:#ffebee;opacity:.6}
+.link-arrow{font-size:24px;color:var(--o)}
+@keyframes nodeIn{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+.progress{height:11px;background:#ddd;border-radius:999px;overflow:hidden;margin:12px 0}.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--g),var(--o))}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0;font-size:13px}.dot{width:14px;height:14px;border-radius:4px;display:inline-block}
+@media(max-width:800px){.layout{grid-template-columns:1fr}aside{display:flex;overflow:auto;gap:6px}aside button{min-width:180px}.info{grid-template-columns:1fr 1fr}}
 
-</style></head><body>
-<header><h1>Data Structure Learning Platform</h1><div>Interactive simulations สำหรับการเรียนโครงสร้างข้อมูลและอัลกอริทึม</div></header><div class="app"><nav id="nav"></nav><main id="main"></main></div>
+.submenu-label{font-size:12px;font-weight:800;color:#607d8b;margin:12px 6px 4px;text-transform:uppercase}
+.token-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
+.token{min-width:48px;padding:10px 12px;border:2px solid #90a4ae;border-radius:9px;background:#fff;text-align:center;font-weight:800}
+.token.active{border-color:var(--o);background:var(--o2)}
+.token.output{border-color:var(--g);background:#e8f5e9}
+.stack-mini{display:flex;flex-direction:column-reverse;gap:6px;align-items:center;min-height:130px;padding:10px}
+.stack-mini .mini-cell{min-width:90px;padding:9px;border:2px solid var(--p);background:#f3e5f5;border-radius:8px;text-align:center;font-weight:800}
+.expr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+.expr-box{background:#fff;border:1px solid #ddd;border-radius:10px;padding:12px}
+.recursion-tree{display:flex;flex-direction:column;gap:12px;align-items:center}
+.rec-level{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.rec-node{border:3px solid var(--g);background:#fff;border-radius:10px;padding:10px 14px;font-weight:800}
+.rec-node.active{border-color:var(--o);background:var(--o2)}
+.rec-node.done{border-color:var(--b);background:#e3f2fd}
+@media(max-width:800px){.expr-grid{grid-template-columns:1fr}}
+
+.algorithm-track{background:#f7f9fa;border-left:5px solid var(--g);padding:10px;margin-top:12px;font-family:Consolas,monospace;border-radius:6px}
+.track-line{display:block;padding:5px 8px;border-radius:5px}
+.track-line.active{background:#ef6c00;color:#fff;font-weight:800;box-shadow:0 2px 8px rgba(239,108,0,.28)}
+.code-box{background:#111827;color:#e5e7eb;border-radius:10px;padding:12px;font-family:Consolas,monospace;white-space:pre-wrap;overflow:auto}
+.phase-badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#e3f2fd;color:#1565c0;font-weight:800;margin-bottom:8px}
+.expr-result{font-weight:800;color:var(--g);font-size:18px;word-break:break-all}
+
+.call-path{display:flex;flex-direction:column;align-items:center;gap:8px}
+.call-frame{min-width:180px;text-align:center;border:3px solid var(--g);background:#fff;border-radius:10px;padding:10px 14px;font-weight:800}
+.call-frame.active{border-color:var(--o);background:var(--o2)}
+.call-frame.returning{border-color:var(--b);background:#e3f2fd}
+.call-down{font-size:22px;color:var(--o)}
+.call-summary{margin-top:10px;padding:10px;background:#f7f9fa;border-radius:8px;text-align:center;font-weight:700}
+
+.return-badge{display:block;margin-top:6px;padding:4px 8px;border-radius:999px;background:#1565c0;color:#fff;font-size:12px}
+
+.algo-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+.algo-visual{min-height:260px;border:2px dashed #cfd8dc;border-radius:12px;padding:22px;background:#fafafa;overflow:auto}
+.tree-stage{display:flex;flex-direction:column;gap:18px;align-items:center}
+.tree-level{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.tree-node{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid var(--g);background:#fff;font-weight:800;transition:.3s}
+.tree-node.active{border-color:var(--o);background:var(--o2);transform:scale(1.08)}
+.tree-node.found{border-color:var(--b);background:#e3f2fd}
+.tree-node.deleted{border-color:var(--r);background:#ffebee;opacity:.55}
+.hash-table{display:grid;grid-template-columns:90px 1fr;gap:8px;align-items:center}
+.hash-index{font-weight:800;color:#607d8b;text-align:center}
+.hash-bucket{min-height:48px;border:2px solid #90a4ae;border-radius:8px;background:#fff;padding:7px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.hash-item{padding:6px 9px;border-radius:7px;background:#e8f5e9;border:2px solid var(--g);font-weight:800}
+.hash-item.active{background:var(--o2);border-color:var(--o)}
+.sort-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:18px 0}
+.sort-cell{position:relative;min-width:62px;height:68px;border:3px solid #90a4ae;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;transition:.3s}
+.sort-cell .sort-index{position:absolute;top:-20px;font-size:11px;color:#607d8b}
+.sort-cell.compare{border-color:var(--b);background:#e3f2fd}
+.sort-cell.active{border-color:var(--o);background:var(--o2)}
+.sort-cell.sorted{border-color:var(--g);background:#c8e6c9}
+.sort-cell.pivot{border-color:var(--p);background:#f3e5f5}
+.search-cell.found{border-color:var(--g);background:#c8e6c9}
+.dashboard{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
+.metric{text-align:center;background:#fff8e1;border-radius:10px;padding:10px}
+.metric span{display:block;color:#607d8b;font-size:12px}.metric strong{font-size:20px}
+@media(max-width:900px){.algo-layout{grid-template-columns:1fr}.dashboard{grid-template-columns:repeat(2,1fr)}}
+
+.selected-panel{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0;padding:12px;background:#fff8e1;border-radius:10px}
+.selected-value{display:inline-flex;align-items:center;justify-content:center;min-width:72px;height:48px;border:3px solid var(--p);background:#f3e5f5;border-radius:10px;font-size:20px;font-weight:800}
+.radix-wrap{display:flex;flex-direction:column;gap:14px}
+.radix-pass{font-weight:800;color:var(--g);text-align:center}
+.bucket-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.bucket-card{border:2px solid #90a4ae;border-radius:10px;background:#fff;min-height:90px;padding:8px}
+.bucket-title{text-align:center;font-weight:800;color:#607d8b;margin-bottom:6px}
+.bucket-values{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.bucket-value{padding:6px 8px;border-radius:7px;background:#e3f2fd;border:2px solid var(--b);font-weight:800}
+.bucket-value.active{background:var(--o2);border-color:var(--o)}
+@media(max-width:800px){.bucket-grid{grid-template-columns:repeat(2,1fr)}}
+
+.hash-calc-panel{margin:12px 0;padding:12px;background:#fff8e1;border-radius:10px;border-left:5px solid var(--o)}
+.hash-calc-panel strong{display:block;margin-bottom:6px}
+.hash-formula{font-family:Consolas,monospace;font-size:18px;font-weight:800;color:var(--b);word-break:break-word}
+
+.graph-svg{width:100%;height:380px;background:#fafafa;border-radius:12px}
+.graph-edge{stroke:#90a4ae;stroke-width:3}
+.graph-edge.active{stroke:#ef6c00;stroke-width:5}
+.graph-edge.selected{stroke:#2e7d32;stroke-width:5}
+.graph-node circle{fill:#fff;stroke:#2e7d32;stroke-width:3}
+.graph-node.active circle{fill:#fff3e0;stroke:#ef6c00;stroke-width:5}
+.graph-node.visited circle{fill:#e3f2fd;stroke:#1565c0}
+.graph-node text{font-weight:800;text-anchor:middle;dominant-baseline:middle}
+.graph-detail{margin-top:10px;padding:10px;background:#f7f9fa;border-radius:8px;font-family:Consolas,monospace}
+.avl-badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#e3f2fd;color:#1565c0;font-weight:800}
+
+.matrix-wrap{overflow:auto;margin-top:12px}
+.distance-matrix{border-collapse:collapse;width:100%;min-width:420px;font-family:Consolas,monospace}
+.distance-matrix th,.distance-matrix td{border:1px solid #b0bec5;padding:7px;text-align:center}
+.distance-matrix th{background:#e8f5e9;color:#2e7d32}
+.distance-matrix td.active{background:#fff3e0;color:#ef6c00;font-weight:800}
+.tree-svg{width:100%;height:390px;background:#fafafa;border-radius:12px}
+.tree-edge{stroke:#90a4ae;stroke-width:3}
+.tree-edge.active{stroke:#ef6c00;stroke-width:5}
+.tree-svg-node circle{fill:#fff;stroke:#2e7d32;stroke-width:3}
+.tree-svg-node.active circle{fill:#fff3e0;stroke:#ef6c00;stroke-width:5}
+.tree-svg-node.found circle{fill:#e3f2fd;stroke:#1565c0}
+.tree-svg-node text{text-anchor:middle;dominant-baseline:middle;font-weight:800}
+
+.link-arrow.creating{color:#7b1fa2;font-weight:900;animation:linkPulse .7s ease infinite}
+.link-arrow.removing{color:#c62828;font-weight:900;text-decoration:line-through}
+@keyframes linkPulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
+
+.dll-link-wrap{display:flex;flex-direction:column;gap:2px;align-items:center;min-width:58px}
+.dll-next{color:#ef6c00;font-weight:900;font-size:28px;line-height:1}
+.dll-prev{color:#1565c0;font-weight:900;font-size:28px;line-height:1}
+.dll-next.creating,.dll-prev.creating{animation:linkPulse .7s ease infinite}
+.dll-next.removing,.dll-prev.removing{color:#c62828;text-decoration:line-through}
+.heap-dual{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.heap-pane{border:1px solid #d7dde0;border-radius:12px;background:#fff;padding:12px}
+.heap-pane h4{margin:0 0 10px;color:#546e7a}
+@media(max-width:900px){.heap-dual{grid-template-columns:1fr}}
+
+/* Heap Sort: larger and clearer dual representation */
+.heap-dual{
+  grid-template-columns:1fr;
+  gap:20px;
+}
+.heap-pane{
+  padding:18px;
+  min-height:260px;
+  overflow:auto;
+}
+.heap-pane h4{
+  font-size:18px;
+  text-align:center;
+  margin-bottom:20px;
+}
+#heapsortVisual{
+  min-height:720px;
+  padding:22px;
+}
+#heapsortVisual .sort-row{
+  gap:14px;
+  padding:26px 12px;
+  flex-wrap:nowrap;
+  min-width:max-content;
+}
+#heapsortVisual .sort-cell{
+  min-width:82px;
+  height:86px;
+  font-size:25px;
+  border-width:4px;
+}
+#heapsortVisual .sort-cell .sort-index{
+  top:-25px;
+  font-size:14px;
+}
+#heapsortVisual .tree-svg{
+  height:500px;
+  min-width:900px;
+}
+#heapsortVisual .tree-edge{
+  stroke-width:4;
+}
+#heapsortVisual .tree-edge.active{
+  stroke-width:7;
+}
+#heapsortVisual .tree-svg-node circle{
+  r:32px;
+  stroke-width:4;
+}
+#heapsortVisual .tree-svg-node text{
+  font-size:20px;
+}
+@media(max-width:900px){
+  #heapsortVisual{min-height:650px;padding:12px}
+  #heapsortVisual .sort-cell{min-width:70px;height:76px;font-size:21px}
+  #heapsortVisual .tree-svg{min-width:760px;height:460px}
+}
+
+/* Heap Sort: controls on the first row and compact visual area */
+#heapsort .heap-first-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  gap:8px;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  background:#e8f5e9;
+}
+#heapsort .heap-first-row label{
+  min-width:130px;
+}
+#heapsort .heap-first-row input[type="text"],
+#heapsort .heap-first-row input:not([type]){
+  min-width:235px;
+}
+#heapsort .heap-first-row input[type="range"]{
+  min-width:170px;
+}
+#heapsort .controls,
+#heapsort .tools{
+  margin:0;
+  padding:0;
+  background:transparent;
+}
+#heapsortVisual{
+  min-height:500px;
+  padding:12px;
+  overflow:auto;
+}
+#heapsortVisual .heap-dual{
+  grid-template-columns:1fr;
+  gap:12px;
+}
+#heapsortVisual .heap-pane{
+  min-height:auto;
+  padding:12px;
+  overflow:auto;
+}
+#heapsortVisual .heap-pane h4{
+  margin:0 0 12px;
+  font-size:16px;
+  text-align:center;
+}
+#heapsortVisual .sort-row{
+  gap:8px;
+  padding:18px 6px;
+  flex-wrap:wrap;
+  min-width:0;
+}
+#heapsortVisual .sort-cell{
+  min-width:56px;
+  height:60px;
+  font-size:18px;
+  border-width:3px;
+}
+#heapsortVisual .sort-cell .sort-index{
+  top:-20px;
+  font-size:11px;
+}
+#heapsortVisual .tree-svg{
+  width:100%;
+  height:330px;
+  min-width:0;
+}
+#heapsortVisual .tree-edge{
+  stroke-width:3;
+}
+#heapsortVisual .tree-edge.active{
+  stroke-width:5;
+}
+#heapsortVisual .tree-svg-node text{
+  font-size:16px;
+}
+@media(max-width:900px){
+  #heapsort .heap-first-row input[type="text"],
+  #heapsort .heap-first-row input:not([type]){
+    min-width:190px;
+  }
+  #heapsortVisual{
+    min-height:460px;
+  }
+  #heapsortVisual .sort-cell{
+    min-width:50px;
+    height:56px;
+    font-size:16px;
+  }
+  #heapsortVisual .tree-svg{
+    height:300px;
+  }
+}
+</style>
+</head>
+<body>
+<header><h1>Data Structure Interactive Learning Platform</h1><div>Stack · Queue · Array List · Linked List</div></header>
+<div class="layout">
+<aside id="menu"></aside>
+<main id="main"></main>
+</div>
 <script>
-const modules=[['home','ภาพรวม'],['stack','Stack'],['physical','Physical Queue'],['linear','Linear Queue'],['circular','Circular Queue'],['arraylist','Array List'],['sll','Singly Linked List'],['dll','Doubly Linked List'],['selection','Selection Sort'],['bubble','Bubble Sort'],['linearsearch','Linear Search'],['binarysearch','Binary Search'],['bst','Binary Search Tree']];
-const nav=document.getElementById('nav'),main=document.getElementById('main');modules.forEach((m,i)=>{nav.innerHTML+=`<button data-id="${m[0]}" class="${i?'':'active'}">${m[1]}</button>`});
-function panel(id,title,body){main.innerHTML+=`<section id="${id}" class="panel ${id==='home'?'active':''}"><h2>${title}</h2>${body}</section>`}
-function c(id,val='10'){return `<input id="${id}" value="${val}">`};function b(t,f){return `<button onclick="${f}">${t}</button>`};function V(id){return `<div id="${id}" class="visual"></div><div id="${id}S" class="status"></div>`}
-panel('home','ภาพรวม','<p>เลือกหัวข้อจากเมนู ทดลองคำสั่ง ทำนายผล และอธิบายการเปลี่ยนแปลงของข้อมูลหรือ pointer ในแต่ละขั้นตอน</p>');
-panel('stack','Stack',`<div class="controls">${c('stIn')}${b('Push','stPush()')}${b('Pop','stPop()')}${b('Peek','stPeek()')}${b('Clear','stClear()')}</div>${V('stV')}`);
-panel('physical','Physical Queue',`<p>Dequeue แล้วเลื่อนข้อมูลที่เหลือไปทางซ้าย โดย front อยู่ index 0</p><div class="controls">${c('pqIn')}${b('Enqueue','pqEnq()')}${b('Dequeue','pqDeq()')}${b('Clear','pqClear()')}</div>${V('pqV')}`);
-panel('linear','Linear Queue',`<p>front และ rear เดินหน้า พื้นที่ว่างด้านหน้าไม่ถูกใช้ซ้ำ</p><div class="controls">${c('lqIn')}${b('Enqueue','lqEnq()')}${b('Dequeue','lqDeq()')}${b('Clear','lqClear()')}</div>${V('lqV')}`);
-panel('circular','Circular Queue',`<div class="controls">Size ${c('cqMax','6')}${b('Create','cqCreate()')} Data ${c('cqIn')}${b('Enqueue','cqEnq()')}${b('Dequeue','cqDeq()')}${b('Peek','cqPeek()')}${b('isEmpty','cqEmpty()')}${b('isFull','cqFull()')}</div>${V('cqV')}`);
-panel('arraylist','Array List',`<div class="controls">Data ${c('alIn','25')} Index ${c('alIdx','0')}${b('Append','alAppend()')}${b('Insert','alInsert()')}${b('Remove','alRemove()')}${b('Clear','alClear()')}</div>${V('alV')}`);
-panel('sll','Singly Linked List',`<div class="controls">${c('sllIn')}${b('Add Head','sllHead()')}${b('Add Tail','sllTail()')}${b('Remove Head','sllRemove()')}${b('Clear','sllClear()')}</div>${V('sllV')}`);
-panel('dll','Doubly Linked List',`<div class="controls">${c('dllIn')}${b('Add Head','dllHead()')}${b('Add Tail','dllTail()')}${b('Remove Tail','dllRemove()')}${b('Clear','dllClear()')}</div>${V('dllV')}`);
-panel('selection','Selection Sort',`<div class="controls">${c('selIn','35,12,48,7,29,18')}${b('Load','selLoad()')}${b('Next Step','selStep()')}${b('Reset','selLoad()')}</div>${V('selV')}`);
-panel('bubble','Bubble Sort',`<div class="controls">${c('bubIn','8,3,6,1,5')}${b('Load','bubLoad()')}${b('Next Step','bubStep()')}${b('Reset','bubLoad()')}</div>${V('bubV')}`);
-panel('linearsearch','Linear Search',`<div class="controls">${c('lsIn','15,8,22,31,9')} Target ${c('lsT','31')}${b('Load','lsLoad()')}${b('Next Step','lsStep()')}</div>${V('lsV')}`);
-panel('binarysearch','Binary Search',`<div class="controls">${c('bsIn','4,8,12,18,25,31,40')} Target ${c('bsT','25')}${b('Load','bsLoad()')}${b('Next Step','bsStep()')}</div>${V('bsV')}`);
-panel('bst','Binary Search Tree',`<div class="controls">${c('bstIn','25')}${b('Insert','bstInsert()')}${b('Search','bstSearch()')}${b('Clear','bstClear()')}</div>${V('bstV')}`);
-nav.onclick=e=>{if(e.target.tagName!=='BUTTON')return;document.querySelectorAll('nav button,.panel').forEach(x=>x.classList.remove('active'));e.target.classList.add('active');document.getElementById(e.target.dataset.id).classList.add('active')};
-function A(a,o={}){return '<div class="array">'+a.map((v,i)=>`<div class="cell ${o.sorted?.includes(i)?'sorted':''} ${o.current===i?'current':''} ${o.compare?.includes(i)?'compare':''}"><span class="idx">${i}</span>${v??'ว่าง'}${o.ptr?.[i]?`<span class="ptr">${o.ptr[i]}</span>`:''}</div>`).join('')+'</div>'};function S(id,t){document.getElementById(id+'S').textContent=t};function n(id){return document.getElementById(id).value};function nums(id){return n(id).split(',').map(Number).filter(x=>!isNaN(x))}
-let st=[];function stR(){stV.innerHTML=A(st,{current:st.length-1,ptr:{[st.length-1]:'top'}});S('stV',`top=${st.length-1}, size=${st.length}`)}function stPush(){if(st.length===6)return S('stV','Overflow');st.push(n('stIn'));stR()}function stPop(){if(!st.length)return S('stV','Underflow');let x=st.pop();stR();S('stV','Pop '+x)}function stPeek(){S('stV',st.length?'Peek '+st.at(-1):'Empty')}function stClear(){st=[];stR()}
-let pq=[];function pqR(){let a=[...pq,...Array(6-pq.length).fill(null)],p=pq.length?{0:'front',[pq.length-1]:'rear'}:{};pqV.innerHTML=A(a,{ptr:p});S('pqV',`front=${pq.length?0:-1}, rear=${pq.length-1}`)}function pqEnq(){if(pq.length===6)return S('pqV','Overflow');pq.push(n('pqIn'));pqR()}function pqDeq(){if(!pq.length)return S('pqV','Underflow');let x=pq.shift();pqR();S('pqV','Dequeue '+x+' และเลื่อนข้อมูล')}function pqClear(){pq=[];pqR()}
-let lq=Array(6).fill(null),lf=-1,lr=-1;function lqR(){let p={};if(lf>=0)p[lf]='front';if(lr>=0)p[lr]=(p[lr]||'')+' rear';lqV.innerHTML=A(lq,{ptr:p});S('lqV',`front=${lf}, rear=${lr}`)}function lqEnq(){if(lr===5)return S('lqV','Overflow');if(lf<0)lf=0;lq[++lr]=n('lqIn');lqR()}function lqDeq(){if(lf<0)return S('lqV','Underflow');let x=lq[lf];lq[lf++]=null;if(lf>lr)lf=lr=-1;lqR();S('lqV','Dequeue '+x)}function lqClear(){lq=Array(6).fill(null);lf=lr=-1;lqR()}
-let cq=[],cf=-1,cr=-1,cs=0,cm=6;function cqCreate(){cm=Math.max(3,Math.min(12,+n('cqMax')||6));cq=Array(cm).fill(null);cf=cr=-1;cs=0;cqR()}function cqR(){let p={};if(cf>=0)p[cf]='front';if(cr>=0)p[cr]=(p[cr]||'')+' rear';cqV.innerHTML=A(cq,{ptr:p});S('cqV',`front=${cf}, rear=${cr}, size=${cs}, max=${cm}`)}function cqEnq(){if(cs===cm)return S('cqV','isFull = true');if(!cs)cf=cr=0;else cr=(cr+1)%cm;cq[cr]=n('cqIn');cs++;cqR()}function cqDeq(){if(!cs)return S('cqV','isEmpty = true');let x=cq[cf];cq[cf]=null;cs--;if(!cs)cf=cr=-1;else cf=(cf+1)%cm;cqR();S('cqV','Dequeue '+x)}function cqPeek(){S('cqV',cs?'Peek '+cq[cf]:'Empty')}function cqEmpty(){S('cqV','isEmpty = '+(cs===0))}function cqFull(){S('cqV','isFull = '+(cs===cm))}
-let al=[10,20,30];function alR(){alV.innerHTML=A(al);S('alV','size='+al.length)}function alAppend(){al.push(n('alIn'));alR()}function alInsert(){let i=+n('alIdx');if(i<0||i>al.length)return S('alV','Invalid index');al.splice(i,0,n('alIn'));alR()}function alRemove(){let i=+n('alIdx');if(i<0||i>=al.length)return S('alV','Invalid index');al.splice(i,1);alR()}function alClear(){al=[];alR()}
-let sl=[10,20,30];function slR(){sllV.innerHTML='<div class="nodeRow">'+(sl.length?sl.map((v,i)=>`<div class="node">${v}|next</div>${i<sl.length-1?'<span class="arrow">→</span>':''}`).join(''):'NULL')+'</div>';S('sllV','head='+(sl[0]??'NULL'))}function sllHead(){sl.unshift(n('sllIn'));slR()}function sllTail(){sl.push(n('sllIn'));slR()}function sllRemove(){sl.shift();slR()}function sllClear(){sl=[];slR()}
-let dl=[10,20,30];function dlR(){dllV.innerHTML='<div class="nodeRow">'+(dl.length?dl.map((v,i)=>`${i?'<span class="arrow">↔</span>':''}<div class="node">prev|${v}|next</div>`).join(''):'NULL')+'</div>';S('dllV',`head=${dl[0]??'NULL'}, tail=${dl.at(-1)??'NULL'}`)}function dllHead(){dl.unshift(n('dllIn'));dlR()}function dllTail(){dl.push(n('dllIn'));dlR()}function dllRemove(){dl.pop();dlR()}function dllClear(){dl=[];dlR()}
-let sa=[],si=0,sj=1,sm=0;function selLoad(){sa=nums('selIn');si=0;sj=1;sm=0;selR('เริ่มต้น')}function selR(t){selV.innerHTML=A(sa,{sorted:[...Array(si).keys()],current:sm,compare:sj<sa.length?[sj]:[]});S('selV',t)}function selStep(){if(si>=sa.length-1)return S('selV','เรียงเสร็จแล้ว');if(sj<sa.length){if(sa[sj]<sa[sm])sm=sj;return selR(`เปรียบเทียบ index ${sj++}`)}[sa[si],sa[sm]]=[sa[sm],sa[si]];si++;sm=si;sj=si+1;selR('สลับและเริ่มรอบใหม่')}
-let ba=[],bi=0,bj=0;function bubLoad(){ba=nums('bubIn');bi=0;bj=0;bubR('เริ่มต้น')}function bubR(t){bubV.innerHTML=A(ba,{sorted:[...Array(bi).keys()].map(x=>ba.length-1-x),compare:bj<ba.length-1-bi?[bj,bj+1]:[]});S('bubV',t)}function bubStep(){if(bi>=ba.length-1)return S('bubV','เรียงเสร็จแล้ว');if(bj<ba.length-1-bi){if(ba[bj]>ba[bj+1])[ba[bj],ba[bj+1]]=[ba[bj+1],ba[bj]];bj++;bubR('เปรียบเทียบและสลับเมื่อจำเป็น')}else{bi++;bj=0;bubR('จบรอบ')}}
-let la=[],li=0,lt=0;function lsLoad(){la=nums('lsIn');li=0;lt=+n('lsT');lsR('เริ่มค้นหา')}function lsR(t){lsV.innerHTML=A(la,{current:li});S('lsV',t)}function lsStep(){if(li>=la.length)return S('lsV','ไม่พบ');if(la[li]===lt)return S('lsV','พบที่ index '+li);li++;lsR('ตรวจตำแหน่งถัดไป')}
-let bs=[],lo=0,hi=0,mid=-1,bt=0;function bsLoad(){bs=nums('bsIn').sort((a,b)=>a-b);lo=0;hi=bs.length-1;mid=-1;bt=+n('bsT');bsR('เริ่มค้นหา')}function bsR(t){bsV.innerHTML=A(bs,{compare:mid>=0?[mid]:[],ptr:{[lo]:'low',[hi]:'high'}});S('bsV',t)}function bsStep(){if(lo>hi)return S('bsV','ไม่พบ');mid=Math.floor((lo+hi)/2);if(bs[mid]===bt)return bsR('พบที่ index '+mid);if(bt<bs[mid])hi=mid-1;else lo=mid+1;bsR('ปรับขอบเขตการค้นหา')}
-class N{constructor(v){this.v=v;this.l=null;this.r=null}}let root=null;function ins(r,v){if(!r)return new N(v);if(v<r.v)r.l=ins(r.l,v);else if(v>r.v)r.r=ins(r.r,v);return r}function bstInsert(){root=ins(root,+n('bstIn'));bstR()}function bstSearch(){let v=+n('bstIn'),r=root,p=[];while(r){p.push(r.v);if(v===r.v)return S('bstV','พบ เส้นทาง '+p.join(' → '));r=v<r.v?r.l:r.r}S('bstV','ไม่พบ เส้นทาง '+p.join(' → '))}function bstClear(){root=null;bstR()}function bstR(){let q=root?[root]:[],out=[];while(q.length&&out.length<5){out.push(q.map(x=>x?x.v:null));let nq=[];q.forEach(x=>x?nq.push(x.l,x.r):nq.push(null,null));if(!nq.some(Boolean))break;q=nq}bstV.innerHTML=out.length?out.map(a=>'<div class="nodeRow">'+a.map(v=>v==null?'<span style="width:50px"></span>':`<div class="node">${v}</div>`).join('')+'</div>').join(''):'ต้นไม้ว่าง';S('bstV','Binary Search Tree')}
-stR();pqR();lqR();cqCreate();alR();slR();dlR();selLoad();bubLoad();lsLoad();bsLoad();bstR();
-</script></body></html>
+"use strict";
+const $=id=>document.getElementById(id);
+const configs=[
+ {id:"stack",title:"Stack",kind:"array",ops:["create","push","pop","isFull","isEmpty","size","popAll"]},
+ {id:"stackapp",title:"Stack Application",kind:"stackapp",ops:[]},
+ {id:"recursion",title:"Recursion Algorithm",kind:"recursion",ops:[]},
+ {id:"physicalq",title:"Physical Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
+ {id:"linearq",title:"Linear Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
+ {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
+ {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","append","insert","delete","delete_index","delete_item","isFull","isEmpty","size","index_of","print_list"]},
+ {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","append","insert","delete","delete_index","delete_item","isEmpty","size","index_of","print_list"]},
+ {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","append","insert","delete","delete_index","delete_item","isEmpty","size","index_of","print_list","print_backward"]},
+ {id:"bst",title:"BST",kind:"nonlinear",structure:"bst"},
+ {id:"heap",title:"Heap Tree",kind:"nonlinear",structure:"heap"},
+ {id:"hash",title:"Hash Table",kind:"nonlinear",structure:"hash"},
+ {id:"avl",title:"AVL Tree",kind:"nonlinear",structure:"avl"},
+ {id:"graph",title:"Graph",kind:"graph"},
+ {id:"dfs",title:"DFS",kind:"graphalgo",algorithm:"dfs"},
+ {id:"bfs",title:"BFS",kind:"graphalgo",algorithm:"bfs"},
+ {id:"dijkstra",title:"Dijkstra",kind:"graphalgo",algorithm:"dijkstra"},
+ {id:"prim",title:"Prim",kind:"graphalgo",algorithm:"prim"},
+ {id:"kruskal",title:"Kruskal",kind:"graphalgo",algorithm:"kruskal"},
+ {id:"selection",title:"Selection Sort",kind:"sorting",algorithm:"selection"},
+ {id:"insertion",title:"Insertion Sort",kind:"sorting",algorithm:"insertion"},
+ {id:"bubble",title:"Bubble Sort",kind:"sorting",algorithm:"bubble"},
+ {id:"radix",title:"Radix Sort",kind:"sorting",algorithm:"radix"},
+ {id:"merge",title:"Merge Sort",kind:"sorting",algorithm:"merge"},
+ {id:"quick",title:"Quick Sort",kind:"sorting",algorithm:"quick"},
+ {id:"heapsort",title:"Heap Sort",kind:"sorting",algorithm:"heapsort"},
+ {id:"sequential",title:"Sequential Search",kind:"searching",algorithm:"sequential"},
+ {id:"binary",title:"Binary Search",kind:"searching",algorithm:"binary"}
+];
+const states={};
+
+function makeState(id){
+ return {id,data:[],capacity:6,front:-1,rear:-1,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1};
+}
+function val(id){const raw=$(id+"Data").value.trim();const n=Number(raw);return Number.isNaN(n)?raw:n}
+function idx(id){return Number($(id+"Index").value)}
+function addLog(id,t){const d=document.createElement("div");d.textContent=t;$(id+"Log").prepend(d)}
+function setStatus(id,t){$(id+"Status").textContent=t}
+function updateInfo(id){
+ const s=states[id],cfg=configs.find(x=>x.id===id);
+ let size=cfg.id==="linearq"||cfg.id==="circularq"?s.data.filter(v=>v!==null).length:s.data.length;
+ $(id+"Size").textContent=size;
+ $(id+"State").textContent=size===0?"Empty":"Ready";
+ if($(id+"Pointer")){
+   if(id==="stack")$(id+"Pointer").textContent=`top = ${s.top}`;
+   else if(["physicalq","linearq","circularq"].includes(id))$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}`;
+   else $(id+"Pointer").textContent="-";
+ }
+}
+function arrayHTML(a,o={}){
+ return '<div class="array">'+a.map((v,i)=>{
+   let c="cell"+(v===null?" empty":"");
+   if(o.front===i)c+=" front";if(o.rear===i)c+=" rear";if(o.top===i)c+=" top";
+   const p=[];if(o.front===i)p.push("front");if(o.rear===i)p.push("rear");if(o.top===i)p.push("top");
+   return `<div class="${c}"><span class="idx">index ${i}</span>${v===null?"ว่าง":v}${p.length?`<span class="ptr">${p.join(" / ")}</span>`:""}</div>`;
+ }).join("")+"</div>";
+}
+function linkedHTML(a,double=false,o={}){
+ const head=a.length
+   ? `<div class="head-pointer"><span>head</span><span class="head-arrow">→</span></div>`
+   : `<div class="head-pointer"><span>head</span><span class="head-arrow">→</span><strong>NULL</strong></div>`;
+
+ if(!a.length)return `<div class="linked-stage">${head}</div>`;
+
+ return `<div class="linked-stage">${head}`+a.map((v,i)=>{
+   let cls="node";
+   if(o.active===i)cls+=" active-node";
+   if(o.newIndex===i)cls+=" new-node";
+   if(o.deleteIndex===i)cls+=" delete-node";
+
+   const body=double
+     ? `<small>prev</small> | <strong>${v}</strong> | <small>next</small>`
+     : `<strong>${v}</strong><small><br>next</small>`;
+
+   let connector="";
+   if(double){
+     const nextCreating=o.nextCreating===i;
+     const prevCreating=o.prevCreating===i;
+     const nextRemoving=o.nextRemoving===i;
+     const prevRemoving=o.prevRemoving===i;
+
+     connector=i<a.length-1
+       ? `<span class="dll-link-wrap">
+            <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→</span>
+            <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
+          </span>`
+       : `<span class="dll-link-wrap">
+            <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→ NULL</span>
+            <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
+          </span>`;
+   }else{
+     const creating=o.linkCreating===i;
+     const removing=o.linkRemoving===i;
+     connector=i<a.length-1
+       ? `<span class="link-arrow ${creating?"creating":""} ${removing?"removing":""}">→</span>`
+       : `<span class="link-arrow ${creating?"creating":""} ${removing?"removing":""}">→ NULL</span>`;
+   }
+
+   return `<div class="node-block">
+     <div class="node-col">
+       <div class="node-label">node ${i}</div>
+       <div class="${cls}">${body}</div>
+     </div>
+     ${connector}
+   </div>`;
+ }).join("")+"</div>";
+}
+function render(id){
+ const s=states[id],cfg=configs.find(x=>x.id===id);
+ if(cfg.kind==="linked")$(id+"Visual").innerHTML=linkedHTML(s.data,cfg.double,s.view);
+ else{
+   let display=[];
+   if(id==="linearq"||id==="circularq")display=s.data.length?[...s.data]:Array(s.capacity).fill(null);
+   else{display=Array(s.capacity).fill(null);s.data.forEach((v,i)=>{if(i<s.capacity)display[i]=v})}
+   $(id+"Visual").innerHTML=`<div style="font-weight:700;color:#546e7a;margin-bottom:12px">Array Capacity = ${s.capacity} ช่อง</div>${arrayHTML(display,{front:s.front,rear:s.rear,top:s.top})}`;
+ }
+ updateInfo(id);
+}
+
+function algorithmControls(id){
+ return `<div class="tools">
+   <button class="action" onclick="nextAlgorithmStep('${id}')">Next Step</button>
+   <button class="action blue" id="${id}Auto" onclick="toggleAlgorithmAuto('${id}')">Auto Play</button>
+   <label>Speed<input id="${id}Speed" type="range" min="250" max="1600" step="100" value="800"></label>
+   <button class="action gray" onclick="resetAlgorithm('${id}')">Reset</button>
+ </div>
+ <div class="progress"><div id="${id}Progress"></div></div>`;
+}
+function algorithmDashboard(id){
+ return `<div class="dashboard">
+   <div class="metric"><span>Step</span><strong id="${id}Step">0</strong></div>
+   <div class="metric"><span>Comparisons</span><strong id="${id}Comparisons">0</strong></div>
+   <div class="metric"><span>Swaps/Moves</span><strong id="${id}Swaps">0</strong></div>
+   <div class="metric"><span>Status</span><strong id="${id}RunState">Ready</strong></div>
+   <div class="metric"><span>Complexity</span><strong id="${id}Complexity">-</strong></div>
+ </div>`;
+}
+
+function panel(cfg){
+ if(cfg.kind==="stackapp"){
+   return `<section id="${cfg.id}" class="panel">
+    <h2>Stack Application</h2>
+    <div class="controls">
+      <label>Infix Expression<input id="exprInput" value="A+B*(C-D)"></label>
+      <select id="exprMode">
+        <option value="postfix">Infix → Postfix</option>
+        <option value="prefix">Infix → Postfix → Prefix</option>
+      </select>
+      <button class="action green" onclick="prepareExpression()">Prepare</button>
+    </div>
+    <div class="tools">
+      <button class="action" onclick="nextExpressionStep()">Next Step</button>
+      <button class="action blue" id="exprAuto" onclick="toggleExpressionAuto()">Auto Play</button>
+      <label>Speed<input id="exprSpeed" type="range" min="300" max="1600" step="100" value="800"></label>
+      <button class="action gray" onclick="resetExpression()">Reset</button>
+      <button class="action gray" onclick="clearLog('stackapp')">Clear Log</button>
+    </div>
+    <div class="progress"><div id="stackappProgress"></div></div>
+    <div class="phase-badge" id="exprPhase">Ready</div>
+    <div class="expr-grid">
+      <div class="expr-box"><strong>Input Tokens</strong><div id="exprTokens" class="token-row"></div></div>
+      <div class="expr-box"><strong>Operator / Expression Stack</strong><div id="exprStack" class="stack-mini"></div></div>
+      <div class="expr-box"><strong>Output</strong><div id="exprOutput" class="token-row"></div><div id="exprResult" class="expr-result"></div></div>
+    </div>
+    <div id="exprTrack" class="algorithm-track">
+      <span class="track-line" data-line="1">1. อ่าน token จากซ้ายไปขวา</span>
+      <span class="track-line" data-line="2">2. Operand → ส่งไป Postfix Output</span>
+      <span class="track-line" data-line="3">3. Operator → เปรียบเทียบลำดับความสำคัญ</span>
+      <span class="track-line" data-line="4">4. Push/Pop Operator Stack</span>
+      <span class="track-line" data-line="5">5. ได้ Postfix Expression</span>
+      <span class="track-line" data-line="6">6. อ่าน Postfix จากซ้ายไปขวา</span>
+      <span class="track-line" data-line="7">7. Operand → Push Expression Stack</span>
+      <span class="track-line" data-line="8">8. Operator → Pop 2 ค่า แล้วสร้าง Prefix</span>
+      <span class="track-line" data-line="9">9. ได้ Prefix Expression</span>
+    </div>
+    <div id="stackappStatus" class="status">พร้อมใช้งาน</div>
+    <div id="stackappLog" class="log"></div>
+   </section>`;
+ }
+ if(cfg.kind==="recursion"){
+   return `<section id="${cfg.id}" class="panel">
+    <h2>Recursion Algorithm</h2>
+    <div class="controls">
+      <label>Algorithm<select id="recMode">
+        <option value="factorial">Factorial</option>
+        <option value="fibonacci">Fibonacci</option>
+      </select></label>
+      <label>n<input id="recN" type="number" min="0" max="8" value="5"></label>
+      <button class="action green" onclick="prepareRecursion()">Prepare</button>
+    </div>
+    <div class="tools">
+      <button class="action" onclick="nextRecursionStep()">Next Step</button>
+      <button class="action blue" id="recAuto" onclick="toggleRecursionAuto()">Auto Play</button>
+      <label>Speed<input id="recSpeed" type="range" min="300" max="1600" step="100" value="800"></label>
+      <button class="action gray" onclick="resetRecursion()">Reset</button>
+    </div>
+    <div class="progress"><div id="recProgress"></div></div>
+    <div class="expr-grid">
+      <div class="expr-box"><strong>Function</strong><div id="recCode" class="code-box"></div></div>
+      <div class="expr-box"><strong>Current Recursion Call Path</strong><div id="recVisual" class="visual"></div></div>
+      <div class="expr-box">
+        <strong>Algorithm Track</strong>
+        <div id="recTrack" class="algorithm-track"></div>
+        <div id="recStepDetail" class="status" style="margin-top:12px">ยังไม่เริ่มประมวลผล</div>
+      </div>
+    </div>
+    <div id="recStatus" class="status">พร้อมใช้งาน</div>
+   </section>`;
+ }
+
+ if(cfg.kind==="nonlinear"){
+   const extra=cfg.structure==="hash"
+     ? `<label>Table Size<input id="${cfg.id}Capacity" type="number" min="3" max="20" value="7"></label>
+        <label>Hash Method
+          <select id="${cfg.id}HashMethod">
+            <option value="division">Division Method: key % m</option>
+            <option value="multiplication">Multiplication Method</option>
+            <option value="midSquare">Mid-Square Method</option>
+          </select>
+        </label>`
+     : `<input id="${cfg.id}Capacity" type="hidden" value="20">`;
+   return `<section id="${cfg.id}" class="panel">
+    <h2>${cfg.title}</h2>
+    <div class="controls">
+      <label>Data / Key<input id="${cfg.id}Data" value="30"></label>
+      ${extra}
+      <button class="action green" onclick="prepareStructureOperation('${cfg.id}','create')">create</button>
+      <button class="action" onclick="prepareStructureOperation('${cfg.id}','add')">add</button>
+      <button class="action blue" onclick="prepareStructureOperation('${cfg.id}','delete')">delete</button>
+      <button class="action gray" onclick="prepareStructureOperation('${cfg.id}','search')">search</button>
+      ${["bst","avl"].includes(cfg.structure)?`<button class="action gray" onclick="showTraversal('${cfg.id}','inorder')">inorder</button><button class="action gray" onclick="showTraversal('${cfg.id}','preorder')">preorder</button><button class="action gray" onclick="showTraversal('${cfg.id}','postorder')">postorder</button>`:""}
+      ${cfg.structure==="heap"?`<button class="action gray" onclick="prepareStructureOperation('${cfg.id}','peek')">peek</button><button class="action gray" onclick="prepareStructureOperation('${cfg.id}','extract')">extractMax</button>`:""}
+      ${cfg.structure==="hash"?`<button class="action gray" onclick="prepareStructureOperation('${cfg.id}','print')">print_table</button>`:""}
+    </div>
+    ${algorithmControls(cfg.id)}
+    ${algorithmDashboard(cfg.id)}
+    ${cfg.structure==="hash"?`<div class="hash-calc-panel">
+      <strong>Hash Index Calculation</strong>
+      <div id="hashFormula" class="hash-formula">ยังไม่คำนวณ</div>
+    </div>`:""}
+    <div class="algo-layout">
+      <div id="${cfg.id}Visual" class="algo-visual"></div>
+      <div>
+        <strong>Algorithm Track</strong>
+        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        <div id="${cfg.id}Detail" class="graph-detail">ยังไม่เริ่ม</div>
+        <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
+      </div>
+    </div>
+   </section>`;
+ }
+
+ if(cfg.kind==="graph"){
+   return `<section id="${cfg.id}" class="panel">
+    <h2>Graph</h2>
+    <div class="controls">
+      <label>Vertices<input id="graphVertices" value="A,B,C,D,E"></label>
+      <label>Edges (u-v:w)<input id="graphEdges" value="A-B:4,A-C:2,B-C:1,B-D:5,C-D:8,C-E:10,D-E:2"></label>
+      <label>Vertex<input id="graphVertex" value="F"></label>
+      <label>Edge<input id="graphEdge" value="A-F:3"></label>
+      <button class="action green" onclick="prepareGraphOperation('create')">create</button>
+      <button class="action" onclick="prepareGraphOperation('addVertex')">add_vertex</button>
+      <button class="action" onclick="prepareGraphOperation('addEdge')">add_edge</button>
+      <button class="action blue" onclick="prepareGraphOperation('deleteVertex')">delete_vertex</button>
+      <button class="action blue" onclick="prepareGraphOperation('deleteEdge')">delete_edge</button>
+      <button class="action gray" onclick="prepareGraphOperation('search')">search</button>
+    </div>
+    ${algorithmControls(cfg.id)}
+    ${algorithmDashboard(cfg.id)}
+    <div class="algo-layout">
+      <div id="graphVisual" class="algo-visual"></div>
+      <div><strong>Algorithm Track</strong><div id="graphTrack" class="algorithm-track"></div><div id="graphStatus" class="status">พร้อมใช้งาน</div></div>
+    </div>
+   </section>`;
+ }
+ if(cfg.kind==="graphalgo"){
+   return `<section id="${cfg.id}" class="panel">
+    <h2>${cfg.title} Algorithm</h2>
+    <div class="controls">
+      <label>Vertices<input id="${cfg.id}Vertices" value="A,B,C,D,E"></label>
+      <label>Edges (u-v:w)<input id="${cfg.id}Edges" value="A-B:4,A-C:2,B-C:1,B-D:5,C-D:8,C-E:10,D-E:2"></label>
+      <label>Start<input id="${cfg.id}Start" value="A"></label>
+      ${cfg.algorithm==="dijkstra"?`<label>Target<input id="${cfg.id}Target" value="E"></label>`:""}
+      <button class="action green" onclick="prepareGraphAlgorithm('${cfg.id}')">Prepare</button>
+    </div>
+    ${algorithmControls(cfg.id)}
+    ${algorithmDashboard(cfg.id)}
+    <div class="algo-layout">
+      <div id="${cfg.id}Visual" class="algo-visual"></div>
+      <div>
+        <strong>Algorithm Track</strong>
+        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        <div id="${cfg.id}Detail" class="graph-detail">ยังไม่เริ่ม</div>
+        <div id="${cfg.id}Matrix" class="matrix-wrap"></div>
+        <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
+      </div>
+    </div>
+   </section>`;
+ }
+
+ if(cfg.kind==="sorting"){
+   return `<section id="${cfg.id}" class="panel">
+    <h2>${cfg.title}</h2>
+    <div class="controls">
+      <label>Data<input id="${cfg.id}Data" value="35,12,48,7,29,18"></label>
+      <label>Order<select id="${cfg.id}Order">
+        <option value="asc">น้อยไปมาก</option>
+        <option value="desc">มากไปน้อย</option>
+      </select></label>
+      <button class="action green" onclick="prepareSorting('${cfg.id}')">Prepare</button>
+    </div>
+    ${cfg.id==="selection"?`<div class="selected-panel">
+      <strong>ค่าที่เลือกในรอบปัจจุบัน:</strong>
+      <span id="selectionSelectedValue" class="selected-value">-</span>
+      <span id="selectionSelectedIndex">index -</span>
+      <span id="selectionPassInfo">pass -</span>
+    </div>`:""}
+    ${algorithmControls(cfg.id)}
+    ${algorithmDashboard(cfg.id)}
+    <div class="algo-layout">
+      <div id="${cfg.id}Visual" class="algo-visual"></div>
+      <div>
+        <strong>Algorithm</strong>
+        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
+      </div>
+    </div>
+   </section>`;
+ }
+ if(cfg.kind==="searching"){
+   return `<section id="${cfg.id}" class="panel">
+    <h2>${cfg.title}</h2>
+    <div class="controls">
+      <label>Data<input id="${cfg.id}Data" value="5,12,18,29,35,48"></label>
+      <label>Target<input id="${cfg.id}Target" value="29"></label>
+      <button class="action green" onclick="prepareSearching('${cfg.id}')">Prepare</button>
+    </div>
+    ${algorithmControls(cfg.id)}
+    ${algorithmDashboard(cfg.id)}
+    <div class="algo-layout">
+      <div id="${cfg.id}Visual" class="algo-visual"></div>
+      <div>
+        <strong>Algorithm</strong>
+        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
+      </div>
+    </div>
+   </section>`;
+ }
+
+ const needsIndex=["arraylist","sll","dll"].includes(cfg.id);
+ const needsCapacity=["stack","physicalq","linearq","circularq","arraylist"].includes(cfg.id);
+ const buttons=cfg.ops.map(op=>`<button class="action ${op==="create"?"green":op.includes("delete")||op==="pop"||op==="dequeue"?"blue":"gray"}" onclick="operate('${cfg.id}','${op}')">${op}</button>`).join("");
+ const linkedTools=cfg.kind==="linked"?`<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div><div id="${cfg.id}Track" class="algorithm-track"></div>`:`<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>`;
+ return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="6" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${buttons}</div>${linkedTools}<div class="info"><div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div><div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div></div><div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
+}
+function build(){
+ let menuHTML="";
+ configs.forEach((c,i)=>{
+   if(c.id==="stackapp")menuHTML+=`<div class="submenu-label">Stack Application</div>`;
+   if(c.id==="recursion")menuHTML+=`<div class="submenu-label">Recursion Algorithm</div>`;
+   if(c.id==="physicalq")menuHTML+=`<div class="submenu-label">Queue</div>`;
+   if(c.id==="arraylist")menuHTML+=`<div class="submenu-label">List</div>`;
+   if(c.id==="bst")menuHTML+=`<div class="submenu-label">Non-linear Data Structure</div>`;
+   if(c.id==="avl")menuHTML+=`<div class="submenu-label">Balanced Tree & Graph</div>`;
+   if(c.id==="dfs")menuHTML+=`<div class="submenu-label">Graph Algorithms</div>`;
+   if(c.id==="selection")menuHTML+=`<div class="submenu-label">Sorting</div>`;
+   if(c.id==="sequential")menuHTML+=`<div class="submenu-label">Searching</div>`;
+   menuHTML+=`<button class="${i===0?"active":""}" data-id="${c.id}">${c.title}</button>`;
+ });
+ $("menu").innerHTML=menuHTML;
+ $("main").innerHTML=configs.map(panel).join("");
+ $("menu").querySelectorAll("button").forEach(b=>b.onclick=()=>{document.querySelectorAll("aside button,.panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.id).classList.add("active")});
+ configs.forEach((c,i)=>{
+   states[c.id]=makeState(c.id);
+   if(c.kind==="array"||c.kind==="arraylist"||c.kind==="linked")operate(c.id,"create");
+   if(c.kind==="nonlinear")prepareStructureOperation(c.id,"create");
+   if(c.kind==="sorting")prepareSorting(c.id);
+   if(c.kind==="searching")prepareSearching(c.id);
+   if(c.kind==="graph")prepareGraphOperation("create");
+   if(c.kind==="graphalgo")prepareGraphAlgorithm(c.id);
+   if(i===0)$(c.id).classList.add("active");
+ });
+ resetExpression();
+ resetRecursion();
+}
+function clearLog(id){$(id+"Log").innerHTML=""}
+
+function operate(id,op){
+ const s=states[id],cfg=configs.find(x=>x.id===id),item=val(id),index=idx(id),cap=Math.max(1,Number($(id+"Capacity").value)||6);
+ if(op==="create"){states[id]=makeState(id);states[id].capacity=cap;if(id==="linearq"||id==="circularq")states[id].data=Array(cap).fill(null);setStatus(id,cfg.kind==="linked"?"create: head → NULL":`สร้างอาร์เรย์ขนาด ${cap} ช่องแล้ว`);addLog(id,"create");render(id);return}
+ if(cfg.kind==="linked"&&["append","insert","delete","delete_index","delete_item"].includes(op)){prepareLinked(id,op,item,index);return}
+ if(id==="stack"){
+   if(op==="push"){if(s.data.length>=s.capacity)return setStatus(id,"Stack Overflow");s.data.push(item);s.top=s.data.length-1;setStatus(id,`push ${item} ลงใน array[${s.top}]`)}
+   if(op==="pop"){if(!s.data.length)return setStatus(id,"Stack Underflow");const x=s.data.pop();s.top=s.data.length-1;setStatus(id,`pop ${x}`)}
+   if(op==="isFull")setStatus(id,`isFull = ${s.data.length===s.capacity}`);
+   if(op==="isEmpty")setStatus(id,`isEmpty = ${s.data.length===0}`);
+   if(op==="size")setStatus(id,`size = ${s.data.length}`);
+   if(op==="popAll"){const out=[];while(s.data.length)out.push(s.data.pop());s.top=-1;setStatus(id,`popAll: ${out.join(" → ")}`)}
+ }
+ if(["physicalq","linearq","circularq"].includes(id)){
+   const qsize=id==="physicalq"?s.data.length:s.data.filter(v=>v!==null).length;
+   if(op==="enqueue"){
+     if(qsize>=s.capacity)return setStatus(id,"Queue Overflow");
+     if(id==="physicalq"){s.data.push(item);s.front=0;s.rear=s.data.length-1}
+     if(id==="linearq"){if(s.rear===s.capacity-1)return setStatus(id,"Queue Overflow");if(s.front===-1)s.front=0;s.rear++;s.data[s.rear]=item}
+     if(id==="circularq"){if(s.front===-1)s.front=s.rear=0;else s.rear=(s.rear+1)%s.capacity;s.data[s.rear]=item}
+     setStatus(id,`enqueue ${item} ลงใน array[${s.rear}]`);
+   }
+   if(op==="dequeue"){
+     if(s.front===-1)return setStatus(id,"Queue Underflow");
+     if(id==="physicalq"){const x=s.data.shift();s.front=s.data.length?0:-1;s.rear=s.data.length-1;setStatus(id,`dequeue ${x} และเลื่อนข้อมูล`)}
+     if(id==="linearq"){const x=s.data[s.front];s.data[s.front]=null;if(s.front===s.rear)s.front=s.rear=-1;else s.front++;setStatus(id,`dequeue ${x}`)}
+     if(id==="circularq"){const x=s.data[s.front];s.data[s.front]=null;if(s.front===s.rear)s.front=s.rear=-1;else s.front=(s.front+1)%s.capacity;setStatus(id,`dequeue ${x}`)}
+   }
+   const sizeNow=id==="physicalq"?s.data.length:s.data.filter(v=>v!==null).length;
+   if(op==="isFull")setStatus(id,`isFull = ${sizeNow===s.capacity}`);
+   if(op==="isEmpty")setStatus(id,`isEmpty = ${sizeNow===0}`);
+   if(op==="size")setStatus(id,`size = ${sizeNow}`);
+   if(op==="front")setStatus(id,`front = ${s.front===-1?"ไม่มีข้อมูล":s.data[s.front]}`);
+   if(op==="rear")setStatus(id,`rear = ${s.rear===-1?"ไม่มีข้อมูล":s.data[s.rear]}`);
+   if(op==="print_queue"){let vals=[];if(id==="physicalq")vals=[...s.data];else if(s.front!==-1){let i=s.front;while(true){vals.push(s.data[i]);if(i===s.rear)break;i=id==="circularq"?(i+1)%s.capacity:i+1}}setStatus(id,`front → ${vals.join(" → ")} ← rear`)}
+ }
+ if(id==="arraylist"){
+   if(op==="append"){if(s.data.length>=s.capacity)return setStatus(id,"List Full");const i=s.data.length;s.data.push(item);setStatus(id,`append ${item} ลงใน array[${i}]`)}
+   if(op==="insert"){if(index<0||index>s.data.length)return setStatus(id,"Index ไม่ถูกต้อง");if(s.data.length>=s.capacity)return setStatus(id,"List Full");s.data.splice(index,0,item);setStatus(id,`insert ${item} at index ${index}`)}
+   if(op==="delete"){const x=s.data.pop();setStatus(id,`delete ${x}`)}
+   if(op==="delete_index"){if(index<0||index>=s.data.length)return setStatus(id,"Index ไม่ถูกต้อง");setStatus(id,`delete_index ${index}: ${s.data.splice(index,1)[0]}`)}
+   if(op==="delete_item"){const i=s.data.indexOf(item);if(i<0)return setStatus(id,"ไม่พบ item");s.data.splice(i,1);setStatus(id,`delete_item ${item}`)}
+   if(op==="isFull")setStatus(id,`isFull = ${s.data.length===s.capacity}`);
+   if(op==="isEmpty")setStatus(id,`isEmpty = ${s.data.length===0}`);
+   if(op==="size")setStatus(id,`size = ${s.data.length}`);
+   if(op==="index_of")setStatus(id,`index_of(${item}) = ${s.data.indexOf(item)}`);
+   if(op==="print_list")setStatus(id,`[${s.data.join(", ")}]`);
+ }
+ if(cfg.kind==="linked"){
+   if(op==="isEmpty")setStatus(id,`isEmpty = ${s.data.length===0}`);
+   if(op==="size")setStatus(id,`size = ${s.data.length}`);
+   if(op==="index_of")setStatus(id,`index_of(${item}) = ${s.data.indexOf(item)}`);
+   if(op==="print_list")setStatus(id,`head → ${s.data.join(cfg.double?" ↔ ":" → ")}${s.data.length?" → NULL":"NULL"}`);
+   if(op==="print_backward"&&cfg.double)setStatus(id,`tail → ${[...s.data].reverse().join(" ↔ ")}${s.data.length?" → NULL":"NULL"}`);
+ }
+ addLog(id,op);render(id);
+}
+
+function snap(data,text,active=-1,newIndex=-1,deleteIndex=-1,final=false,linkCreating=-1,linkRemoving=-1,nextCreating=-1,prevCreating=-1,nextRemoving=-1,prevRemoving=-1){
+ return {data:[...data],text,active,newIndex,deleteIndex,final,linkCreating,linkRemoving,nextCreating,prevCreating,nextRemoving,prevRemoving};
+}
+
+function setLinkedTrack(id,op){
+ const tracks={
+   append:[
+     "สร้าง NewNode",
+     "เชื่อม Pointer ของโหนดเดิมกับ NewNode",
+     "กำหนด Pointer ของ NewNode",
+     "Append Complete"
+   ],
+   insert:[
+     "สร้าง NewNode",
+     "newNode.next ชี้ไปโหนดถัดไป",
+     "newNode.previous ชี้ไปโหนดก่อนหน้า",
+     "next ของโหนดก่อนหน้า ชี้มาที่ NewNode",
+     "previous ของโหนดถัดไปเดิม ชี้มาที่ NewNode",
+     "Insert Complete"
+   ],
+   delete:[
+     "ค้นหาโหนดเป้าหมาย",
+     "ยกเลิก next ของโหนดก่อนหน้า",
+     "ยกเลิก previous ของโหนดถัดไป",
+     "เชื่อมโหนดก่อนหน้าและโหนดถัดไป",
+     "Delete Complete"
+   ],
+   delete_index:[
+     "ค้นหาโหนดตาม index",
+     "ยกเลิก next ของโหนดก่อนหน้า",
+     "ยกเลิก previous ของโหนดถัดไป",
+     "เชื่อมโหนดก่อนหน้าและโหนดถัดไป",
+     "Delete Complete"
+   ],
+   delete_item:[
+     "ค้นหาโหนดตามค่า",
+     "ยกเลิก next ของโหนดก่อนหน้า",
+     "ยกเลิก previous ของโหนดถัดไป",
+     "เชื่อมโหนดก่อนหน้าและโหนดถัดไป",
+     "Delete Complete"
+   ]
+ };
+ const lines=tracks[op]||["ดำเนินการ Linked List"];
+ if($(id+"Track")){
+   $(id+"Track").innerHTML=lines.map((x,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${x}</span>`).join("");
+ }
+}
+function highlightLinkedTrack(id,line){
+ document.querySelectorAll(`#${id}Track .track-line`).forEach(x=>x.classList.remove("active"));
+ document.querySelector(`#${id}Track [data-line="${line}"]`)?.classList.add("active");
+}
+
+function prepareLinked(id,op,item,index){
+ const s=states[id],old=[...s.data],steps=[],result=[...old];
+ setLinkedTrack(id,op);
+ if(op==="append"){
+   steps.push(snap(old,`สร้างโหนดใหม่ ค่า ${item}`,-1,old.length));
+   for(let i=0;i<old.length;i++)steps.push(snap(old,`pointer เดินผ่าน node ${i}`,i,old.length));
+   result.push(item);
+   if(old.length){
+     if(id==="dll"){
+       steps.push(snap(result,`กำหนด next ของ node ${old.length-1} ให้ชี้โหนดใหม่`,-1,old.length,-1,false,-1,-1,old.length-1,-1,-1,-1));
+       steps.push(snap(result,`กำหนด previous ของโหนดใหม่ให้ชี้ node ${old.length-1}`,-1,old.length,-1,false,-1,-1,-1,old.length-1,-1,-1));
+     }else{
+       steps.push(snap(result,`สร้างเส้นเชื่อมจาก node ${old.length-1} ไปยังโหนดใหม่`,-1,old.length,-1,false,old.length-1,-1));
+     }
+   }else{
+     steps.push(snap(result,"สร้างเส้นเชื่อมจาก head ไปยังโหนดใหม่",0,0,-1,false,-1,-1));
+   }
+   steps.push(snap(result,old.length?`เชื่อม node ${old.length-1} ไปยังโหนดใหม่`:"กำหนด head ให้ชี้โหนดใหม่",-1,old.length,-1,true));
+ }else if(op==="insert"){
+   if(!Number.isInteger(index)||index<0||index>old.length)return setStatus(id,"Index ไม่ถูกต้อง");
+
+   steps.push({
+     ...snap(old,`สร้าง NewNode ค่า ${item}`,-1,index),
+     trackLine:1
+   });
+
+   for(let i=0;i<index;i++){
+     steps.push({
+       ...snap(old,`pointer เดินผ่าน node ${i}`,i,index),
+       trackLine:1
+     });
+   }
+
+   result.splice(index,0,item);
+
+   if(id==="dll"){
+     if(index===0){
+       steps.push({
+         ...snap(result,"newNode.next ชี้ไปโหนดถัดไป",0,0,-1,false,-1,-1,0,-1,-1,-1),
+         trackLine:2
+       });
+       steps.push({
+         ...snap(result,"newNode.previous = NULL",0,0,-1,false,-1,-1,-1,0,-1,-1),
+         trackLine:3
+       });
+       steps.push({
+         ...snap(result,"head ชี้มาที่ NewNode",0,0,-1,false,-1,-1,0,-1,-1,-1),
+         trackLine:4
+       });
+       if(result.length>1){
+         steps.push({
+           ...snap(result,"previous ของโหนดถัดไปเดิม ชี้มาที่ NewNode",1,0,-1,false,-1,-1,-1,0,-1,-1),
+           trackLine:5
+         });
+       }
+       steps.push({
+         ...snap(result,"Insert Complete",0,0,-1,true),
+         trackLine:6
+       });
+     }else if(index===result.length-1){
+       steps.push({
+         ...snap(result,"newNode.next = NULL",index,index,-1,false,-1,-1,index,-1,-1,-1),
+         trackLine:2
+       });
+       steps.push({
+         ...snap(result,`newNode.previous ชี้ไป node ${index-1}`,index,index,-1,false,-1,-1,-1,index-1,-1,-1),
+         trackLine:3
+       });
+       steps.push({
+         ...snap(result,`next ของ node ${index-1} ชี้มาที่ NewNode`,index-1,index,-1,false,-1,-1,index-1,-1,-1,-1),
+         trackLine:4
+       });
+       steps.push({
+         ...snap(result,"ไม่มีโหนดถัดไปเดิม จึงไม่ต้องปรับ previous",index,index,-1,false),
+         trackLine:5
+       });
+       steps.push({
+         ...snap(result,"Insert Complete",index,index,-1,true),
+         trackLine:6
+       });
+     }else{
+       steps.push({
+         ...snap(result,`newNode.next ชี้ไป node ${index+1}`,index,index,-1,false,-1,-1,index,-1,-1,-1),
+         trackLine:2
+       });
+       steps.push({
+         ...snap(result,`newNode.previous ชี้ไป node ${index-1}`,index,index,-1,false,-1,-1,-1,index-1,-1,-1),
+         trackLine:3
+       });
+       steps.push({
+         ...snap(result,`next ของ node ${index-1} ชี้มาที่ NewNode`,index-1,index,-1,false,-1,-1,index-1,-1,-1,-1),
+         trackLine:4
+       });
+       steps.push({
+         ...snap(result,`previous ของ node ${index+1} ชี้มาที่ NewNode`,index+1,index,-1,false,-1,-1,-1,index,-1,-1),
+         trackLine:5
+       });
+       steps.push({
+         ...snap(result,"Insert Complete",index,index,-1,true),
+         trackLine:6
+       });
+     }
+   }else{
+     if(index===0){
+       steps.push({
+         ...snap(result,"สร้างเส้นเชื่อมจากโหนดใหม่ไปยัง head เดิม",0,0,-1,false,0,-1),
+         trackLine:2
+       });
+       steps.push({
+         ...snap(result,"ปรับ head ให้ชี้โหนดใหม่",0,0,-1,true),
+         trackLine:3
+       });
+     }else{
+       steps.push({
+         ...snap(result,`สร้างเส้นเชื่อมจาก node ${index-1} ไปยังโหนดใหม่`,index,index,-1,false,index-1,-1),
+         trackLine:2
+       });
+       steps.push({
+         ...snap(result,`สร้างเส้นเชื่อมจากโหนดใหม่ไปยัง node ${index+1}`,index,index,-1,false,index,-1),
+         trackLine:3
+       });
+       steps.push({
+         ...snap(result,`เชื่อมโหนดใหม่ที่ index ${index}`,index,index,-1,true),
+         trackLine:4
+       });
+     }
+   }
+ }else{
+   let target=op==="delete"?old.length-1:op==="delete_index"?index:old.indexOf(item);
+   if(target<0||target>=old.length)return setStatus(id,op==="delete_item"?"ไม่พบ item":"Index ไม่ถูกต้องหรือ List ว่าง");
+   for(let i=0;i<=target;i++)steps.push(snap(old,`pointer เดินผ่าน node ${i}`,i));
+   steps.push(snap(old,`เตรียมลบ node ${target} ค่า ${old[target]}`,target,-1,target));
+   if(target>0){
+     if(id==="dll"){
+       steps.push(snap(old,`ยกเลิก next ของ node ${target-1} ที่ชี้ node ${target}`,target-1,-1,target,false,-1,-1,-1,-1,target-1,-1));
+       steps.push(snap(old,`ยกเลิก previous ของ node ${target} ที่ชี้ node ${target-1}`,target,-1,target,false,-1,-1,-1,-1,-1,target-1));
+     }else{
+       steps.push(snap(old,`ยกเลิกเส้นเชื่อมจาก node ${target-1} ไปยัง node ${target}`,target-1,-1,target,false,-1,target-1));
+     }
+   }
+   if(id==="dll" && target<old.length-1){
+     steps.push(snap(old,`ยกเลิก next ของ node ${target} ที่ชี้ node ${target+1}`,target,-1,target,false,-1,-1,-1,-1,target,-1));
+     steps.push(snap(old,`ยกเลิก previous ของ node ${target+1} ที่ชี้ node ${target}`,target+1,-1,target,false,-1,-1,-1,-1,-1,target));
+   }
+   result.splice(target,1);
+   if(target===0){
+     steps.push(snap(result,"เลื่อน head ไปยังโหนดถัดไป",result.length?0:-1,-1,-1,true));
+   }else{
+     if(id==="dll" && target<result.length){
+       steps.push(snap(result,`กำหนด next ของ node ${target-1} ให้ชี้ node ${target}`,Math.min(target-1,result.length-1),-1,-1,false,-1,-1,target-1,-1,-1,-1));
+       steps.push(snap(result,`กำหนด previous ของ node ${target} ให้ชี้ node ${target-1}`,Math.min(target,result.length-1),-1,-1,false,-1,-1,-1,target-1,-1,-1));
+     }else if(id!=="dll"){
+       steps.push(snap(result,`สร้างเส้นเชื่อมใหม่ให้ข้ามโหนดที่ลบ`,Math.min(target-1,result.length-1),-1,-1,false,Math.min(target-1,result.length-1),-1));
+     }
+     steps.push(snap(result,"ปรับ pointer ให้ข้ามโหนดที่ลบ",Math.min(target-1,result.length-1),-1,-1,true));
+   }
+ }
+ s.steps=steps;s.step=0;s.pending=result;s.view={};$(id+"Progress").style.width="0%";setStatus(id,`เตรียม ${op} แล้ว กด Next Step`);addLog(id,`prepare ${op}`);render(id);
+}
+function nextLinkedStep(id){
+ const s=states[id];
+ if(!s.steps.length)return setStatus(id,"กรุณาเลือก append / insert / delete ก่อน");
+ const st=s.steps[s.step];if(!st)return setStatus(id,"Animation เสร็จสิ้น");
+ s.data=[...st.data];
+ s.view={
+   active:st.active,
+   newIndex:st.newIndex,
+   deleteIndex:st.deleteIndex,
+   linkCreating:st.linkCreating,
+   linkRemoving:st.linkRemoving,
+   nextCreating:st.nextCreating,
+   prevCreating:st.prevCreating,
+   nextRemoving:st.nextRemoving,
+   prevRemoving:st.prevRemoving
+ };
+ s.step++;
+ setStatus(id,st.text);addLog(id,`Step ${s.step}: ${st.text}`);$(id+"Progress").style.width=(s.step/s.steps.length*100)+"%";render(id);
+ if(st.final){s.data=[...s.pending];s.view={};s.steps=[];s.step=0;s.pending=null;setTimeout(()=>{render(id);setStatus(id,"ฟังก์ชันทำงานเสร็จสิ้น")},450)}
+}
+function resetLinkedAnimation(id){const s=states[id];s.steps=[];s.step=0;s.pending=null;s.view={};$(id+"Progress").style.width="0%";setStatus(id,"ยกเลิก Animation แล้ว");render(id)}
+
+
+const expressionState={
+ steps:[],step:0,tokens:[],stack:[],output:[],mode:"postfix",
+ phase:"ready",postfix:[],timer:null
+};
+function precedence(op){return {"^":3,"*":2,"/":2,"+":1,"-":1}[op]||0}
+function tokenizeExpr(expr){return expr.replace(/\s+/g,"").match(/[A-Za-z0-9]+|[()+\-*/^]/g)||[]}
+function highlightExprTrack(line){
+ document.querySelectorAll("#exprTrack .track-line").forEach(x=>x.classList.remove("active"));
+ document.querySelector(`#exprTrack [data-line="${line}"]`)?.classList.add("active");
+}
+function postfixConversionSteps(tokens){
+ const steps=[],stack=[],output=[];
+ tokens.forEach((tok,index)=>{
+  if(/^[A-Za-z0-9]+$/.test(tok)){output.push(tok);steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:2,text:`Operand ${tok} → ส่งไป Postfix Output`})}
+  else if(tok==="("){stack.push(tok);steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:4,text:"Push ( ลง Operator Stack"})}
+  else if(tok===")"){
+   while(stack.length&&stack.at(-1)!=="("){const op=stack.pop();output.push(op);steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:4,text:`Pop ${op} ไป Postfix Output`})}
+   stack.pop();steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:4,text:"นำ ( ออกจาก Stack"})
+  }else{
+   steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:3,text:`เปรียบเทียบ precedence ของ ${tok}`});
+   while(stack.length&&stack.at(-1)!=="("&&precedence(stack.at(-1))>=precedence(tok)){const op=stack.pop();output.push(op);steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:4,text:`Pop ${op} เพราะ precedence สูงกว่าหรือเท่ากัน`})}
+   stack.push(tok);steps.push({phase:"Infix → Postfix",index,stack:[...stack],output:[...output],line:4,text:`Push ${tok} ลง Operator Stack`})
+  }
+ });
+ while(stack.length){const op=stack.pop();output.push(op);steps.push({phase:"Infix → Postfix",index:tokens.length,stack:[...stack],output:[...output],line:4,text:`Pop ${op} ที่เหลือไป Output`})}
+ steps.push({phase:"Postfix Complete",index:tokens.length,stack:[],output:[...output],line:5,text:`Postfix = ${output.join("")}`,postfix:[...output]});
+ return {steps,postfix:output};
+}
+function postfixToPrefixSteps(postfix){
+ const steps=[],stack=[];
+ postfix.forEach((tok,index)=>{
+  if(/^[A-Za-z0-9]+$/.test(tok)){stack.push(tok);steps.push({phase:"Postfix → Prefix",index,stack:[...stack],output:[],line:7,text:`Operand ${tok} → Push ลง Expression Stack`})}
+  else{const right=stack.pop(),left=stack.pop(),expr=tok+left+right;stack.push(expr);steps.push({phase:"Postfix → Prefix",index,stack:[...stack],output:[expr],line:8,text:`Pop ${left}, ${right} แล้วสร้าง ${expr}`})}
+ });
+ const prefix=stack[0]||"";
+ steps.push({phase:"Prefix Complete",index:postfix.length,stack:[...stack],output:[prefix],line:9,text:`Prefix = ${prefix}`,prefix});
+ return {steps,prefix};
+}
+function prepareExpression(){
+ stopExpressionAuto();
+ const tokens=tokenizeExpr($("exprInput").value),mode=$("exprMode").value,p1=postfixConversionSteps(tokens);
+ let steps=[...p1.steps];
+ if(mode==="prefix")steps=steps.concat(postfixToPrefixSteps(p1.postfix).steps);
+ Object.assign(expressionState,{steps,step:0,tokens,stack:[],output:[],mode,phase:"ready",postfix:p1.postfix});
+ $("stackappProgress").style.width="0%";$("stackappLog").innerHTML="";$("exprResult").textContent="";
+ renderExpression(-1);$("exprPhase").textContent=mode==="prefix"?"Phase 1: Infix → Postfix":"Infix → Postfix";
+ $("stackappStatus").textContent="เตรียม Algorithm Track แล้ว";highlightExprTrack(1);
+}
+function renderExpression(activeIndex){
+ $("exprTokens").innerHTML=expressionState.tokens.map((t,i)=>`<span class="token ${i===activeIndex?"active":""}">${t}</span>`).join("");
+ $("exprStack").innerHTML=expressionState.stack.map(x=>`<div class="mini-cell">${x}</div>`).join("");
+ $("exprOutput").innerHTML=expressionState.output.map(x=>`<span class="token output">${x}</span>`).join("");
+}
+function nextExpressionStep(){
+ const st=expressionState.steps[expressionState.step];
+ if(!st){$("stackappStatus").textContent="Algorithm Track เสร็จสิ้น";stopExpressionAuto();return}
+ expressionState.stack=[...st.stack];expressionState.output=[...st.output];expressionState.phase=st.phase;expressionState.step++;
+ renderExpression(Math.min(st.index,expressionState.tokens.length-1));$("exprPhase").textContent=st.phase;$("stackappStatus").textContent=st.text;
+ addLog("stackapp",`Step ${expressionState.step}: ${st.text}`);highlightExprTrack(st.line);
+ if(st.postfix)$("exprResult").textContent=`Postfix: ${st.postfix.join("")}`;
+ if(st.prefix)$("exprResult").textContent=`Prefix: ${st.prefix}`;
+ $("stackappProgress").style.width=(expressionState.step/expressionState.steps.length*100)+"%";
+}
+function toggleExpressionAuto(){
+ if(expressionState.timer){stopExpressionAuto();return}
+ expressionState.timer=setInterval(nextExpressionStep,Number($("exprSpeed").value));$("exprAuto").textContent="Pause";
+}
+function stopExpressionAuto(){if(expressionState.timer)clearInterval(expressionState.timer);expressionState.timer=null;if($("exprAuto"))$("exprAuto").textContent="Auto Play"}
+function resetExpression(){
+ stopExpressionAuto();Object.assign(expressionState,{steps:[],step:0,tokens:[],stack:[],output:[],phase:"ready"});
+ if($("exprTokens"))renderExpression(-1);if($("stackappProgress"))$("stackappProgress").style.width="0%";
+ if($("stackappStatus"))$("stackappStatus").textContent="พร้อมใช้งาน";if($("exprPhase"))$("exprPhase").textContent="Ready";
+ if($("exprResult"))$("exprResult").textContent="";if($("stackappLog"))$("stackappLog").innerHTML="";
+ document.querySelectorAll("#exprTrack .track-line").forEach(x=>x.classList.remove("active"));
+}
+
+
+
+const recursionState={steps:[],step:0,timer:null,mode:"factorial",n:5};
+const factorialCode=`function factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)`;
+const fibonacciCode=`function fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1)
+         + fibonacci(n - 2)`;
+function factorialSteps(n){
+ const steps=[];
+ function call(x,depth,path){
+  const currentPath=[...path,`factorial(${x})`];
+
+  steps.push({
+    label:`factorial(${x})`,
+    path:currentPath,
+    state:"call",
+    track:1,
+    text:`เรียก factorial(${x})`
+  });
+
+  steps.push({
+    label:`factorial(${x})`,
+    path:currentPath,
+    state:"check",
+    track:2,
+    text:`ตรวจ Base Case: ${x} == 0 ?`
+  });
+
+  if(x===0){
+    steps.push({
+      label:`factorial(${x})`,
+      path:currentPath,
+      state:"base",
+      track:5,
+      text:"Base Case เป็นจริง → return 1",
+      result:"return 1"
+    });
+    return 1;
+  }
+
+  steps.push({
+    label:`factorial(${x})`,
+    path:currentPath,
+    state:"wait",
+    track:3,
+    text:`Base Case เป็นเท็จ → เรียก factorial(${x-1})`
+  });
+
+  const sub=call(x-1,depth+1,currentPath);
+  const result=x*sub;
+
+  steps.push({
+    label:`factorial(${x})`,
+    path:currentPath,
+    state:"multiply",
+    track:4,
+    text:`ย้อนกลับ: คำนวณ ${x} × ${sub} = ${result}`,
+    result:`${x} × ${sub} = ${result}`
+  });
+
+  steps.push({
+    label:`factorial(${x})`,
+    path:currentPath,
+    state:"done",
+    track:5,
+    text:`คืนค่า factorial(${x}) = ${result}`,
+    result:`return ${result}`
+  });
+
+  return result;
+ }
+ call(n,0,[]);
+ return steps;
+}
+function fibonacciSteps(n){
+ const steps=[];
+ function call(x,depth,path){
+  const currentPath=[...path,`fib(${x})`];
+
+  steps.push({
+    label:`fib(${x})`,
+    path:currentPath,
+    state:"call",
+    track:1,
+    text:`เรียก fibonacci(${x})`
+  });
+
+  steps.push({
+    label:`fib(${x})`,
+    path:currentPath,
+    state:"check",
+    track:2,
+    text:`ตรวจ Base Case: ${x} <= 1 ?`
+  });
+
+  if(x<=1){
+    steps.push({
+      label:`fib(${x})`,
+      path:currentPath,
+      state:"base",
+      track:5,
+      text:`Base Case เป็นจริง → return ${x}`,
+      result:`return ${x}`
+    });
+    return x;
+  }
+
+  steps.push({
+    label:`fib(${x})`,
+    path:currentPath,
+    state:"left",
+    track:3,
+    text:`Base Case เป็นเท็จ → เรียก fibonacci(${x-1})`
+  });
+  const a=call(x-1,depth+1,currentPath);
+
+  steps.push({
+    label:`fib(${x})`,
+    path:currentPath,
+    state:"right",
+    track:4,
+    text:`เรียก fibonacci(${x-2})`
+  });
+  const b=call(x-2,depth+1,currentPath);
+
+  const result=a+b;
+  steps.push({
+    label:`fib(${x})`,
+    path:currentPath,
+    state:"done",
+    track:5,
+    text:`รวมผลลัพธ์ ${a} + ${b} และคืนค่า ${result}`,
+    result:`return ${result}`
+  });
+
+  return result;
+ }
+ call(n,0,[]);
+ return steps;
+}
+function recursionTrackHTML(mode){
+ const lines=mode==="factorial"
+ ?["เรียก factorial(n)","ตรวจ Base Case n == 0","เรียก factorial(n-1)","คูณค่าขณะย้อนกลับ","คืนผลลัพธ์"]
+ :["เรียก fibonacci(n)","ตรวจ base case n <= 1","เรียก fibonacci(n-1)","เรียก fibonacci(n-2)","รวมผลลัพธ์และคืนค่า"];
+ return lines.map((x,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${x}</span>`).join("");
+}
+function highlightRecTrack(line){
+ document.querySelectorAll("#recTrack .track-line").forEach(x=>x.classList.remove("active"));
+ if(!line)return;
+ const active=document.querySelector(`#recTrack [data-line="${line}"]`);
+ if(active){
+   active.classList.add("active");
+   active.scrollIntoView({block:"nearest",behavior:"smooth"});
+ }
+}
+function prepareRecursion(){
+ stopRecursionAuto();
+ const mode=$("recMode").value,n=Math.max(0,Math.min(mode==="fibonacci"?7:8,Number($("recN").value)||0));
+ Object.assign(recursionState,{mode,n,steps:mode==="factorial"?factorialSteps(n):fibonacciSteps(n),step:0});
+ $("recCode").textContent=mode==="factorial"?factorialCode:fibonacciCode;$("recTrack").innerHTML=recursionTrackHTML(mode);
+ $("recProgress").style.width="0%";renderRecursion();$("recStatus").textContent="เตรียม Function และ Algorithm Track แล้ว — กด Next Step";
+ $("recStepDetail").textContent="ยังไม่เริ่มประมวลผล";
+ highlightRecTrack(0);
+}
+function renderRecursion(){
+ const current=recursionState.steps[recursionState.step-1];
+
+ if(!current){
+   $("recVisual").innerHTML='<div class="call-summary">ยังไม่เริ่มการเรียกฟังก์ชัน</div>';
+   return;
+ }
+
+ const path=current.path||[current.label];
+
+ const frames=path.map((label,index)=>{
+   const isLast=index===path.length-1;
+   const isReturning=isLast && ["done","base","multiply"].includes(current.state);
+   const stateClass=isLast ? (isReturning?"returning":"active") : "";
+
+   let returnText="";
+   if(isReturning && current.result){
+     returnText=`<span class="return-badge">${current.result}</span>`;
+   }
+
+   return `<div class="call-frame ${stateClass}">
+     ${label}
+     ${returnText}
+   </div>${index<path.length-1?'<div class="call-down">↓</div>':''}`;
+ }).join("");
+
+ const summary=current.result
+   ? `<div class="call-summary">ค่าที่ส่งกลับ: ${current.result}</div>`
+   : `<div class="call-summary">Current depth = ${path.length}</div>`;
+
+ $("recVisual").innerHTML=`<div class="call-path">${frames}${summary}</div>`;
+}
+function nextRecursionStep(){
+ const st=recursionState.steps[recursionState.step];
+ if(!st){
+   $("recStatus").textContent="Algorithm Track เสร็จสิ้น";
+   $("recStepDetail").textContent="การประมวลผลเสร็จสิ้น";
+   stopRecursionAuto();
+   return;
+ }
+ recursionState.step++;
+ renderRecursion();
+ $("recStatus").textContent=`Step ${recursionState.step} / ${recursionState.steps.length}`;
+ $("recStepDetail").textContent=st.text;
+ 
+ highlightRecTrack(st.track);
+ $("recProgress").style.width=(recursionState.step/recursionState.steps.length*100)+"%";
+}
+function toggleRecursionAuto(){
+ if(recursionState.timer){stopRecursionAuto();return}
+ recursionState.timer=setInterval(nextRecursionStep,Number($("recSpeed").value));$("recAuto").textContent="Pause";
+}
+function stopRecursionAuto(){if(recursionState.timer)clearInterval(recursionState.timer);recursionState.timer=null;if($("recAuto"))$("recAuto").textContent="Auto Play"}
+function resetRecursion(){
+ stopRecursionAuto();recursionState.steps=[];recursionState.step=0;
+ if($("recVisual"))$("recVisual").innerHTML="";if($("recProgress"))$("recProgress").style.width="0%";
+ if($("recStatus"))$("recStatus").textContent="พร้อมใช้งาน";
+ if($("recStepDetail"))$("recStepDetail").textContent="ยังไม่เริ่มประมวลผล";
+ if($("recLog"))$("recLog").innerHTML="";
+ if($("recCode"))$("recCode").textContent="";if($("recTrack"))$("recTrack").innerHTML="";highlightRecTrack(0);
+}
+
+
+
+const complexityMap={
+ bst:"Average O(log n)",heap:"O(log n)",hash:"Average O(1)",
+ selection:"O(n²)",insertion:"O(n²)",bubble:"O(n²)",radix:"O(d(n+k))",
+ merge:"O(n log n)",quick:"Average O(n log n)",
+ sequential:"O(n)",binary:"O(log n)"
+};
+function parseListValue(id){
+ return $(id+"Data").value.split(",").map(x=>Number(x.trim())).filter(x=>!Number.isNaN(x));
+}
+function setAlgorithmTrack(id,lines){
+ $(id+"Track").innerHTML=lines.map((x,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${x}</span>`).join("");
+}
+function highlightAlgorithmLine(id,line){
+ document.querySelectorAll(`#${id}Track .track-line`).forEach(x=>x.classList.remove("active"));
+ document.querySelector(`#${id}Track [data-line="${line}"]`)?.classList.add("active");
+}
+function updateAlgorithmDashboard(id){
+ const s=states[id];
+ $(id+"Step").textContent=s.step;
+ $(id+"Comparisons").textContent=s.comparisons||0;
+ $(id+"Swaps").textContent=s.swaps||0;
+ $(id+"RunState").textContent=s.steps.length&&s.step>=s.steps.length?"Done":"Running";
+ $(id+"Complexity").textContent=complexityMap[id]||"-";
+ $(id+"Progress").style.width=(s.steps.length?Math.min(100,s.step/s.steps.length*100):0)+"%";
+}
+function stopAlgorithmAuto(id){
+ const s=states[id];if(s.timer)clearInterval(s.timer);s.timer=null;
+ if($(id+"Auto"))$(id+"Auto").textContent="Auto Play";
+}
+function toggleAlgorithmAuto(id){
+ const s=states[id];
+ if(s.timer){stopAlgorithmAuto(id);return}
+ s.timer=setInterval(()=>nextAlgorithmStep(id),Number($(id+"Speed").value));
+ $(id+"Auto").textContent="Pause";
+}
+function resetAlgorithm(id){
+ stopAlgorithmAuto(id);
+ const cfg=configs.find(x=>x.id===id);
+ if(cfg.kind==="sorting")prepareSorting(id);
+ else if(cfg.kind==="searching")prepareSearching(id);
+ else prepareStructureOperation(id,"create");
+}
+function nextAlgorithmStep(id){
+ const s=states[id],st=s.steps[s.step];
+ if(!st){setStatus(id,"Algorithm เสร็จสิ้น");stopAlgorithmAuto(id);updateAlgorithmDashboard(id);return}
+ s.step++;s.comparisons=st.comparisons??s.comparisons;s.swaps=st.swaps??s.swaps;
+ if(st.data)s.data=JSON.parse(JSON.stringify(st.data));
+ s.active=st.active??-1;s.found=st.found??-1;s.view=st.view||{};
+ renderAlgorithmModule(id,st);
+ if($(id+"Detail"))$(id+"Detail").textContent=st.detail||"";
+ setStatus(id,st.text);
+ highlightAlgorithmLine(id,st.line||1);
+ updateAlgorithmDashboard(id);
+}
+
+function heapTreeSvg(arr,heapSize,st={}){
+ const values=arr.slice(0,heapSize);
+ if(!values.length)return '<div>Heap ว่าง</div>';
+
+ const width=760,height=340;
+ const maxLevel=Math.floor(Math.log2(values.length));
+ const positions={};
+
+ values.forEach((_,i)=>{
+   const level=Math.floor(Math.log2(i+1));
+   const first=2**level-1;
+   const pos=i-first;
+   const count=2**level;
+   positions[i]={
+     x:(pos+1)*width/(count+1),
+     y:42+level*(maxLevel?245/maxLevel:0)
+   };
+ });
+
+ let edges="";
+ values.forEach((_,i)=>{
+   if(i===0)return;
+   const p=Math.floor((i-1)/2);
+   const active=st.compare?.includes(i)&&st.compare?.includes(p);
+   edges+=`<line class="tree-edge ${active?"active":""}"
+      x1="${positions[p].x}" y1="${positions[p].y}"
+      x2="${positions[i].x}" y2="${positions[i].y}"/>`;
+ });
+
+ let nodes="";
+ values.forEach((v,i)=>{
+   const cls=`tree-svg-node ${st.active===i?"active":""}`;
+   nodes+=`<g class="${cls}">
+     <circle cx="${positions[i].x}" cy="${positions[i].y}" r="27"/>
+     <text x="${positions[i].x}" y="${positions[i].y}">${v}</text>
+   </g>`;
+ });
+
+ return `<svg class="tree-svg" viewBox="0 0 ${width} ${height}">${edges}${nodes}</svg>`;
+}
+
+function renderAlgorithmModule(id,st={}){
+ const cfg=configs.find(x=>x.id===id),s=states[id];
+
+ if(cfg.kind==="sorting"||cfg.kind==="searching"){
+   if(id==="heapsort"){
+     const arr=s.data||[];
+     const heapSize=st.heapSize??arr.length;
+     const arrayHtml='<div class="sort-row">'+arr.map((v,i)=>{
+       let cls="sort-cell";
+       if(st.compare?.includes(i))cls+=" compare";
+       if(st.active===i)cls+=" active";
+       if(st.sorted?.includes(i))cls+=" sorted";
+       return `<div class="${cls}"><span class="sort-index">${i}</span>${v}</div>`;
+     }).join("")+"</div>";
+
+     $(id+"Visual").innerHTML=`
+       <div class="heap-dual">
+         <div class="heap-pane">
+           <h4>Array Representation — index และข้อมูล</h4>
+           ${arrayHtml}
+         </div>
+         <div class="heap-pane">
+           <h4>Heap Tree Representation — Parent / Left Child / Right Child</h4>
+           ${heapTreeSvg(arr,heapSize,st)}
+         </div>
+       </div>`;
+     return;
+   }
+
+   if(id==="radix" && st.buckets){
+     const exp=st.exp||1;
+     const bucketHtml=st.buckets.map((bucket,bucketIndex)=>
+       `<div class="bucket-card">
+         <div class="bucket-title">Bucket ${bucketIndex}</div>
+         <div class="bucket-values">${
+           bucket.map((v,itemIndex)=>
+             `<span class="bucket-value ${(st.activeBucket===bucketIndex&&st.activeItem===itemIndex)?"active":""}">${v}</span>`
+           ).join("")
+         }</div>
+       </div>`
+     ).join("");
+
+     $(id+"Visual").innerHTML=`
+       <div class="radix-wrap">
+         <div class="radix-pass">กำลังพิจารณาหลัก ${exp===1?"หน่วย":exp===10?"สิบ":exp===100?"ร้อย":exp}</div>
+         <div class="sort-row">${
+           (s.data||[]).map((v,i)=>`<div class="sort-cell ${st.active===i?"active":""}">
+             <span class="sort-index">${i}</span>${v}
+           </div>`).join("")
+         }</div>
+         <div class="bucket-grid">${bucketHtml}</div>
+       </div>`;
+     return;
+   }
+
+   const arr=s.data||[];
+   $(id+"Visual").innerHTML='<div class="sort-row">'+arr.map((v,i)=>{
+     let cls="sort-cell";
+     if(st.compare?.includes(i))cls+=" compare";
+     if(st.active===i)cls+=" active";
+     if(st.sorted?.includes(i))cls+=" sorted";
+     if(st.pivot===i)cls+=" pivot";
+     if(st.found===i)cls+=" search-cell found";
+     return `<div class="${cls}"><span class="sort-index">${i}</span>${v}</div>`;
+   }).join("")+"</div>";
+
+   if(id==="selection"){
+     const valueElement=$("selectionSelectedValue");
+     const indexElement=$("selectionSelectedIndex");
+     const passElement=$("selectionPassInfo");
+     if(valueElement)valueElement.textContent=st.selectedValue ?? "-";
+     if(indexElement)indexElement.textContent=`index ${st.selectedIndex ?? "-"}`;
+     if(passElement)passElement.textContent=`pass ${st.pass ?? "-"}`;
+   }
+   return;
+ }
+
+ if(cfg.structure==="hash"){
+   const table=s.data||[];
+   $(id+"Visual").innerHTML='<div class="hash-table">'+table.map((bucket,i)=>
+     `<div class="hash-index">${i}</div><div class="hash-bucket">${(bucket||[]).map((v,j)=>`<span class="hash-item ${(st.bucket===i&&st.item===j)?"active":""}">${v}</span>`).join("")}</div>`
+   ).join("")+"</div>";
+   return;
+ }
+
+ const values=s.data||[];
+ const validIndices=values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0);
+ const maxIndex=validIndices.length?Math.max(...validIndices):0;
+ const maxLevel=Math.max(0,Math.floor(Math.log2(maxIndex+1)));
+ const width=760,height=390,topPad=42,levelGap=maxLevel?280/maxLevel:0;
+ const positions={};
+
+ validIndices.forEach(i=>{
+   const level=Math.floor(Math.log2(i+1));
+   const first=2**level-1;
+   const posInLevel=i-first;
+   const count=2**level;
+   positions[i]={
+     x:(posInLevel+1)*width/(count+1),
+     y:topPad+level*levelGap
+   };
+ });
+
+ let edges="";
+ validIndices.forEach(i=>{
+   if(i===0)return;
+   const parent=Math.floor((i-1)/2);
+   if(values[parent]===null||!positions[parent]||!positions[i])return;
+   const activeEdge=st.active===i||st.active===parent;
+   edges+=`<line class="tree-edge ${activeEdge?"active":""}"
+     x1="${positions[parent].x}" y1="${positions[parent].y}"
+     x2="${positions[i].x}" y2="${positions[i].y}"/>`;
+ });
+
+ let nodes="";
+ validIndices.forEach(i=>{
+   const cls=`tree-svg-node ${st.active===i?"active":""} ${st.found===i?"found":""}`;
+   nodes+=`<g class="${cls}">
+     <circle cx="${positions[i].x}" cy="${positions[i].y}" r="26"/>
+     <text x="${positions[i].x}" y="${positions[i].y}">${values[i]}</text>
+   </g>`;
+ });
+
+ $(id+"Visual").innerHTML=`<svg class="tree-svg" viewBox="0 0 ${width} ${height}">${edges}${nodes}</svg>`;
+}
+
+function bstInsert(root,value){
+ if(root===null)return {value,left:null,right:null};
+ if(value<root.value)root.left=bstInsert(root.left,value);
+ else if(value>root.value)root.right=bstInsert(root.right,value);
+ return root;
+}
+function bstToArray(root){
+ if(!root)return [];
+ const out=[],q=[{n:root,i:0}];
+ while(q.length){const {n,i}=q.shift();out[i]=n?n.value:null;if(n){q.push({n:n.left,i:2*i+1},{n:n.right,i:2*i+2})}}
+ while(out.length&&out.at(-1)===null)out.pop();return out;
+}
+function arrayToBST(arr){let root=null;arr.filter(v=>v!==null).forEach(v=>root=bstInsert(root,v));return root}
+function bstDelete(root,key){
+ if(!root)return root;
+ if(key<root.value)root.left=bstDelete(root.left,key);
+ else if(key>root.value)root.right=bstDelete(root.right,key);
+ else{
+  if(!root.left)return root.right;if(!root.right)return root.left;
+  let min=root.right;while(min.left)min=min.left;root.value=min.value;root.right=bstDelete(root.right,min.value);
+ }
+ return root;
+}
+
+function structureTrackLines(structure,op){
+ const tracks={
+   bst:{
+     create:["กำหนด root = NULL","สร้างโครงสร้าง BST ว่าง","พร้อมรับข้อมูล"],
+     add:["เริ่มที่ root","เปรียบเทียบ key กับ current node","key น้อยกว่า → ไปซ้าย","key มากกว่า → ไปขวา","พบตำแหน่งว่าง → เพิ่มโหนด"],
+     delete:["ค้นหาโหนดเป้าหมาย","กรณีไม่มีลูก → ลบได้ทันที","กรณีมีลูกหนึ่งโหนด → เชื่อมลูกแทน","กรณีมีลูกสองโหนด → หา inorder successor","ปรับโครงสร้าง BST"],
+     search:["เริ่มที่ root","เปรียบเทียบ key กับ current node","key น้อยกว่า → ไปซ้าย","key มากกว่า → ไปขวา","พบหรือไม่พบข้อมูล"],
+     inorder:["เดิน Left subtree","Visit node","เดิน Right subtree","แสดงผล Inorder"],
+     preorder:["Visit node","เดิน Left subtree","เดิน Right subtree","แสดงผล Preorder"],
+     postorder:["เดิน Left subtree","เดิน Right subtree","Visit node","แสดงผล Postorder"]
+   },
+   heap:{
+     create:["สร้าง Array สำหรับ Heap","กำหนด size = 0","พร้อมรับข้อมูล"],
+     add:["เพิ่มข้อมูลที่ตำแหน่งท้าย","เปรียบเทียบกับ Parent","หากค่ามากกว่า Parent → Swap ขึ้น","ทำซ้ำจนเป็น Max Heap","เพิ่มข้อมูลเสร็จสิ้น"],
+     delete:["ค้นหาตำแหน่งข้อมูล","นำค่าท้ายมาแทนตำแหน่งที่ลบ","เปรียบเทียบกับลูก","Swap ลงหรือขึ้นตามความเหมาะสม","รักษาคุณสมบัติ Max Heap"],
+     search:["เริ่มตรวจข้อมูลใน Heap","เปรียบเทียบแต่ละตำแหน่ง","พบหรือไม่พบข้อมูล"],
+     peek:["ตรวจสอบ root ของ Heap","แสดงค่าสูงสุด"],
+     extract:["นำค่า root ออก","นำค่าท้ายมาไว้ที่ root","เปรียบเทียบกับลูกซ้ายและขวา","Swap ลง","รักษาคุณสมบัติ Max Heap"]
+   },
+   hash:{
+     create:["เลือกวิธีคำนวณ Hash Index","กำหนดขนาดตาราง m","สร้าง Bucket 0 ถึง m-1","กำหนดทุก Bucket เป็นว่าง","พร้อมรับข้อมูล"],
+     add:["รับ key","แทนค่าในสูตร Hash Function","คำนวณ Hash Index","เลือก Bucket","เพิ่ม key และจัดการ Collision"],
+     delete:["รับ key","แทนค่าในสูตร Hash Function","คำนวณ Hash Index","ค้นหา key ใน Bucket","ลบ key หากพบ"],
+     search:["รับ key","แทนค่าในสูตร Hash Function","คำนวณ Hash Index","ค้นหา key ใน Bucket","พบหรือไม่พบข้อมูล"],
+     print:["วนผ่าน Bucket ทุกตำแหน่ง","แสดงข้อมูลในแต่ละ Bucket","แสดง Hash Table ทั้งหมด"]
+   }
+ };
+ return tracks[structure]?.[op] || ["เตรียมโครงสร้าง","ดำเนินการ","แสดงผล"];
+}
+
+function setStructureTrack(id,structure,op){
+ const lines=structureTrackLines(structure,op);
+ setAlgorithmTrack(id,lines);
+ if($(id+"Status")){
+   $(id+"Status").textContent=`Algorithm: ${op}`;
+ }
+}
+
+
+function calculateHashIndex(key,tableSize,method){
+ const safeSize=Math.max(1,tableSize);
+ const absKey=Math.abs(Math.trunc(key));
+
+ if(method==="multiplication"){
+   const A=0.6180339887;
+   const product=absKey*A;
+   const fraction=product-Math.floor(product);
+   const index=Math.floor(safeSize*fraction);
+   return {
+     index,
+     methodName:"Multiplication Method",
+     formula:`h(${key}) = floor(${safeSize} × frac(${absKey} × ${A.toFixed(4)}))`,
+     substitution:`${absKey} × ${A.toFixed(4)} = ${product.toFixed(4)}, frac = ${fraction.toFixed(4)}`,
+     result:`h(${key}) = floor(${safeSize} × ${fraction.toFixed(4)}) = ${index}`
+   };
+ }
+
+ if(method==="midSquare"){
+   const square=absKey*absKey;
+   const digits=String(square);
+   const width=Math.max(1,String(safeSize-1).length);
+   const start=Math.max(0,Math.floor((digits.length-width)/2));
+   const middle=digits.substring(start,start+width) || "0";
+   const raw=Number(middle);
+   const index=raw % safeSize;
+   return {
+     index,
+     methodName:"Mid-Square Method",
+     formula:`h(${key}) = middleDigits(${absKey}²) mod ${safeSize}`,
+     substitution:`${absKey}² = ${square}, middle digits = ${middle}`,
+     result:`h(${key}) = ${raw} mod ${safeSize} = ${index}`
+   };
+ }
+
+ const index=((Math.trunc(key)%safeSize)+safeSize)%safeSize;
+ return {
+   index,
+   methodName:"Division Method",
+   formula:`h(${key}) = ${key} mod ${safeSize}`,
+   substitution:`${key} % ${safeSize}`,
+   result:`h(${key}) = ${index}`
+ };
+}
+
+function showHashCalculation(calc){
+ const el=$("hashFormula");
+ if(!el)return;
+ el.innerHTML=`
+   <div>${calc.methodName}</div>
+   <div>${calc.formula}</div>
+   <div>${calc.substitution}</div>
+   <div>${calc.result}</div>
+ `;
+}
+
+function prepareStructureOperation(id,op){
+ stopAlgorithmAuto(id);
+ const cfg=configs.find(x=>x.id===id),s=states[id],value=Number($(id+"Data")?.value||0);
+ s.steps=[];s.step=0;s.comparisons=0;s.swaps=0;s.active=-1;s.found=-1;
+ if(cfg.structure==="bst"){
+   setStructureTrack(id,"bst",op);
+   if(op==="create"){s.data=[];s.steps=[{data:[],line:1,text:"สร้าง BST ว่าง"}]}
+   else{
+    let root=arrayToBST(s.data),path=[],node=root,index=0,comparisons=0;
+    while(node){comparisons++;path.push({value:node.value,index});if(value===node.value)break;if(value<node.value){node=node.left;index=2*index+1}else{node=node.right;index=2*index+2}}
+    path.forEach((p,k)=>{
+     let line=2;
+     if(op==="add"||op==="search"||op==="delete"){
+       if(k===0)line=1;
+       else line=value<p.value?3:value>p.value?4:2;
+     }
+     s.steps.push({
+       data:[...s.data],
+       active:p.index,
+       line,
+       text:`เปรียบเทียบ ${value} กับ ${p.value}`,
+       comparisons:k+1,
+       swaps:0
+     });
+   });
+    if(op==="add"){
+     root=bstInsert(root,value);
+     const arr=bstToArray(root);
+     s.steps.push({
+       data:arr,
+       found:arr.indexOf(value),
+       line:5,
+       text:`เพิ่ม ${value} ลง BST`,
+       comparisons:path.length
+     });
+   }
+    if(op==="search")s.steps.push({
+     data:[...s.data],
+     found:s.data.indexOf(value),
+     line:5,
+     text:s.data.includes(value)?`พบ ${value}`:`ไม่พบ ${value}`,
+     comparisons:path.length
+   });
+    if(op==="delete"){
+     root=bstDelete(root,value);
+     const arr=bstToArray(root);
+     s.steps.push({
+       data:arr,
+       line:5,
+       text:`ลบ ${value} และปรับ BST`,
+       comparisons:path.length,
+       swaps:1
+     });
+   }
+   }
+ }
+ if(cfg.structure==="heap"){
+   setStructureTrack(id,"heap",op);
+   if(op==="create"){s.data=[];s.steps=[{data:[],line:1,text:"สร้าง Max Heap ว่าง"}]}
+   if(op==="add"){
+    let a=[...s.data,value],i=a.length-1,c=0,w=0;s.steps.push({data:[...a],active:i,line:1,text:`เพิ่ม ${value} ที่ท้าย Heap`,comparisons:c,swaps:w});
+    while(i>0){let p=Math.floor((i-1)/2);c++;s.steps.push({data:[...a],active:i,line:2,text:`เปรียบเทียบ ${a[i]} กับ parent ${a[p]}`,comparisons:c,swaps:w});if(a[i]<=a[p])break;[a[i],a[p]]=[a[p],a[i]];w++;i=p;s.steps.push({data:[...a],active:i,line:3,text:"Swap ขึ้นเพื่อรักษา Max-Heap",comparisons:c,swaps:w})}
+   }
+   if(op==="search"){
+     const i=s.data.indexOf(value);
+     s.steps=[{
+       data:[...s.data],
+       found:i,
+       line:3,
+       text:i>=0?`พบ ${value} ที่ index ${i}`:`ไม่พบ ${value}`,
+       comparisons:s.data.length
+     }];
+   }
+   if(op==="peek")s.steps=[{
+     data:[...s.data],
+     found:s.data.length?0:-1,
+     line:2,
+     text:s.data.length?`Max = ${s.data[0]}`:"Heap ว่าง"
+   }];
+   if(op==="extract"||op==="delete"){
+    let a=[...s.data];if(!a.length)s.steps=[{data:a,line:5,text:"Heap ว่าง"}];
+    else{const removed=op==="delete"?value:a[0],target=op==="delete"?a.indexOf(value):0;if(target<0)s.steps=[{data:a,line:5,text:`ไม่พบ ${value}`}];
+    else{a[target]=a.at(-1);a.pop();let i=target,c=0,w=1;s.steps.push({data:[...a],active:i,line:1,text:`ลบ ${removed} แล้วนำค่าท้ายมาแทน`,swaps:w});while(true){let l=2*i+1,r=2*i+2,b=i;if(l<a.length){c++;if(a[l]>a[b])b=l}if(r<a.length){c++;if(a[r]>a[b])b=r}if(b===i)break;[a[i],a[b]]=[a[b],a[i]];w++;i=b;s.steps.push({data:[...a],active:i,line:3,text:"Swap ลงเพื่อรักษา Max-Heap",comparisons:c,swaps:w})}}}
+   }
+ }
+ if(cfg.structure==="hash"){
+   setStructureTrack(id,"hash",op);
+   const size=Math.max(3,Number($(id+"Capacity").value)||7);
+   const method=$(id+"HashMethod")?.value||"division";
+   const methodText=$(id+"HashMethod")?.selectedOptions?.[0]?.text||method;
+   if(op==="create"){
+     s.capacity=size;
+     s.data=Array.from({length:size},()=>[]);
+     if($("hashFormula"))$("hashFormula").innerHTML=`วิธี: ${methodText}<br>Table Size = ${size}`;
+     s.steps=[
+       {data:s.data,line:1,text:`เลือกวิธี ${methodText}`},
+       {data:s.data,line:2,text:`กำหนด table size = ${size}`},
+       {data:s.data,line:3,text:`สร้าง Bucket 0 ถึง ${size-1}`},
+       {data:s.data,line:4,text:"กำหนดทุก Bucket เป็นว่าง"},
+       {data:s.data,line:5,text:"Hash Table พร้อมใช้งาน"}
+     ];
+   }else{
+     if(!s.data.length)s.data=Array.from({length:size},()=>[]);
+     const calc=calculateHashIndex(value,s.data.length,method),h=calc.index;
+     showHashCalculation(calc);
+     s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,line:1,text:`รับ key = ${value}`});
+     s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,line:2,text:calc.formula});
+     s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,line:3,text:`${calc.substitution} → ${calc.result}`});
+     if(op==="add"){
+       const t=JSON.parse(JSON.stringify(s.data)),collision=t[h].length>0;
+       s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,line:4,text:`เลือก Bucket ${h}${collision?" และพบ Collision":""}`});
+       t[h].push(value);
+       s.steps.push({data:t,bucket:h,item:t[h].length-1,line:5,text:`เพิ่ม ${value} ลง Bucket ${h}`});
+     }
+     if(op==="search"){
+       const j=s.data[h].indexOf(value);
+       s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,line:4,text:`ค้นหาใน Bucket ${h}`});
+       s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,item:j,line:5,text:j>=0?`พบ ${value}`:`ไม่พบ ${value}`});
+     }
+     if(op==="delete"){
+       const t=JSON.parse(JSON.stringify(s.data)),j=t[h].indexOf(value);
+       s.steps.push({data:JSON.parse(JSON.stringify(s.data)),bucket:h,line:4,text:`ค้นหาใน Bucket ${h}`});
+       if(j>=0)t[h].splice(j,1);
+       s.steps.push({data:t,bucket:h,line:5,text:j>=0?`ลบ ${value}`:`ไม่พบ ${value}`});
+     }
+     if(op==="print")s.steps.push({data:JSON.parse(JSON.stringify(s.data)),line:3,text:"แสดง Hash Table ทั้งหมด"});
+   }
+ }
+ $(id+"Progress").style.width="0%";updateAlgorithmDashboard(id);renderAlgorithmModule(id,{});setStatus(id,`เตรียม ${op} แล้ว`);
+}
+
+function showTraversal(id,type){
+ const s=states[id];
+ const cfg=configs.find(x=>x.id===id);
+ const root=cfg?.structure==="avl"?avlFromArray(s.data):arrayToBST(s.data);
+
+ setStructureTrack(id,cfg?.structure==="avl"?"avl":"bst",type);
+ stopAlgorithmAuto(id);
+ s.steps=[];
+ s.step=0;
+ s.comparisons=0;
+ s.swaps=0;
+
+ const output=[];
+
+ function walk(node,index){
+   if(!node)return;
+
+   if(type==="preorder"){
+     output.push(node.value);
+     s.steps.push({
+       data:[...s.data],
+       active:index,
+       found:index,
+       line:1,
+       text:`Visit ${node.value}`,
+       detail:`Output: ${output.join(" → ")}`
+     });
+   }
+
+   if(node.left){
+     s.steps.push({
+       data:[...s.data],
+       active:index,
+       line:type==="preorder"?2:1,
+       text:`เดินจาก ${node.value} ไป Left child ${node.left.value}`,
+       detail:`Output: ${output.join(" → ")}`
+     });
+   }
+   walk(node.left,2*index+1);
+
+   if(type==="inorder"){
+     output.push(node.value);
+     s.steps.push({
+       data:[...s.data],
+       active:index,
+       found:index,
+       line:2,
+       text:`Visit ${node.value}`,
+       detail:`Output: ${output.join(" → ")}`
+     });
+   }
+
+   if(node.right){
+     s.steps.push({
+       data:[...s.data],
+       active:index,
+       line:type==="postorder"?2:3,
+       text:`เดินจาก ${node.value} ไป Right child ${node.right.value}`,
+       detail:`Output: ${output.join(" → ")}`
+     });
+   }
+   walk(node.right,2*index+2);
+
+   if(type==="postorder"){
+     output.push(node.value);
+     s.steps.push({
+       data:[...s.data],
+       active:index,
+       found:index,
+       line:3,
+       text:`Visit ${node.value}`,
+       detail:`Output: ${output.join(" → ")}`
+     });
+   }
+ }
+
+ walk(root,0);
+
+ s.steps.push({
+   data:[...s.data],
+   line:4,
+   text:`${type}: ${output.join(" → ")}`,
+   detail:`Traversal complete`
+ });
+
+ updateAlgorithmDashboard(id);
+ renderAlgorithmModule(id,{});
+ setStatus(id,`เตรียม ${type} traversal แล้ว — กด Next Step`);
+}
+
+function sortingTrack(algo){
+ const tracks={
+  selection:["กำหนดตำแหน่งปัจจุบัน","ค้นหาค่าน้อยสุด","เปรียบเทียบ","Swap","ขยายส่วน Sorted"],
+  insertion:["เลือก key","เปรียบเทียบทางซ้าย","Shift ค่าใหญ่กว่า","วาง key","ขยาย Sorted prefix"],
+  bubble:["เริ่มรอบ","เปรียบเทียบค่าติดกัน","Swap หากผิดลำดับ","ค่ามากสุดไปท้าย","จบรอบ"],
+  radix:["เลือกหลักหน่วย/สิบ/ร้อย","กระจายลง bucket","รวบรวมจาก bucket","เปลี่ยนหลัก","เสร็จสิ้น"],
+  merge:["แบ่ง Array","แบ่งจนเหลือ 1 ค่า","เปรียบเทียบสองครึ่ง","Merge","เสร็จสิ้น"],
+  quick:["เลือก Pivot","แบ่งค่าต่ำกว่า/สูงกว่า","เปรียบเทียบ","วาง Pivot","เรียงส่วนย่อย"],
+  heapsort:["สร้าง Max Heap","เปรียบเทียบ Parent กับ Children","Swap เพื่อ Heapify","ย้ายค่าสูงสุดไปท้าย","ลดขนาด Heap และทำซ้ำ"]
+ };return tracks[algo];
+}
+function prepareSorting(id){
+ stopAlgorithmAuto(id);
+
+ const s=states[id];
+ const cfg=configs.find(x=>x.id===id);
+ const order=$(id+"Order")?.value||"asc";
+ const ascending=order==="asc";
+ const a=parseListValue(id);
+
+ s.steps=[];
+ s.step=0;
+ s.comparisons=0;
+ s.swaps=0;
+ s.data=[...a];
+
+ setAlgorithmTrack(id,sortingTrack(cfg.algorithm));
+
+ let arr=[...a],c=0,w=0;
+
+ if(cfg.algorithm==="selection"){
+   for(let i=0;i<arr.length-1;i++){
+     let selected=i;
+
+     s.steps.push({
+       data:[...arr],
+       active:i,
+       selectedIndex:selected,
+       selectedValue:arr[selected],
+       pass:i+1,
+       line:1,
+       text:`เริ่ม pass ${i+1}: เลือก ${arr[selected]} เป็นค่าเริ่มต้น`,
+       comparisons:c,
+       swaps:w
+     });
+
+     for(let j=i+1;j<arr.length;j++){
+       c++;
+
+       s.steps.push({
+         data:[...arr],
+         compare:[selected,j],
+         selectedIndex:selected,
+         selectedValue:arr[selected],
+         pass:i+1,
+         line:3,
+         text:`เปรียบเทียบ ${arr[j]} กับค่าที่เลือก ${arr[selected]}`,
+         comparisons:c,
+         swaps:w
+       });
+
+       const better=ascending ? arr[j]<arr[selected] : arr[j]>arr[selected];
+
+       if(better){
+         selected=j;
+         s.steps.push({
+           data:[...arr],
+           active:selected,
+           selectedIndex:selected,
+           selectedValue:arr[selected],
+           pass:i+1,
+           line:2,
+           text:`เปลี่ยนค่าที่เลือกเป็น ${arr[selected]} ที่ index ${selected}`,
+           comparisons:c,
+           swaps:w
+         });
+       }
+     }
+
+     if(selected!==i){
+       [arr[i],arr[selected]]=[arr[selected],arr[i]];
+       w++;
+
+       s.steps.push({
+         data:[...arr],
+         sorted:[...Array(i+1).keys()],
+         selectedIndex:i,
+         selectedValue:arr[i],
+         pass:i+1,
+         line:4,
+         text:`สลับค่าที่เลือก ${arr[i]} มาไว้ที่ index ${i}`,
+         comparisons:c,
+         swaps:w
+       });
+     }else{
+       s.steps.push({
+         data:[...arr],
+         sorted:[...Array(i+1).keys()],
+         selectedIndex:i,
+         selectedValue:arr[i],
+         pass:i+1,
+         line:5,
+         text:`ค่าที่เลือกอยู่ในตำแหน่งที่ถูกต้องแล้ว`,
+         comparisons:c,
+         swaps:w
+       });
+     }
+   }
+
+   s.steps.push({
+     data:[...arr],
+     sorted:[...Array(arr.length).keys()],
+     selectedIndex:-1,
+     selectedValue:"Done",
+     pass:arr.length-1,
+     line:5,
+     text:`เรียงแบบ ${ascending?"น้อยไปมาก":"มากไปน้อย"} เสร็จสิ้น`,
+     comparisons:c,
+     swaps:w
+   });
+ }
+
+ if(cfg.algorithm==="insertion"){
+   for(let i=1;i<arr.length;i++){
+     let key=arr[i],j=i-1;
+     s.steps.push({data:[...arr],active:i,line:1,text:`เลือก key = ${key}`,comparisons:c,swaps:w});
+     while(j>=0){
+       c++;
+       s.steps.push({data:[...arr],compare:[j,j+1],line:2,text:`เปรียบเทียบ ${arr[j]} กับ key ${key}`,comparisons:c,swaps:w});
+       const shouldShift=ascending ? arr[j]>key : arr[j]<key;
+       if(shouldShift){
+         arr[j+1]=arr[j];w++;
+         s.steps.push({data:[...arr],active:j+1,line:3,text:`Shift ${arr[j]} ไปขวา`,comparisons:c,swaps:w});
+         j--;
+       }else break;
+     }
+     arr[j+1]=key;
+     s.steps.push({data:[...arr],sorted:[...Array(i+1).keys()],line:4,text:`วาง key ที่ index ${j+1}`,comparisons:c,swaps:w});
+   }
+ }
+
+ if(cfg.algorithm==="bubble"){
+   for(let p=0;p<arr.length-1;p++){
+     for(let j=0;j<arr.length-1-p;j++){
+       c++;
+       s.steps.push({data:[...arr],compare:[j,j+1],line:2,text:`เปรียบเทียบ ${arr[j]} กับ ${arr[j+1]}`,comparisons:c,swaps:w});
+       const shouldSwap=ascending ? arr[j]>arr[j+1] : arr[j]<arr[j+1];
+       if(shouldSwap){
+         [arr[j],arr[j+1]]=[arr[j+1],arr[j]];
+         w++;
+         s.steps.push({data:[...arr],line:3,text:`Swap index ${j},${j+1}`,comparisons:c,swaps:w});
+       }
+     }
+   }
+ }
+
+ if(cfg.algorithm==="radix"){
+   const nonNegative=arr.every(v=>v>=0);
+   if(!nonNegative){
+     s.steps=[{data:[...arr],line:5,text:"Radix Sort เวอร์ชันนี้รองรับจำนวนเต็มไม่ติดลบเท่านั้น"}];
+   }else{
+     let max=Math.max(...arr,0),exp=1,pass=1;
+
+     while(Math.floor(max/exp)>0){
+       let buckets=Array.from({length:10},()=>[]);
+
+       s.steps.push({
+         data:[...arr],
+         buckets:buckets.map(b=>[...b]),
+         exp,
+         line:1,
+         text:`เริ่มรอบ ${pass}: พิจารณาหลัก ${exp}`,
+         comparisons:c,
+         swaps:w
+       });
+
+       arr.forEach((value,index)=>{
+         const digit=Math.floor(value/exp)%10;
+         buckets[digit].push(value);
+
+         s.steps.push({
+           data:[...arr],
+           active:index,
+           buckets:buckets.map(b=>[...b]),
+           activeBucket:digit,
+           activeItem:buckets[digit].length-1,
+           exp,
+           line:2,
+           text:`นำ ${value} ลง Bucket ${digit}`,
+           comparisons:c,
+           swaps:w
+         });
+       });
+
+       arr=buckets.flat();
+       w+=arr.length;
+
+       s.steps.push({
+         data:[...arr],
+         buckets:buckets.map(b=>[...b]),
+         exp,
+         line:3,
+         text:`รวบรวมข้อมูลจาก Bucket 0 → 9`,
+         comparisons:c,
+         swaps:w
+       });
+
+       s.steps.push({
+         data:[...arr],
+         sorted:Math.floor(max/(exp*10))===0?[...Array(arr.length).keys()]:[],
+         buckets:Array.from({length:10},()=>[]),
+         exp,
+         line:4,
+         text:`จบรอบ ${pass}: ได้ [${arr.join(", ")}]`,
+         comparisons:c,
+         swaps:w
+       });
+
+       exp*=10;
+       pass++;
+     }
+
+     if(!ascending){
+       arr.reverse();
+       w+=arr.length;
+       s.steps.push({
+         data:[...arr],
+         sorted:[...Array(arr.length).keys()],
+         buckets:Array.from({length:10},()=>[]),
+         exp:exp/10,
+         line:5,
+         text:`กลับลำดับเพื่อเรียงจากมากไปน้อย`,
+         comparisons:c,
+         swaps:w
+       });
+     }
+   }
+ }
+
+ if(cfg.algorithm==="merge"){
+   function mergeSort(l,r){
+     if(r-l<=1)return;
+     const m=Math.floor((l+r)/2);
+     s.steps.push({data:[...arr],compare:[l,r-1],line:1,text:`แบ่งช่วง ${l}-${r-1}`,comparisons:c,swaps:w});
+     mergeSort(l,m);mergeSort(m,r);
+     const left=arr.slice(l,m),right=arr.slice(m,r),merged=[];
+     while(left.length&&right.length){
+       c++;
+       const takeLeft=ascending ? left[0]<=right[0] : left[0]>=right[0];
+       merged.push(takeLeft?left.shift():right.shift());
+     }
+     merged.push(...left,...right);
+     for(let i=0;i<merged.length;i++){arr[l+i]=merged[i];w++}
+     s.steps.push({data:[...arr],sorted:[...Array(r-l).keys()].map(x=>x+l),line:4,text:`Merge ช่วง ${l}-${r-1}`,comparisons:c,swaps:w});
+   }
+   mergeSort(0,arr.length);
+ }
+
+ if(cfg.algorithm==="quick"){
+   function qs(l,r){
+     if(l>=r)return;
+     const pivot=arr[r];
+     let i=l;
+
+     s.steps.push({data:[...arr],pivot:r,line:1,text:`เลือก pivot = ${pivot}`,comparisons:c,swaps:w});
+
+     for(let j=l;j<r;j++){
+       c++;
+       s.steps.push({data:[...arr],compare:[j,r],pivot:r,line:3,text:`เปรียบเทียบ ${arr[j]} กับ pivot`,comparisons:c,swaps:w});
+
+       const belongsLeft=ascending ? arr[j]<pivot : arr[j]>pivot;
+       if(belongsLeft){
+         [arr[i],arr[j]]=[arr[j],arr[i]];
+         w++;
+         i++;
+       }
+     }
+
+     [arr[i],arr[r]]=[arr[r],arr[i]];
+     w++;
+
+     s.steps.push({data:[...arr],pivot:i,sorted:[i],line:4,text:`วาง pivot ที่ index ${i}`,comparisons:c,swaps:w});
+     qs(l,i-1);qs(i+1,r);
+   }
+   qs(0,arr.length-1);
+ }
+
+
+ if(cfg.algorithm==="heapsort"){
+   function heapify(n,i){
+     let largest=i;
+     const left=2*i+1;
+     const right=2*i+2;
+
+     if(left<n){
+       c++;
+       s.steps.push({
+         data:[...arr],
+         compare:[i,left],
+         active:i,
+         line:2,
+         text:`เปรียบเทียบ parent ${arr[i]} กับ left child ${arr[left]}`,
+         heapSize:n,
+         comparisons:c,
+         swaps:w
+       });
+       if(arr[left]>arr[largest])largest=left;
+     }
+
+     if(right<n){
+       c++;
+       s.steps.push({
+         data:[...arr],
+         compare:[largest,right],
+         active:i,
+         line:2,
+         text:`เปรียบเทียบ candidate ${arr[largest]} กับ right child ${arr[right]}`,
+         heapSize:n,
+         comparisons:c,
+         swaps:w
+       });
+       if(arr[right]>arr[largest])largest=right;
+     }
+
+     if(largest!==i){
+       [arr[i],arr[largest]]=[arr[largest],arr[i]];
+       w++;
+       s.steps.push({
+         data:[...arr],
+         compare:[i,largest],
+         active:largest,
+         line:3,
+         text:`Swap index ${i} กับ ${largest} เพื่อรักษา Max Heap`,
+         heapSize:n,
+         comparisons:c,
+         swaps:w
+       });
+       heapify(n,largest);
+     }
+   }
+
+   s.steps.push({
+     data:[...arr],
+     line:1,
+     text:"เริ่มสร้าง Max Heap",
+     heapSize:arr.length,
+     comparisons:c,
+     swaps:w
+   });
+
+   for(let i=Math.floor(arr.length/2)-1;i>=0;i--){
+     heapify(arr.length,i);
+   }
+
+   s.steps.push({
+     data:[...arr],
+     line:1,
+     text:"สร้าง Max Heap เสร็จแล้ว",
+     heapSize:arr.length,
+     comparisons:c,
+     swaps:w
+   });
+
+   for(let end=arr.length-1;end>0;end--){
+     [arr[0],arr[end]]=[arr[end],arr[0]];
+     w++;
+     s.steps.push({
+       data:[...arr],
+       sorted:[...Array(arr.length-end).keys()].map(x=>end+x),
+       compare:[0,end],
+       line:4,
+       text:`ย้ายค่าสูงสุด ${arr[end]} ไป index ${end}`,
+       heapSize:end,
+       comparisons:c,
+       swaps:w
+     });
+
+     heapify(end,0);
+
+     s.steps.push({
+       data:[...arr],
+       sorted:[...Array(arr.length-end).keys()].map(x=>end+x),
+       line:5,
+       text:`ลดขนาด Heap เหลือ ${end} และ Heapify ใหม่`,
+       heapSize:end,
+       comparisons:c,
+       swaps:w
+     });
+   }
+
+   s.steps.push({
+     data:[...arr],
+     sorted:[...Array(arr.length).keys()],
+     line:5,
+     text:"Heap Sort เสร็จสิ้น",
+     heapSize:0,
+     comparisons:c,
+     swaps:w
+   });
+
+   if(!ascending){
+     arr.reverse();
+     w+=arr.length;
+     s.steps.push({
+       data:[...arr],
+       sorted:[...Array(arr.length).keys()],
+       line:5,
+       text:"กลับลำดับเพื่อเรียงจากมากไปน้อย",
+       comparisons:c,
+       swaps:w
+     });
+   }
+ }
+
+ if(!s.steps.length){
+   s.steps=[{data:[...arr],line:5,text:"ข้อมูลมีขนาดเล็กเกินไป"}];
+ }
+
+ renderAlgorithmModule(id,{});
+ updateAlgorithmDashboard(id);
+ setStatus(id,`เตรียม Sorting แบบ ${ascending?"น้อยไปมาก":"มากไปน้อย"} แล้ว`);
+}
+
+function searchingTrack(algo){
+ return algo==="sequential"
+ ?["เริ่ม index 0","เปรียบเทียบ data[index]","หากไม่เท่ากัน เลื่อนไปถัดไป","พบข้อมูล","ไม่พบข้อมูล"]
+ :["กำหนด low และ high","คำนวณ mid","เปรียบเทียบ target กับ data[mid]","ปรับ low/high","พบหรือไม่พบ"];
+}
+function prepareSearching(id){
+ stopAlgorithmAuto(id);const s=states[id],cfg=configs.find(x=>x.id===id),target=Number($(id+"Target").value),a=parseListValue(id);
+ s.steps=[];s.step=0;s.comparisons=0;s.swaps=0;s.data=cfg.algorithm==="binary"?[...a].sort((x,y)=>x-y):[...a];
+ setAlgorithmTrack(id,searchingTrack(cfg.algorithm));let c=0;
+ if(cfg.algorithm==="sequential"){
+  let found=false;for(let i=0;i<s.data.length;i++){c++;const yes=s.data[i]===target;s.steps.push({data:[...s.data],active:i,found:yes?i:-1,line:yes?4:2,text:`เปรียบเทียบ ${s.data[i]} กับ ${target}`,comparisons:c});if(yes){found=true;break}}if(!found)s.steps.push({data:[...s.data],line:5,text:`ไม่พบ ${target}`,comparisons:c});
+ }else{
+  let l=0,r=s.data.length-1,found=false;while(l<=r){const m=Math.floor((l+r)/2);c++;const yes=s.data[m]===target;s.steps.push({data:[...s.data],active:m,found:yes?m:-1,line:2,text:`low=${l}, mid=${m}, high=${r}`,comparisons:c});if(yes){found=true;break}if(target<s.data[m])r=m-1;else l=m+1;s.steps.push({data:[...s.data],line:4,text:`ปรับช่วงเป็น low=${l}, high=${r}`,comparisons:c})}if(!found)s.steps.push({data:[...s.data],line:5,text:`ไม่พบ ${target}`,comparisons:c});
+ }
+ renderAlgorithmModule(id,{});updateAlgorithmDashboard(id);setStatus(id,"เตรียม Searching แล้ว");
+}
+
+
+class AVLNode{
+ constructor(value){this.value=value;this.left=null;this.right=null;this.height=1}
+}
+function avlHeight(n){return n?n.height:0}
+function avlUpdate(n){n.height=1+Math.max(avlHeight(n.left),avlHeight(n.right));return n}
+function rotateRight(y){const x=y.left,t=x.right;x.right=y;y.left=t;avlUpdate(y);avlUpdate(x);return x}
+function rotateLeft(x){const y=x.right,t=y.left;y.left=x;x.right=t;avlUpdate(x);avlUpdate(y);return y}
+function avlInsert(root,key,events){
+ if(!root){events.push(`เพิ่มโหนด ${key}`);return new AVLNode(key)}
+ events.push(`เปรียบเทียบ ${key} กับ ${root.value}`);
+ if(key<root.value)root.left=avlInsert(root.left,key,events);
+ else if(key>root.value)root.right=avlInsert(root.right,key,events);
+ else return root;
+ avlUpdate(root);
+ const balance=avlHeight(root.left)-avlHeight(root.right);
+ events.push(`balance(${root.value}) = ${balance}`);
+ if(balance>1&&key<root.left.value){events.push("LL Case → Rotate Right");return rotateRight(root)}
+ if(balance<-1&&key>root.right.value){events.push("RR Case → Rotate Left");return rotateLeft(root)}
+ if(balance>1&&key>root.left.value){events.push("LR Case → Rotate Left + Right");root.left=rotateLeft(root.left);return rotateRight(root)}
+ if(balance<-1&&key<root.right.value){events.push("RL Case → Rotate Right + Left");root.right=rotateRight(root.right);return rotateLeft(root)}
+ return root;
+}
+function avlMin(n){while(n.left)n=n.left;return n}
+function avlDelete(root,key,events){
+ if(!root)return root;
+ events.push(`ค้นหา ${key} ที่โหนด ${root.value}`);
+ if(key<root.value)root.left=avlDelete(root.left,key,events);
+ else if(key>root.value)root.right=avlDelete(root.right,key,events);
+ else{
+   events.push(`ลบโหนด ${key}`);
+   if(!root.left||!root.right)root=root.left||root.right;
+   else{const s=avlMin(root.right);root.value=s.value;root.right=avlDelete(root.right,s.value,events)}
+ }
+ if(!root)return root;
+ avlUpdate(root);
+ const b=avlHeight(root.left)-avlHeight(root.right);
+ events.push(`ตรวจ balance(${root.value}) = ${b}`);
+ if(b>1&&(avlHeight(root.left.left)>=avlHeight(root.left.right)))return rotateRight(root);
+ if(b>1){root.left=rotateLeft(root.left);return rotateRight(root)}
+ if(b<-1&&(avlHeight(root.right.right)>=avlHeight(root.right.left)))return rotateLeft(root);
+ if(b<-1){root.right=rotateRight(root.right);return rotateLeft(root)}
+ return root;
+}
+function avlFromArray(arr){let root=null;arr.filter(v=>v!==null).forEach(v=>root=avlInsert(root,v,[]));return root}
+function avlToArray(root){return bstToArray(root)}
+function avlTrack(op){
+ const t={
+  create:["กำหนด root = NULL","สร้าง AVL Tree ว่าง","พร้อมรับข้อมูล"],
+  add:["ค้นหาตำแหน่งแบบ BST","เพิ่มโหนด","อัปเดต height","คำนวณ balance factor","หมุน LL/RR/LR/RL หากจำเป็น"],
+  delete:["ค้นหาโหนด","ลบแบบ BST","อัปเดต height","ตรวจ balance factor","หมุนเพื่อปรับสมดุล"],
+  search:["เริ่มที่ root","เปรียบเทียบค่า","ไปซ้ายหรือขวา","พบหรือไม่พบ"],
+  inorder:["Left","Visit","Right","แสดงผล"],preorder:["Visit","Left","Right","แสดงผล"],postorder:["Left","Right","Visit","แสดงผล"]
+ };return t[op]||t.search;
+}
+
+const originalPrepareStructureOperation=prepareStructureOperation;
+prepareStructureOperation=function(id,op){
+ const cfg=configs.find(x=>x.id===id);
+ if(cfg?.structure!=="avl")return originalPrepareStructureOperation(id,op);
+ stopAlgorithmAuto(id);
+ const s=states[id],value=Number($(id+"Data").value||0);
+ s.steps=[];s.step=0;s.comparisons=0;s.swaps=0;
+ setAlgorithmTrack(id,avlTrack(op));
+ if(op==="create"){s.data=[];s.steps=[{data:[],line:1,text:"สร้าง AVL Tree ว่าง"}]}
+ else{
+   let root=avlFromArray(s.data),events=[];
+   if(op==="add")root=avlInsert(root,value,events);
+   if(op==="delete")root=avlDelete(root,value,events);
+   if(op==="search"){
+     let n=root,c=0,index=0;
+     while(n){c++;s.steps.push({data:[...s.data],active:index,line:2,text:`เปรียบเทียบ ${value} กับ ${n.value}`,comparisons:c});if(value===n.value)break;if(value<n.value){n=n.left;index=2*index+1}else{n=n.right;index=2*index+2}}
+     s.steps.push({data:[...s.data],found:s.data.indexOf(value),line:4,text:s.data.includes(value)?`พบ ${value}`:`ไม่พบ ${value}`,comparisons:c});
+   }else{
+     events.forEach((e,i)=>s.steps.push({data:[...s.data],line:Math.min(5,i+1),text:e,comparisons:i+1}));
+     s.steps.push({data:avlToArray(root),line:5,text:`AVL Tree หลัง ${op}`,swaps:events.filter(e=>e.includes("Rotate")).length});
+   }
+ }
+ updateAlgorithmDashboard(id);renderAlgorithmModule(id,{});setStatus(id,`เตรียม ${op} แล้ว`);
+};
+
+function parseVertices(text){return [...new Set(text.split(",").map(x=>x.trim()).filter(Boolean))]}
+function parseEdges(text){
+ return text.split(",").map(x=>x.trim()).filter(Boolean).map(e=>{
+  const [pair,wRaw]=e.split(":");const [u,v]=pair.split("-").map(x=>x.trim());
+  return {u,v,w:Number(wRaw||1)};
+ }).filter(e=>e.u&&e.v);
+}
+function graphData(vertices,edges){return {vertices:[...vertices],edges:edges.map(e=>({...e}))}}
+function graphPositions(vertices){
+ const cx=260,cy=180,r=135,n=Math.max(vertices.length,1),pos={};
+ vertices.forEach((v,i)=>{const a=-Math.PI/2+2*Math.PI*i/n;pos[v]={x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)}});return pos;
+}
+
+function buildDistanceMatrix(g){
+ const vertices=g.vertices||[];
+ const matrix=vertices.map(()=>vertices.map(()=>Infinity));
+ vertices.forEach((_,i)=>matrix[i][i]=0);
+ (g.edges||[]).forEach(e=>{
+   const i=vertices.indexOf(e.u),j=vertices.indexOf(e.v);
+   if(i>=0&&j>=0){
+     matrix[i][j]=Math.min(matrix[i][j],e.w);
+     matrix[j][i]=Math.min(matrix[j][i],e.w);
+   }
+ });
+ return matrix;
+}
+function renderDistanceMatrix(id,g,st={}){
+ const box=$(id+"Matrix");
+ if(!box)return;
+ const vertices=g.vertices||[];
+ if(!vertices.length){box.innerHTML="";return}
+ const matrix=st.matrix||buildDistanceMatrix(g);
+ let html='<table class="distance-matrix"><thead><tr><th></th>';
+ vertices.forEach(v=>html+=`<th>${v}</th>`);
+ html+='</tr></thead><tbody>';
+ matrix.forEach((row,i)=>{
+   html+=`<tr><th>${vertices[i]}</th>`;
+   row.forEach((value,j)=>{
+     const active=st.matrixActive&&st.matrixActive[0]===i&&st.matrixActive[1]===j;
+     html+=`<td class="${active?"active":""}">${value===Infinity?"∞":value}</td>`;
+   });
+   html+='</tr>';
+ });
+ html+='</tbody></table>';
+ box.innerHTML=html;
+}
+function distancesToMatrix(vertices,dist){
+ const matrix=vertices.map(()=>vertices.map(()=>Infinity));
+ vertices.forEach((v,i)=>{matrix[i][i]=0});
+ if(dist){
+   vertices.forEach((v,j)=>{matrix[0][j]=dist[v]??Infinity});
+ }
+ return matrix;
+}
+
+function renderGraph(id,st={}){
+ const s=states[id],g=s.data||{vertices:[],edges:[]},pos=graphPositions(g.vertices||[]);
+ const activeEdge=st.activeEdge||"",selected=new Set(st.selectedEdges||[]);
+ const edgeSvg=(g.edges||[]).map(e=>{
+   const key=[e.u,e.v].sort().join("-"),p1=pos[e.u],p2=pos[e.v];
+   if(!p1||!p2)return "";
+   const cls=selected.has(key)?"selected":activeEdge===key?"active":"";
+   const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2;
+   return `<g><line class="graph-edge ${cls}" x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}"/><text x="${mx}" y="${my-6}" text-anchor="middle">${e.w}</text></g>`;
+ }).join("");
+ const visited=new Set(st.visited||[]);
+ const nodeSvg=(g.vertices||[]).map(v=>`<g class="graph-node ${st.activeVertex===v?"active":""} ${visited.has(v)?"visited":""}"><circle cx="${pos[v].x}" cy="${pos[v].y}" r="25"/><text x="${pos[v].x}" y="${pos[v].y}">${v}</text></g>`).join("");
+ $(id+"Visual").innerHTML=`<svg class="graph-svg" viewBox="0 0 520 360">${edgeSvg}${nodeSvg}</svg>`;
+ if($(id+"Detail"))$(id+"Detail").textContent=st.detail||"";
+ renderDistanceMatrix(id,g,st);
+}
+const oldRenderAlgorithmModule=renderAlgorithmModule;
+renderAlgorithmModule=function(id,st={}){
+ const cfg=configs.find(x=>x.id===id);
+ if(cfg?.kind==="graph"||cfg?.kind==="graphalgo"){renderGraph(id,st);return}
+ oldRenderAlgorithmModule(id,st);
+};
+
+function graphTrack(op){
+ const t={
+  create:["อ่าน vertices","อ่าน edges","สร้าง adjacency structure","แสดง Graph"],
+  addVertex:["รับ vertex","ตรวจข้อมูลซ้ำ","เพิ่ม vertex","แสดง Graph"],
+  addEdge:["รับ edge","ตรวจ vertices","เพิ่ม edge/weight","แสดง Graph"],
+  deleteVertex:["ค้นหา vertex","ลบ vertex","ลบ edges ที่เกี่ยวข้อง","แสดง Graph"],
+  deleteEdge:["ค้นหา edge","ลบ edge","แสดง Graph"],
+  search:["ค้นหา vertex","แสดงผล"]
+ };return t[op]||t.create;
+}
+function prepareGraphOperation(op){
+ const id="graph",s=states[id];stopAlgorithmAuto(id);s.steps=[];s.step=0;s.comparisons=0;s.swaps=0;setAlgorithmTrack(id,graphTrack(op));
+ let g=s.data?.vertices?graphData(s.data.vertices,s.data.edges):{vertices:[],edges:[]};
+ if(op==="create"){g=graphData(parseVertices($("graphVertices").value),parseEdges($("graphEdges").value));s.steps=[{data:g,line:1,text:"อ่าน vertices"},{data:g,line:2,text:"อ่าน weighted edges"},{data:g,line:3,text:"สร้าง Graph"},{data:g,line:4,text:"Graph พร้อมใช้งาน"}]}
+ if(op==="addVertex"){const v=$("graphVertex").value.trim();if(v&&!g.vertices.includes(v))g.vertices.push(v);s.steps=[{data:g,activeVertex:v,line:3,text:`เพิ่ม vertex ${v}`}]}
+ if(op==="addEdge"){const e=parseEdges($("graphEdge").value)[0];if(e){if(!g.vertices.includes(e.u))g.vertices.push(e.u);if(!g.vertices.includes(e.v))g.vertices.push(e.v);g.edges.push(e)}s.steps=[{data:g,activeEdge:e?[e.u,e.v].sort().join("-"):"",line:3,text:e?`เพิ่ม edge ${e.u}-${e.v} weight ${e.w}`:"ข้อมูล edge ไม่ถูกต้อง"}]}
+ if(op==="deleteVertex"){const v=$("graphVertex").value.trim();g.vertices=g.vertices.filter(x=>x!==v);g.edges=g.edges.filter(e=>e.u!==v&&e.v!==v);s.steps=[{data:g,line:3,text:`ลบ vertex ${v} และ edges ที่เกี่ยวข้อง`}]}
+ if(op==="deleteEdge"){const e=parseEdges($("graphEdge").value)[0];if(e)g.edges=g.edges.filter(x=>!((x.u===e.u&&x.v===e.v)||(x.u===e.v&&x.v===e.u)));s.steps=[{data:g,line:2,text:e?`ลบ edge ${e.u}-${e.v}`:"ข้อมูล edge ไม่ถูกต้อง"}]}
+ if(op==="search"){const v=$("graphVertex").value.trim(),found=g.vertices.includes(v);s.steps=[{data:g,activeVertex:found?v:"",line:2,text:found?`พบ vertex ${v}`:`ไม่พบ vertex ${v}`}]}
+ updateAlgorithmDashboard(id);renderGraph(id,{});setStatus(id,`เตรียม ${op} แล้ว`);
+}
+function graphAdj(g){
+ const a={};g.vertices.forEach(v=>a[v]=[]);
+ g.edges.forEach(e=>{a[e.u]?.push({v:e.v,w:e.w});a[e.v]?.push({v:e.u,w:e.w})});return a;
+}
+function edgeKey(u,v){return [u,v].sort().join("-")}
+function graphAlgoTracks(algo){
+ const t={
+  dfs:["Push start ลง Stack","Pop vertex","หากยังไม่เยี่ยมชม → Visit","Push เพื่อนบ้าน","ทำซ้ำจน Stack ว่าง"],
+  bfs:["Enqueue start","Dequeue vertex","Visit vertex","Enqueue เพื่อนบ้านที่ยังไม่พบ","ทำซ้ำจน Queue ว่าง"],
+  dijkstra:["กำหนด distance(start)=0","เลือก vertex ระยะต่ำสุด","Relax edges","อัปเดต distance/previous","เสร็จสิ้น"],
+  prim:["เลือก start","เลือก edge น้ำหนักต่ำสุดที่เชื่อมต้นไม้","เพิ่ม vertex และ edge","ทำซ้ำจนครบ","ได้ MST"],
+  kruskal:["เรียง edges ตามน้ำหนัก","เลือก edge ต่ำสุด","ตรวจ cycle","เพิ่ม edge หากไม่เกิด cycle","ได้ MST"]
+ };return t[algo];
+}
+function prepareGraphAlgorithm(id){
+ const cfg=configs.find(x=>x.id===id),s=states[id];stopAlgorithmAuto(id);s.steps=[];s.step=0;s.comparisons=0;s.swaps=0;
+ const g=graphData(parseVertices($(id+"Vertices").value),parseEdges($(id+"Edges").value)),start=$(id+"Start").value.trim(),adj=graphAdj(g);
+ s.data=g;setAlgorithmTrack(id,graphAlgoTracks(cfg.algorithm));
+ if(cfg.algorithm==="dfs"){
+   const stack=[start],visited=[],seen=new Set();while(stack.length){s.steps.push({data:g,visited:[...visited],activeVertex:stack.at(-1),line:1,text:`Stack = [${stack.join(", ")}]`,detail:`Stack: ${stack.join(" → ")}`});const u=stack.pop();if(seen.has(u))continue;seen.add(u);visited.push(u);s.steps.push({data:g,visited:[...visited],activeVertex:u,line:3,text:`Visit ${u}`,detail:`Visited: ${visited.join(" → ")}`});[...(adj[u]||[])].reverse().forEach(n=>{if(!seen.has(n.v))stack.push(n.v)})}
+ }
+ if(cfg.algorithm==="bfs"){
+   const q=[start],seen=new Set([start]),visited=[];while(q.length){s.steps.push({data:g,visited:[...visited],activeVertex:q[0],line:1,text:`Queue = [${q.join(", ")}]`,detail:`Queue: ${q.join(" → ")}`});const u=q.shift();visited.push(u);s.steps.push({data:g,visited:[...visited],activeVertex:u,line:3,text:`Visit ${u}`,detail:`Visited: ${visited.join(" → ")}`});(adj[u]||[]).forEach(n=>{if(!seen.has(n.v)){seen.add(n.v);q.push(n.v)}})}
+ }
+ if(cfg.algorithm==="dijkstra"){
+   const dist={},prev={},un=new Set(g.vertices);g.vertices.forEach(v=>dist[v]=Infinity);dist[start]=0;
+   while(un.size){let u=[...un].sort((a,b)=>dist[a]-dist[b])[0];if(dist[u]===Infinity)break;un.delete(u);s.steps.push({
+   data:g,
+   activeVertex:u,
+   visited:g.vertices.filter(v=>!un.has(v)),
+   line:2,
+   text:`เลือก ${u}, distance=${dist[u]}`,
+   detail:Object.entries(dist).map(([v,d])=>`${v}:${d===Infinity?"∞":d}`).join(" | "),
+   matrix:distancesToMatrix(g.vertices,dist),
+   matrixActive:[0,g.vertices.indexOf(u)]
+ });for(const e of adj[u]||[]){if(!un.has(e.v))continue;const alt=dist[u]+e.w;s.comparisons++;s.steps.push({
+   data:g,
+   activeVertex:u,
+   activeEdge:edgeKey(u,e.v),
+   line:3,
+   text:`Relax ${u}-${e.v}: ${dist[u]}+${e.w}`,
+   detail:`candidate=${alt}, current=${dist[e.v]===Infinity?"∞":dist[e.v]}`,
+   comparisons:s.comparisons,
+   matrix:distancesToMatrix(g.vertices,dist),
+   matrixActive:[0,g.vertices.indexOf(e.v)]
+ });if(alt<dist[e.v]){dist[e.v]=alt;prev[e.v]=u;s.steps.push({
+   data:g,
+   activeVertex:e.v,
+   activeEdge:edgeKey(u,e.v),
+   line:4,
+   text:`update distance(${e.v})=${alt}`,
+   detail:Object.entries(dist).map(([v,d])=>`${v}:${d===Infinity?"∞":d}`).join(" | "),
+   matrix:distancesToMatrix(g.vertices,dist),
+   matrixActive:[0,g.vertices.indexOf(e.v)]
+ })}}}
+ }
+ if(cfg.algorithm==="prim"){
+   const visited=new Set([start]),selected=[];while(visited.size<g.vertices.length){let best=null;for(const e of g.edges){const cross=visited.has(e.u)!==visited.has(e.v);if(cross&&(!best||e.w<best.w))best=e}s.steps.push({data:g,visited:[...visited],selectedEdges:[...selected],line:2,text:"ค้นหา edge น้ำหนักต่ำสุด",detail:`Visited: ${[...visited].join(", ")}`});if(!best)break;selected.push(edgeKey(best.u,best.v));visited.add(visited.has(best.u)?best.v:best.u);s.steps.push({data:g,visited:[...visited],selectedEdges:[...selected],activeEdge:edgeKey(best.u,best.v),line:3,text:`เลือก ${best.u}-${best.v} (${best.w})`,detail:`MST weight = ${g.edges.filter(e=>selected.includes(edgeKey(e.u,e.v))).reduce((a,e)=>a+e.w,0)}`})}
+ }
+ if(cfg.algorithm==="kruskal"){
+   const parent={};g.vertices.forEach(v=>parent[v]=v);const find=x=>parent[x]===x?x:(parent[x]=find(parent[x]));const selected=[];
+   const edges=[...g.edges].sort((a,b)=>a.w-b.w);s.steps.push({data:g,line:1,text:"เรียง edges ตามน้ำหนัก",detail:edges.map(e=>`${e.u}-${e.v}:${e.w}`).join(", ")});
+   for(const e of edges){s.steps.push({data:g,selectedEdges:[...selected],activeEdge:edgeKey(e.u,e.v),line:2,text:`พิจารณา ${e.u}-${e.v} (${e.w})`,detail:"ตรวจ cycle"});let a=find(e.u),b=find(e.v);if(a!==b){parent[a]=b;selected.push(edgeKey(e.u,e.v));s.steps.push({data:g,selectedEdges:[...selected],activeEdge:edgeKey(e.u,e.v),line:4,text:"ไม่เกิด cycle → เลือก edge",detail:`Selected: ${selected.join(", ")}`})}else s.steps.push({data:g,selectedEdges:[...selected],activeEdge:edgeKey(e.u,e.v),line:3,text:"เกิด cycle → ข้าม",detail:""})}
+ }
+ if(cfg.algorithm!=="dijkstra"){
+   s.steps=s.steps.map(st=>({...st,matrix:buildDistanceMatrix(g)}));
+ }
+ updateAlgorithmDashboard(id);renderGraph(id,{matrix:buildDistanceMatrix(g)});setStatus(id,"เตรียม Algorithm แล้ว");
+}
+
+
+function arrangeHeapSortControls(){
+ const panel=$("heapsort");
+ if(!panel)return;
+
+ const controls=panel.querySelector(":scope > .controls");
+ const tools=panel.querySelector(":scope > .tools");
+ if(!controls||!tools||panel.querySelector(":scope > .heap-first-row"))return;
+
+ const firstRow=document.createElement("div");
+ firstRow.className="heap-first-row";
+
+ while(controls.firstChild)firstRow.appendChild(controls.firstChild);
+ while(tools.firstChild)firstRow.appendChild(tools.firstChild);
+
+ controls.remove();
+ tools.remove();
+
+ const heading=panel.querySelector("h2");
+ heading.insertAdjacentElement("afterend",firstRow);
+}
+
+build();
+arrangeHeapSortControls();
+</script>
+</body>
+</html>
