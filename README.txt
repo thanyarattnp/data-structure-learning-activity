@@ -1,11 +1,10 @@
-Data Structure Combined Platform v19
+Data Structure Combined Platform v32
+Base: v31
 
-ปรับ Doubly Linked List Insert:
-1. newNode.next ชี้ไปโหนดถัดไป
-2. newNode.previous ชี้ไปโหนดก่อนหน้า
-3. next ของโหนดก่อนหน้า ชี้มาที่ NewNode
-4. previous ของโหนดถัดไปเดิม ชี้มาที่ NewNode
-5. Insert Complete
-
-เพิ่ม Algorithm Track สำหรับ Linked List และไฮไลต์ตาม Step
-รองรับกรณี insert ที่ต้นรายการ กลางรายการ และท้ายรายการ
+ปรับ Merge Sort และ Quick Sort:
+- Recursion Tree ไม่แสดงโครงสร้างทั้งหมดทันทีหลัง Prepare
+- แต่ละ Step เก็บ Snapshot ของต้นไม้ ณ เวลานั้น
+- คลิก Next Step แล้วค่อยแสดงโหนดและระดับใหม่
+- Merge Sort ค่อย ๆ แสดง Split, Base Case และ Merge
+- Quick Sort ค่อย ๆ แสดง Subarray, Pivot และ Left/Right Partition
+- Auto Play ใช้ลำดับ Snapshot เดียวกับ Next Step

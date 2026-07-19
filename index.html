@@ -306,6 +306,422 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
     height:300px;
   }
 }
+
+/* v20 Popup topic navigation */
+.layout{grid-template-columns:205px 1fr}
+aside{
+  position:sticky;
+  top:0;
+  height:calc(100vh - 90px);
+  overflow:auto;
+}
+.topic-menu-title{
+  margin:2px 4px 12px;
+  color:var(--g);
+  font-size:15px;
+  font-weight:800;
+}
+aside .topic-popup-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border:0;
+  border-left:5px solid transparent;
+  border-radius:10px;
+  background:#f5f7f6;
+  color:var(--d);
+  font-weight:800;
+  cursor:pointer;
+}
+aside .topic-popup-btn:hover,
+aside .topic-popup-btn.active{
+  color:var(--o);
+  background:var(--o2);
+  border-left-color:var(--o);
+}
+.topic-popup-btn .topic-icon{font-size:19px}
+.topic-popup-btn .topic-arrow{color:#78909c;font-size:17px}
+.menu-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(17,24,39,.58);
+  backdrop-filter:blur(3px);
+}
+.menu-modal.open{display:flex}
+.menu-dialog{
+  width:min(680px,96vw);
+  max-height:85vh;
+  overflow:auto;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 22px 65px rgba(0,0,0,.28);
+  animation:popupIn .2s ease;
+}
+@keyframes popupIn{
+  from{opacity:0;transform:translateY(18px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.menu-dialog-header{
+  position:sticky;
+  top:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:17px 20px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--g),#43a047);
+}
+.menu-dialog-header h3{margin:0;font-size:21px}
+.menu-close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.2);
+  color:#fff;
+  font-size:24px;
+  cursor:pointer;
+}
+.menu-dialog-body{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  padding:20px;
+}
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:76px;
+  padding:14px;
+  border:2px solid #e0e5e2;
+  border-radius:13px;
+  background:#fff;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+.menu-item:hover,
+.menu-item.active{
+  border-color:var(--o);
+  background:var(--o2);
+  transform:translateY(-2px);
+}
+.menu-item-number{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 39px;
+  height:39px;
+  border-radius:50%;
+  background:var(--g2);
+  color:var(--g);
+  font-weight:900;
+}
+.menu-item strong{display:block;color:var(--d);font-size:15px}
+.menu-item small{display:block;margin-top:4px;color:#607d8b}
+.menu-hint{
+  padding:0 20px 18px;
+  color:#607d8b;
+  font-size:13px;
+}
+@media(max-width:800px){
+  .layout{grid-template-columns:1fr}
+  aside{
+    position:static;
+    height:auto;
+    display:flex;
+    gap:7px;
+    padding:10px;
+    overflow-x:auto;
+    border-right:0;
+    border-bottom:1px solid #ddd;
+  }
+  .topic-menu-title{display:none}
+  aside .topic-popup-btn{
+    flex:0 0 auto;
+    width:auto;
+    min-width:138px;
+    margin:0;
+    border-left:0;
+    border-bottom:4px solid transparent;
+  }
+  aside .topic-popup-btn.active{border-bottom-color:var(--o)}
+  .menu-dialog-body{grid-template-columns:1fr}
+}
+
+
+.code-tabs{margin-top:10px;border:1px solid #d8e0dc;border-radius:12px;overflow:hidden;background:#fff}
+.code-tab-buttons{display:flex;flex-wrap:wrap;background:#f5f8f6;border-bottom:1px solid #d8e0dc}
+.code-tab-btn{flex:1 1 120px;padding:10px;border:0;background:transparent;font-weight:800;cursor:pointer;color:#455a64}
+.code-tab-btn.active{color:var(--o);background:var(--o2);box-shadow:inset 0 -3px 0 var(--o)}
+.code-tab-panel{display:none;padding:12px}.code-tab-panel.active{display:block}
+.code-block{margin:0;min-height:150px;max-height:360px;overflow:auto;padding:14px;border-radius:9px;background:#17212b;color:#f5f7fa;font-family:Consolas,monospace;font-size:13px;line-height:1.55;white-space:pre-wrap}
+
+#selection.selection-desc .selected-panel{
+  border-color:#ef6c00;
+  background:#fff3e0;
+}
+#selection.selection-desc .selected-value{
+  color:#ef6c00;
+}
+#selection.selection-desc .sort-cell.selected{
+  border-color:#ef6c00;
+  box-shadow:0 0 0 4px rgba(239,108,0,.18);
+}
+
+/* v24 Dropdown topic navigation */
+#menu{display:block}
+.topic-dropdown{margin:7px 0;border:1px solid #dfe6e2;border-radius:11px;overflow:hidden;background:#fff}
+.topic-dropdown-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:12px;border:0;background:#f5f7f6;color:var(--d);font-weight:800;cursor:pointer;text-align:left}
+.topic-dropdown-btn:hover,.topic-dropdown.open .topic-dropdown-btn{background:var(--o2);color:var(--o)}
+.topic-dropdown-arrow{transition:transform .2s ease;color:#78909c}
+.topic-dropdown.open .topic-dropdown-arrow{transform:rotate(90deg)}
+.topic-dropdown-list{display:none;padding:6px;background:#fff}
+.topic-dropdown.open .topic-dropdown-list{display:block}
+.topic-submenu-btn{display:flex;align-items:center;gap:9px;width:100%;padding:10px;margin:4px 0;border:0;border-radius:8px;background:#fff;color:#455a64;text-align:left;cursor:pointer}
+.topic-submenu-btn:hover,.topic-submenu-btn.active{background:#fff3e0;color:var(--o);font-weight:800}
+.topic-submenu-number{display:flex;align-items:center;justify-content:center;flex:0 0 28px;height:28px;border-radius:50%;background:var(--g2);color:var(--g);font-size:12px;font-weight:900}
+#topicMenuModal{display:none!important}
+@media(max-width:800px){aside{display:block;overflow:visible}.topic-dropdown{min-width:100%}}
+
+
+/* Tree traversal heading and result */
+.traversal-summary{
+  margin:12px 0;
+  padding:14px 16px;
+  border:1px solid #d9e5dc;
+  border-left:5px solid var(--g);
+  border-radius:12px;
+  background:#f8fbf9;
+}
+.traversal-summary h3{
+  margin:0 0 8px;
+  color:var(--g);
+  font-size:18px;
+}
+.traversal-result{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  min-height:42px;
+}
+.traversal-result-label{
+  font-weight:800;
+  color:#455a64;
+}
+.traversal-node-value{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:38px;
+  height:38px;
+  padding:0 10px;
+  border-radius:20px;
+  background:var(--o2);
+  color:var(--o);
+  border:2px solid var(--o);
+  font-weight:900;
+}
+.traversal-arrow{
+  color:#78909c;
+  font-weight:800;
+}
+
+
+.selection-order-buttons,.sorting-order-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.selection-order-btn,.sorting-order-btn{
+  border:2px solid #cfd8dc;
+  background:#fff;
+  color:#455a64;
+  padding:10px 14px;
+  border-radius:9px;
+  font-weight:800;
+  cursor:pointer;
+}
+.selection-order-btn:hover,.sorting-order-btn:hover{
+  border-color:var(--o);
+  color:var(--o);
+}
+.selection-order-btn.active,.sorting-order-btn.active{
+  border-color:var(--g);
+  background:var(--g2);
+  color:var(--g);
+}
+#selection.selection-desc .selection-order-btn.active,.sorting-order-btn.active{
+  border-color:var(--o);
+  background:var(--o2);
+  color:var(--o);
+}
+
+/* v28 shared sorting movement engine */
+.sort-cell{
+  position:relative;
+  will-change:transform;
+}
+.sort-cell.swap-moving{
+  z-index:20;
+  box-shadow:0 12px 24px rgba(0,0,0,.22);
+}
+.sort-cell.swap-source-a{
+  border-color:#2e7d32!important;
+  background:#e8f5e9!important;
+}
+.sort-cell.swap-source-b{
+  border-color:#ef6c00!important;
+  background:#fff3e0!important;
+}
+.sort-cell.shift-moving{
+  z-index:18;
+  border-color:#1565c0!important;
+  background:#e3f2fd!important;
+  box-shadow:0 10px 20px rgba(21,101,192,.22);
+}
+.sort-cell.key-moving{
+  z-index:22;
+  border-color:#7b1fa2!important;
+  background:#f3e5f5!important;
+  box-shadow:0 12px 24px rgba(123,31,162,.24);
+}
+@keyframes swapLiftPulse{
+  0%{filter:brightness(1)}
+  25%{filter:brightness(1.08)}
+  100%{filter:brightness(1)}
+}
+.sort-cell.swap-moving,
+.sort-cell.shift-moving,
+.sort-cell.key-moving{
+  animation:swapLiftPulse .65s ease;
+}
+.movement-status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-left:8px;
+  padding:4px 9px;
+  border-radius:14px;
+  background:#fff3e0;
+  color:#ef6c00;
+  font-size:12px;
+  font-weight:800;
+}
+
+#insertion.sort-desc .sorting-order-btn.active,
+#bubble.sort-desc .sorting-order-btn.active{
+  border-color:var(--o);
+  background:var(--o2);
+  color:var(--o);
+}
+
+.insertion-key-panel{display:grid;grid-template-columns:repeat(5,minmax(110px,1fr));gap:10px;margin:12px 0}
+.insertion-key-card{padding:12px;border:1px solid #d8e0dc;border-radius:11px;background:#fff;text-align:center}
+.insertion-key-card strong{display:block;margin-bottom:6px;color:#546e7a;font-size:12px}
+.insertion-key-value{display:inline-flex;align-items:center;justify-content:center;min-width:52px;min-height:52px;padding:0 14px;border:3px solid #7b1fa2;border-radius:14px;background:#f3e5f5;color:#7b1fa2;font-size:22px;font-weight:900}
+.insertion-key-status{font-weight:800;color:#ef6c00}
+.insertion-key-floating{position:relative;min-height:78px;margin-bottom:8px}
+.insertion-key-floating .floating-key{position:absolute;left:50%;top:0;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:58px;height:50px;padding:0 15px;border:3px solid #7b1fa2;border-radius:14px;background:#f3e5f5;color:#7b1fa2;font-size:21px;font-weight:900;box-shadow:0 10px 22px rgba(123,31,162,.22)}
+.insertion-key-floating .floating-key::after{content:"Key";position:absolute;top:-22px;left:50%;transform:translateX(-50%);color:#7b1fa2;font-size:12px;font-weight:900}
+@media(max-width:900px){.insertion-key-panel{grid-template-columns:repeat(2,minmax(120px,1fr))}}
+
+/* v31 Recursion Tree for Merge Sort and Quick Sort */
+.recursion-tree-wrap{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid #d8e0dc;
+  border-radius:12px;
+  background:#fbfdfc;
+  overflow:auto;
+}
+.recursion-tree-title{
+  margin:0 0 12px;
+  color:var(--g);
+  font-size:17px;
+  font-weight:900;
+}
+.recursion-tree{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-width:680px;
+}
+.recursion-level{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  position:relative;
+}
+.recursion-node{
+  min-width:110px;
+  max-width:220px;
+  padding:10px 12px;
+  border:2px solid #cfd8dc;
+  border-radius:11px;
+  background:#fff;
+  text-align:center;
+  font-weight:800;
+  color:#455a64;
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+.recursion-node small{
+  display:block;
+  margin-top:5px;
+  color:#78909c;
+  font-weight:700;
+}
+.recursion-node.active{
+  border-color:var(--o);
+  background:var(--o2);
+  color:var(--o);
+  box-shadow:0 0 0 4px rgba(239,108,0,.14);
+}
+.recursion-node.done{
+  border-color:var(--g);
+  background:var(--g2);
+  color:var(--g);
+}
+.recursion-node.pivot{
+  border-color:#7b1fa2;
+  background:#f3e5f5;
+  color:#7b1fa2;
+}
+.recursion-tree-meta{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(120px,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.recursion-meta-card{
+  padding:10px;
+  border-radius:9px;
+  background:#fff;
+  border:1px solid #d8e0dc;
+}
+.recursion-meta-card strong{
+  display:block;
+  color:#607d8b;
+  font-size:12px;
+  margin-bottom:5px;
+}
+@media(max-width:900px){
+  .recursion-tree-meta{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -313,6 +729,16 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 <div class="layout">
 <aside id="menu"></aside>
 <main id="main"></main>
+</div>
+<div id="topicMenuModal" class="menu-modal" role="dialog" aria-modal="true" aria-labelledby="topicMenuTitle">
+  <div class="menu-dialog">
+    <div class="menu-dialog-header">
+      <h3 id="topicMenuTitle">เลือกหัวข้อ</h3>
+      <button class="menu-close" type="button" aria-label="ปิดเมนู" onclick="closeTopicPopup()">×</button>
+    </div>
+    <div id="topicMenuItems" class="menu-dialog-body"></div>
+    <div class="menu-hint">เลือกหัวข้อย่อยเพื่อเปิดหน้าจำลองการทำงาน</div>
+  </div>
 </div>
 <script>
 "use strict";
@@ -455,6 +881,576 @@ function algorithmDashboard(id){
    <div class="metric"><span>Complexity</span><strong id="${id}Complexity">-</strong></div>
  </div>`;
 }
+
+
+const codeLibrary={
+ stack:{p:`CREATE stack
+top ← -1
+
+PUSH(item)
+  IF top = maxSize - 1
+    DISPLAY "Stack Overflow"
+  ELSE
+    top ← top + 1
+    stack[top] ← item
+
+POP()
+  IF top = -1
+    DISPLAY "Stack Underflow"
+  ELSE
+    item ← stack[top]
+    top ← top - 1
+    RETURN item`,c:`class Stack:
+    def __init__(self, max_size):
+        self.items = [None] * max_size
+        self.max_size = max_size
+        self.top = -1
+
+    def push(self, item):
+        if self.top == self.max_size - 1:
+            raise OverflowError("Stack Overflow")
+        self.top += 1
+        self.items[self.top] = item
+
+    def pop(self):
+        if self.top == -1:
+            raise IndexError("Stack Underflow")
+        item = self.items[self.top]
+        self.top -= 1
+        return item`},
+ physicalq:{p:`ENQUEUE(item)
+  rear ← rear + 1
+  queue[rear] ← item
+
+DEQUEUE()
+  item ← queue[0]
+  FOR i ← 0 TO rear - 1
+    queue[i] ← queue[i + 1]
+  rear ← rear - 1
+  RETURN item`,c:`class PhysicalQueue:
+    def __init__(self, max_size):
+        self.data = [None] * max_size
+        self.rear = -1
+
+    def enqueue(self, item):
+        self.rear += 1
+        self.data[self.rear] = item
+
+    def dequeue(self):
+        item = self.data[0]
+        for i in range(self.rear):
+            self.data[i] = self.data[i + 1]
+        self.rear -= 1
+        return item`},
+ linearq:{p:`ENQUEUE(item)
+  rear ← rear + 1
+  queue[rear] ← item
+
+DEQUEUE()
+  item ← queue[front]
+  front ← front + 1
+  RETURN item`,c:`class LinearQueue:
+    def __init__(self, max_size):
+        self.data = [None] * max_size
+        self.front = 0
+        self.rear = -1
+
+    def enqueue(self, item):
+        self.rear += 1
+        self.data[self.rear] = item
+
+    def dequeue(self):
+        item = self.data[self.front]
+        self.front += 1
+        return item`},
+ circularq:{p:`ENQUEUE(item)
+  rear ← (rear + 1) MOD maxSize
+  queue[rear] ← item
+  size ← size + 1
+
+DEQUEUE()
+  item ← queue[front]
+  front ← (front + 1) MOD maxSize
+  size ← size - 1
+  RETURN item`,c:`class CircularQueue:
+    def __init__(self, max_size):
+        self.data = [None] * max_size
+        self.max_size = max_size
+        self.front = 0
+        self.rear = -1
+        self.size = 0
+
+    def enqueue(self, item):
+        self.rear = (self.rear + 1) % self.max_size
+        self.data[self.rear] = item
+        self.size += 1
+
+    def dequeue(self):
+        item = self.data[self.front]
+        self.front = (self.front + 1) % self.max_size
+        self.size -= 1
+        return item`},
+ sll:{p:`INSERT(index, item)
+  newNode ← Node(item)
+  current ← node at index - 1
+  newNode.next ← current.next
+  current.next ← newNode`,c:`def insert_after(current, item):
+    new_node = Node(item)
+    new_node.next = current.next
+    current.next = new_node`},
+ dll:{p:`INSERT(index, item)
+  newNode ← Node(item)
+  prevNode ← node at index - 1
+  nextNode ← node at index
+
+  newNode.next ← nextNode
+  newNode.previous ← prevNode
+  prevNode.next ← newNode
+  nextNode.previous ← newNode`,c:`def insert_between(prev_node, next_node, item):
+    new_node = DoublyNode(item)
+    new_node.next = next_node
+    new_node.previous = prev_node
+    prev_node.next = new_node
+    next_node.previous = new_node
+    return new_node`},
+ selection:{p:`FOR i ← 0 TO n - 2
+  selected ← i
+  FOR j ← i + 1 TO n - 1
+    IF data[j] < data[selected]
+      selected ← j
+  SWAP data[i], data[selected]`,c:`def selection_sort(data):
+    for i in range(len(data) - 1):
+        selected = i
+        for j in range(i + 1, len(data)):
+            if data[j] < data[selected]:
+                selected = j
+        data[i], data[selected] = data[selected], data[i]
+    return data`},
+ insertion:{p:`FOR i ← 1 TO n - 1
+  key ← data[i]
+  j ← i - 1
+  WHILE j ≥ 0 AND data[j] > key
+    data[j + 1] ← data[j]
+    j ← j - 1
+  data[j + 1] ← key`,c:`def insertion_sort(data):
+    for i in range(1, len(data)):
+        key = data[i]
+        j = i - 1
+        while j >= 0 and data[j] > key:
+            data[j + 1] = data[j]
+            j -= 1
+        data[j + 1] = key
+    return data`},
+ bubble:{p:`FOR i ← 0 TO n - 2
+  FOR j ← 0 TO n - i - 2
+    IF data[j] > data[j + 1]
+      SWAP data[j], data[j + 1]`,c:`def bubble_sort(data):
+    for i in range(len(data) - 1):
+        for j in range(len(data) - i - 1):
+            if data[j] > data[j + 1]:
+                data[j], data[j + 1] = data[j + 1], data[j]
+    return data`},
+ merge:{p:`MERGE_SORT(data)
+  IF length(data) ≤ 1
+    RETURN data
+  mid ← length(data) DIV 2
+  left ← MERGE_SORT(data[0:mid])
+  right ← MERGE_SORT(data[mid:n])
+  RETURN MERGE(left, right)`,c:`def merge_sort(data):
+    if len(data) <= 1:
+        return data
+    mid = len(data) // 2
+    left = merge_sort(data[:mid])
+    right = merge_sort(data[mid:])
+    result = []
+    while left and right:
+        result.append(left.pop(0) if left[0] <= right[0] else right.pop(0))
+    return result + left + right`},
+ quick:{p:`QUICK_SORT(data, low, high)
+  IF low < high
+    pivotIndex ← PARTITION(data, low, high)
+    QUICK_SORT(data, low, pivotIndex - 1)
+    QUICK_SORT(data, pivotIndex + 1, high)`,c:`def quick_sort(data):
+    if len(data) <= 1:
+        return data
+    pivot = data[-1]
+    left = [x for x in data[:-1] if x <= pivot]
+    right = [x for x in data[:-1] if x > pivot]
+    return quick_sort(left) + [pivot] + quick_sort(right)`},
+ heapsort:{p:`BUILD_MAX_HEAP(data)
+FOR end ← n - 1 DOWNTO 1
+  SWAP data[0], data[end]
+  HEAPIFY(data, 0, end)`,c:`def heap_sort(data):
+    import heapq
+    heapq.heapify(data)
+    return [heapq.heappop(data) for _ in range(len(data))]`},
+ sequential:{p:`FOR i ← 0 TO n - 1
+  IF data[i] = target
+    RETURN i
+RETURN -1`,c:`def sequential_search(data, target):
+    for i, value in enumerate(data):
+        if value == target:
+            return i
+    return -1`},
+ binary:{p:`low ← 0
+high ← n - 1
+WHILE low ≤ high
+  mid ← (low + high) DIV 2
+  IF data[mid] = target
+    RETURN mid
+  ELSE IF target < data[mid]
+    high ← mid - 1
+  ELSE
+    low ← mid + 1
+RETURN -1`,c:`def binary_search(data, target):
+    low, high = 0, len(data) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if data[mid] == target:
+            return mid
+        if target < data[mid]:
+            high = mid - 1
+        else:
+            low = mid + 1
+    return -1`}
+};
+
+function escCode(s){
+ return String(s).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+}
+function codeTabs(id){
+ const x=codeLibrary[id]||{p:"ยังไม่มี Pseudocode สำหรับหัวข้อนี้",c:"# ยังไม่มี Python Code สำหรับหัวข้อนี้"};
+ return `<div class="code-tabs">
+  <div class="code-tab-buttons">
+   <button type="button" class="code-tab-btn active" onclick="switchCodeTab(this,'${id}TabAlgorithm')">Algorithm</button>
+   <button type="button" class="code-tab-btn" onclick="switchCodeTab(this,'${id}TabPseudocode')">Pseudocode</button>
+   <button type="button" class="code-tab-btn" onclick="switchCodeTab(this,'${id}TabPython')">Python Code</button>
+  </div>
+  <div id="${id}TabAlgorithm" class="code-tab-panel active"><div id="${id}Track" class="algorithm-track"></div></div>
+  <div id="${id}TabPseudocode" class="code-tab-panel"><pre class="code-block">${escCode(x.p)}</pre></div>
+  <div id="${id}TabPython" class="code-tab-panel"><pre class="code-block">${escCode(x.c)}</pre></div>
+ </div>`;
+}
+
+
+const selectionTemplates={
+ asc:{
+  label:"Selected Minimum",
+  nounEn:"minimum",
+  nounTh:"ค่าต่ำสุด",
+  compare:"<",
+  algorithm:[
+   "กำหนด selected = i",
+   "เปรียบเทียบ data[j] < data[selected]",
+   "ถ้าพบค่าน้อยกว่า ให้ selected = j",
+   "สลับ data[i] กับ data[selected]",
+   "จบรอบและขยายส่วนที่เรียงแล้ว"
+  ],
+  pseudocode:`FOR i ← 0 TO n - 2
+  selected ← i
+
+  FOR j ← i + 1 TO n - 1
+    IF data[j] < data[selected]
+      selected ← j
+
+  SWAP data[i], data[selected]`,
+  python:`def selection_sort(data):
+    for i in range(len(data) - 1):
+        selected = i
+
+        for j in range(i + 1, len(data)):
+            if data[j] < data[selected]:
+                selected = j
+
+        data[i], data[selected] = data[selected], data[i]
+
+    return data`
+ },
+ desc:{
+  label:"Selected Maximum",
+  nounEn:"maximum",
+  nounTh:"ค่าสูงสุด",
+  compare:">",
+  algorithm:[
+   "กำหนด selected = i",
+   "เปรียบเทียบ data[j] > data[selected]",
+   "ถ้าพบค่ามากกว่า ให้ selected = j",
+   "สลับ data[i] กับ data[selected]",
+   "จบรอบและขยายส่วนที่เรียงแล้ว"
+  ],
+  pseudocode:`FOR i ← 0 TO n - 2
+  selected ← i
+
+  FOR j ← i + 1 TO n - 1
+    IF data[j] > data[selected]
+      selected ← j
+
+  SWAP data[i], data[selected]`,
+  python:`def selection_sort_descending(data):
+    for i in range(len(data) - 1):
+        selected = i
+
+        for j in range(i + 1, len(data)):
+            if data[j] > data[selected]:
+                selected = j
+
+        data[i], data[selected] = data[selected], data[i]
+
+    return data`
+ }
+};
+
+function getSelectionTemplate(){
+ const order=$("selectionOrder")?.value||"asc";
+ return selectionTemplates[order];
+}
+
+function renderSelectionTabs(){
+ const t=getSelectionTemplate();
+
+ const track=$("selectionTrack");
+ if(track){
+   track.innerHTML=t.algorithm
+     .map((text,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${text}</span>`)
+     .join("");
+ }
+
+ const pseudo=$("selectionTabPseudocode")?.querySelector(".code-block");
+ if(pseudo)pseudo.textContent=t.pseudocode;
+
+ const python=$("selectionTabPython")?.querySelector(".code-block");
+ if(python)python.textContent=t.python;
+
+ const selectedLabel=document.querySelector("#selection .selected-panel strong");
+ if(selectedLabel)selectedLabel.textContent=t.label+":";
+
+ document.querySelector("#selection")?.classList.toggle("selection-desc",($("selectionOrder")?.value||"asc")==="desc");
+}
+
+
+
+const insertionTemplates={
+ asc:{
+  algorithm:[
+   "เลือก key = data[i]",
+   "เปรียบเทียบ data[j] > key",
+   "ถ้าจริง ให้เลื่อน data[j] ไปขวา",
+   "วาง key ที่ตำแหน่ง j + 1",
+   "ขยายส่วนที่เรียงแล้ว"
+  ],
+  pseudocode:`FOR i ← 1 TO n - 1
+  key ← data[i]
+  j ← i - 1
+
+  WHILE j ≥ 0 AND data[j] > key
+    data[j + 1] ← data[j]
+    j ← j - 1
+
+  data[j + 1] ← key`,
+  python:`def insertion_sort(data):
+    for i in range(1, len(data)):
+        key = data[i]
+        j = i - 1
+
+        while j >= 0 and data[j] > key:
+            data[j + 1] = data[j]
+            j -= 1
+
+        data[j + 1] = key
+
+    return data`
+ },
+ desc:{
+  algorithm:[
+   "เลือก key = data[i]",
+   "เปรียบเทียบ data[j] < key",
+   "ถ้าจริง ให้เลื่อน data[j] ไปขวา",
+   "วาง key ที่ตำแหน่ง j + 1",
+   "ขยายส่วนที่เรียงแล้ว"
+  ],
+  pseudocode:`FOR i ← 1 TO n - 1
+  key ← data[i]
+  j ← i - 1
+
+  WHILE j ≥ 0 AND data[j] < key
+    data[j + 1] ← data[j]
+    j ← j - 1
+
+  data[j + 1] ← key`,
+  python:`def insertion_sort_descending(data):
+    for i in range(1, len(data)):
+        key = data[i]
+        j = i - 1
+
+        while j >= 0 and data[j] < key:
+            data[j + 1] = data[j]
+            j -= 1
+
+        data[j + 1] = key
+
+    return data`
+ }
+};
+
+const bubbleTemplates={
+ asc:{
+  algorithm:[
+   "เริ่มรอบการเปรียบเทียบ",
+   "เปรียบเทียบ data[j] > data[j + 1]",
+   "ถ้าจริง ให้ Swap",
+   "ค่ามากที่สุดของรอบไปอยู่ด้านขวา",
+   "ทำซ้ำจนเรียงเสร็จ"
+  ],
+  pseudocode:`FOR i ← 0 TO n - 2
+  FOR j ← 0 TO n - i - 2
+    IF data[j] > data[j + 1]
+      SWAP data[j], data[j + 1]`,
+  python:`def bubble_sort(data):
+    n = len(data)
+
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if data[j] > data[j + 1]:
+                data[j], data[j + 1] = data[j + 1], data[j]
+
+    return data`
+ },
+ desc:{
+  algorithm:[
+   "เริ่มรอบการเปรียบเทียบ",
+   "เปรียบเทียบ data[j] < data[j + 1]",
+   "ถ้าจริง ให้ Swap",
+   "ค่าน้อยที่สุดของรอบไปอยู่ด้านขวา",
+   "ทำซ้ำจนเรียงเสร็จ"
+  ],
+  pseudocode:`FOR i ← 0 TO n - 2
+  FOR j ← 0 TO n - i - 2
+    IF data[j] < data[j + 1]
+      SWAP data[j], data[j + 1]`,
+  python:`def bubble_sort_descending(data):
+    n = len(data)
+
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if data[j] < data[j + 1]:
+                data[j], data[j + 1] = data[j + 1], data[j]
+
+    return data`
+ }
+};
+
+function renderSortingTabs(id){
+ const order=$(id+"Order")?.value||"asc";
+ const templates=id==="selection"?selectionTemplates:id==="insertion"?insertionTemplates:bubbleTemplates;
+ const t=templates[order];
+
+ const track=$(id+"Track");
+ if(track){
+   track.innerHTML=t.algorithm.map((text,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${text}</span>`).join("");
+ }
+
+ const pseudo=$(id+"TabPseudocode")?.querySelector(".code-block");
+ if(pseudo)pseudo.textContent=t.pseudocode;
+
+ const python=$(id+"TabPython")?.querySelector(".code-block");
+ if(python)python.textContent=t.python;
+
+ if(id==="selection"){
+   const selectedLabel=document.querySelector("#selection .selected-panel strong");
+   if(selectedLabel)selectedLabel.textContent=selectionTemplates[order].label+":";
+   document.querySelector("#selection")?.classList.toggle("selection-desc",order==="desc");
+ }else{
+   document.querySelector(`#${id}`)?.classList.toggle("sort-desc",order==="desc");
+ }
+}
+
+function setSortingOrder(id,order){
+ const input=$(id+"Order");
+ if(input)input.value=order;
+
+ $(id+"AscBtn")?.classList.toggle("active",order==="asc");
+ $(id+"DescBtn")?.classList.toggle("active",order==="desc");
+
+ renderSortingTabs(id);
+
+ const s=states[id];
+ if(s?.timer){
+   clearInterval(s.timer);
+   s.timer=null;
+ }
+ if(s){
+   s.steps=[];
+   s.step=0;
+   s.running=false;
+ }
+ if($(id+"Progress"))$(id+"Progress").style.width="0%";
+ if($(id+"Status"))$(id+"Status").textContent="เปลี่ยนลำดับการเรียงแล้ว กรุณากด Prepare";
+ if(id==="insertion")resetInsertionKeyPanel();
+ renderAlgorithmModule(id,{});
+}
+
+
+function setSelectionOrder(order){
+ setSortingOrder("selection",order);
+}
+
+function updateSelectionOrder(){
+ const state=states.selection;
+ if(state?.timer){
+   clearInterval(state.timer);
+   state.timer=null;
+ }
+
+ renderSortingTabs("selection");
+ensureStackCodeTabs();
+renderTraversalSummary($("bstTraversal")?.value||"inorder",[]);
+setSortingOrder("selection",$("selectionOrder")?.value||"asc");
+setSortingOrder("insertion",$("insertionOrder")?.value||"asc");
+setSortingOrder("bubble",$("bubbleOrder")?.value||"asc");
+resetInsertionKeyPanel();
+
+ if(state){
+   state.steps=[];
+   state.step=0;
+   state.running=false;
+ }
+
+ if($("selectionProgress"))$("selectionProgress").style.width="0%";
+ if($("selectionSelectedValue"))$("selectionSelectedValue").textContent="-";
+ if($("selectionSelectedIndex"))$("selectionSelectedIndex").textContent="index -";
+ if($("selectionPassInfo"))$("selectionPassInfo").textContent="pass -";
+ if($("selectionStatus"))$("selectionStatus").textContent="เปลี่ยนลำดับการเรียงแล้ว กรุณากด Prepare";
+
+ render("selection");
+}
+
+
+function switchCodeTab(btn,targetId){
+ const root=btn.closest(".code-tabs");
+ root.querySelectorAll(".code-tab-btn").forEach(x=>x.classList.remove("active"));
+ root.querySelectorAll(".code-tab-panel").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+ $(targetId).classList.add("active");
+}
+
+
+function insertionKeyPanel(){
+ return `<div id="insertionKeyPanel" class="insertion-key-panel">
+  <div class="insertion-key-card"><strong>Current Key</strong><span id="insertionKeyValue" class="insertion-key-value">-</span></div>
+  <div class="insertion-key-card"><strong>Original Index</strong><span id="insertionKeyOriginal">-</span></div>
+  <div class="insertion-key-card"><strong>Compare Index</strong><span id="insertionKeyCompare">-</span></div>
+  <div class="insertion-key-card"><strong>Insert Position</strong><span id="insertionKeyTarget">-</span></div>
+  <div class="insertion-key-card"><strong>Status</strong><span id="insertionKeyStatus" class="insertion-key-status">พร้อมใช้งาน</span></div>
+ </div>`;
+}
+function updateInsertionKeyPanel(st={}){
+ if($("insertionKeyValue"))$("insertionKeyValue").textContent=st.keyValue ?? "-";
+ if($("insertionKeyOriginal"))$("insertionKeyOriginal").textContent=st.keyOriginal ?? "-";
+ if($("insertionKeyCompare"))$("insertionKeyCompare").textContent=st.compareIndex ?? "-";
+ if($("insertionKeyTarget"))$("insertionKeyTarget").textContent=st.insertPosition ?? "-";
+ if($("insertionKeyStatus"))$("insertionKeyStatus").textContent=st.keyStatus || "พร้อมใช้งาน";
+}
+function resetInsertionKeyPanel(){updateInsertionKeyPanel({keyValue:"-",keyOriginal:"-",compareIndex:"-",insertPosition:"-",keyStatus:"พร้อมใช้งาน"})}
 
 function panel(cfg){
  if(cfg.kind==="stackapp"){
@@ -623,10 +1619,19 @@ function panel(cfg){
     <h2>${cfg.title}</h2>
     <div class="controls">
       <label>Data<input id="${cfg.id}Data" value="35,12,48,7,29,18"></label>
-      <label>Order<select id="${cfg.id}Order">
-        <option value="asc">น้อยไปมาก</option>
-        <option value="desc">มากไปน้อย</option>
-      </select></label>
+      ${["selection","insertion","bubble"].includes(cfg.id)
+      ? `<div>
+          <label>Order</label>
+          <div class="${cfg.id==="selection"?"selection-order-buttons":"sorting-order-buttons"}">
+            <button type="button" id="${cfg.id}AscBtn" class="${cfg.id==="selection"?"selection-order-btn":"sorting-order-btn"} active" onclick="setSortingOrder('${cfg.id}','asc')">น้อยไปมาก</button>
+            <button type="button" id="${cfg.id}DescBtn" class="${cfg.id==="selection"?"selection-order-btn":"sorting-order-btn"}" onclick="setSortingOrder('${cfg.id}','desc')">มากไปน้อย</button>
+          </div>
+          <input id="${cfg.id}Order" type="hidden" value="asc">
+        </div>`
+      : `<label>Order<select id="${cfg.id}Order">
+          <option value="asc">น้อยไปมาก</option>
+          <option value="desc">มากไปน้อย</option>
+        </select></label>`}
       <button class="action green" onclick="prepareSorting('${cfg.id}')">Prepare</button>
     </div>
     ${cfg.id==="selection"?`<div class="selected-panel">
@@ -635,13 +1640,13 @@ function panel(cfg){
       <span id="selectionSelectedIndex">index -</span>
       <span id="selectionPassInfo">pass -</span>
     </div>`:""}
+    ${cfg.id==="insertion"?insertionKeyPanel():""}
     ${algorithmControls(cfg.id)}
     ${algorithmDashboard(cfg.id)}
     <div class="algo-layout">
       <div id="${cfg.id}Visual" class="algo-visual"></div>
       <div>
-        <strong>Algorithm</strong>
-        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        ${codeTabs(cfg.id)}
         <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
       </div>
     </div>
@@ -660,8 +1665,7 @@ function panel(cfg){
     <div class="algo-layout">
       <div id="${cfg.id}Visual" class="algo-visual"></div>
       <div>
-        <strong>Algorithm</strong>
-        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        ${codeTabs(cfg.id)}
         <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
       </div>
     </div>
@@ -671,26 +1675,174 @@ function panel(cfg){
  const needsIndex=["arraylist","sll","dll"].includes(cfg.id);
  const needsCapacity=["stack","physicalq","linearq","circularq","arraylist"].includes(cfg.id);
  const buttons=cfg.ops.map(op=>`<button class="action ${op==="create"?"green":op.includes("delete")||op==="pop"||op==="dequeue"?"blue":"gray"}" onclick="operate('${cfg.id}','${op}')">${op}</button>`).join("");
- const linkedTools=cfg.kind==="linked"?`<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div><div id="${cfg.id}Track" class="algorithm-track"></div>`:`<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>`;
+ const linkedTools=cfg.kind==="linked"?`<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>${codeTabs(cfg.id)}`:`<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>`;
  return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="6" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${buttons}</div>${linkedTools}<div class="info"><div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div><div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div></div><div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
 }
+
+const topicGroups=[
+ {
+  id:"stack-group",title:"Stack",icon:"📚",
+  items:[
+   {id:"stack",subtitle:"โครงสร้าง LIFO และคำสั่งพื้นฐาน"},
+   {id:"stackapp",subtitle:"การประยุกต์ใช้ Stack"},
+   {id:"recursion",subtitle:"Recursion และ Current Call Path"}
+  ]
+ },
+ {
+  id:"queue-group",title:"Queue",icon:"🚶",
+  items:[
+   {id:"physicalq",subtitle:"เลื่อนข้อมูลหลัง Dequeue"},
+   {id:"linearq",subtitle:"Front เคลื่อนไปข้างหน้า"},
+   {id:"circularq",subtitle:"วนกลับมาใช้พื้นที่ว่าง"}
+  ]
+ },
+ {
+  id:"list-group",title:"List",icon:"🔗",
+  items:[
+   {id:"arraylist",subtitle:"List ที่จัดเก็บด้วย Array"},
+   {id:"sll",subtitle:"โหนดและ Pointer แบบทางเดียว"},
+   {id:"dll",subtitle:"Next และ Previous Pointer"}
+  ]
+ },
+ {
+  id:"nonlinear-group",title:"Tree & Hash",icon:"🌳",
+  items:[
+   {id:"bst",subtitle:"Binary Search Tree"},
+   {id:"heap",subtitle:"Heap Tree"},
+   {id:"avl",subtitle:"Balanced Binary Search Tree"},
+   {id:"hash",subtitle:"Hash Function และ Bucket"}
+  ]
+ },
+ {
+  id:"graph-group",title:"Graph",icon:"🕸️",
+  items:[
+   {id:"graph",subtitle:"สร้างและจัดการ Graph"},
+   {id:"dfs",subtitle:"Depth-First Search"},
+   {id:"bfs",subtitle:"Breadth-First Search"},
+   {id:"dijkstra",subtitle:"Shortest Path"},
+   {id:"prim",subtitle:"Minimum Spanning Tree"},
+   {id:"kruskal",subtitle:"Minimum Spanning Tree"}
+  ]
+ },
+ {
+  id:"sorting-group",title:"Sorting",icon:"🔢",
+  items:[
+   {id:"selection",subtitle:"Selection Sort"},
+   {id:"insertion",subtitle:"Insertion Sort"},
+   {id:"bubble",subtitle:"Bubble Sort"},
+   {id:"radix",subtitle:"Radix Sort"},
+   {id:"merge",subtitle:"Merge Sort"},
+   {id:"quick",subtitle:"Quick Sort"},
+   {id:"heapsort",subtitle:"Heap Sort"}
+  ]
+ },
+ {
+  id:"searching-group",title:"Searching",icon:"🔍",
+  items:[
+   {id:"sequential",subtitle:"Sequential Search"},
+   {id:"binary",subtitle:"Binary Search"}
+  ]
+ }
+];
+
+
+function groupOfPanel(panelId){
+ return topicGroups.find(g=>g.items.some(x=>x.id===panelId));
+}
+function toggleTopicDropdown(groupId){
+ const current=document.querySelector(`#menu [data-dropdown="${groupId}"]`);
+ if(!current)return;
+ const willOpen=!current.classList.contains("open");
+ document.querySelectorAll("#menu .topic-dropdown").forEach(x=>x.classList.remove("open"));
+ if(willOpen)current.classList.add("open");
+}
+function showPanel(panelId){
+ document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+ const target=$(panelId);
+ if(target)target.classList.add("active");
+
+ document.querySelectorAll("#menu .topic-submenu-btn").forEach(x=>x.classList.remove("active"));
+ document.querySelector(`#menu .topic-submenu-btn[data-id="${panelId}"]`)?.classList.add("active");
+
+ const group=groupOfPanel(panelId);
+ if(group){
+   document.querySelectorAll("#menu .topic-dropdown").forEach(x=>x.classList.remove("open"));
+   document.querySelector(`#menu [data-dropdown="${group.id}"]`)?.classList.add("open");
+ }
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+function ensureStackCodeTabs(){
+ const panel=$("stack");
+ if(!panel)return;
+
+ if(panel.querySelector(".code-tabs"))return;
+
+ const track=$("stackTrack");
+ if(!track)return;
+
+ const wrapper=document.createElement("div");
+ wrapper.innerHTML=codeTabs("stack");
+ const tabs=wrapper.firstElementChild;
+
+ const parent=track.parentElement;
+ const label=track.previousElementSibling;
+ if(label && label.tagName==="STRONG" && /Algorithm/i.test(label.textContent)){
+   label.remove();
+ }
+ parent.replaceChild(tabs,track);
+}
+
+
+function traversalLabel(mode){
+ return {
+  inorder:"Inorder Traversal (Left → Root → Right)",
+  preorder:"Preorder Traversal (Root → Left → Right)",
+  postorder:"Postorder Traversal (Left → Right → Root)"
+ }[mode] || "Tree Traversal";
+}
+
+function renderTraversalSummary(mode, values=[]){
+ const box=$("bstTraversalSummary");
+ if(!box)return;
+ $("bstTraversalTitle").textContent=traversalLabel(mode);
+
+ const result=$("bstTraversalResult");
+ renderTraversalSummary(mode,result);
+ if(!result)return;
+
+ if(!values.length){
+   result.innerHTML='<span class="traversal-result-label">ผลลัพธ์:</span><span>-</span>';
+   return;
+ }
+
+ result.innerHTML='<span class="traversal-result-label">ผลลัพธ์:</span>' +
+   values.map((v,i)=>`${i?'<span class="traversal-arrow">→</span>':''}<span class="traversal-node-value">${v}</span>`).join("");
+}
+
 function build(){
- let menuHTML="";
- configs.forEach((c,i)=>{
-   if(c.id==="stackapp")menuHTML+=`<div class="submenu-label">Stack Application</div>`;
-   if(c.id==="recursion")menuHTML+=`<div class="submenu-label">Recursion Algorithm</div>`;
-   if(c.id==="physicalq")menuHTML+=`<div class="submenu-label">Queue</div>`;
-   if(c.id==="arraylist")menuHTML+=`<div class="submenu-label">List</div>`;
-   if(c.id==="bst")menuHTML+=`<div class="submenu-label">Non-linear Data Structure</div>`;
-   if(c.id==="avl")menuHTML+=`<div class="submenu-label">Balanced Tree & Graph</div>`;
-   if(c.id==="dfs")menuHTML+=`<div class="submenu-label">Graph Algorithms</div>`;
-   if(c.id==="selection")menuHTML+=`<div class="submenu-label">Sorting</div>`;
-   if(c.id==="sequential")menuHTML+=`<div class="submenu-label">Searching</div>`;
-   menuHTML+=`<button class="${i===0?"active":""}" data-id="${c.id}">${c.title}</button>`;
+ let menuHTML=`<div class="topic-menu-title">เลือกหมวดเนื้อหา</div>`;
+ topicGroups.forEach((g,groupIndex)=>{
+   const submenu=g.items.map((item,itemIndex)=>{
+     const cfg=configs.find(c=>c.id===item.id);
+     const active=groupIndex===0&&itemIndex===0?"active":"";
+     return `<button type="button" class="topic-submenu-btn ${active}" data-id="${item.id}" onclick="showPanel('${item.id}')">
+       <span class="topic-submenu-number">${itemIndex+1}</span>
+       <span>${cfg?.title||item.id}</span>
+     </button>`;
+   }).join("");
+
+   menuHTML+=`<div class="topic-dropdown ${groupIndex===0?"open":""}" data-dropdown="${g.id}">
+     <button type="button" class="topic-dropdown-btn" onclick="toggleTopicDropdown('${g.id}')">
+       <span><span class="topic-icon">${g.icon}</span> ${g.title}</span>
+       <span class="topic-dropdown-arrow">›</span>
+     </button>
+     <div class="topic-dropdown-list">${submenu}</div>
+   </div>`;
  });
  $("menu").innerHTML=menuHTML;
  $("main").innerHTML=configs.map(panel).join("");
- $("menu").querySelectorAll("button").forEach(b=>b.onclick=()=>{document.querySelectorAll("aside button,.panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.id).classList.add("active")});
  configs.forEach((c,i)=>{
    states[c.id]=makeState(c.id);
    if(c.kind==="array"||c.kind==="arraylist"||c.kind==="linked")operate(c.id,"create");
@@ -1348,15 +2500,93 @@ function resetAlgorithm(id){
  else if(cfg.kind==="searching")prepareSearching(id);
  else prepareStructureOperation(id,"create");
 }
+
+function sortingCells(id){
+ return [...document.querySelectorAll(`#${id}Visual .sort-cell[data-sort-index]`)];
+}
+
+function animateSortingMovement(id,st){
+ if(!st || (!st.swap && !st.move && !st.keyMove))return;
+
+ const cells=sortingCells(id);
+ if(!cells.length)return;
+
+ const byIndex=index=>cells.find(cell=>Number(cell.dataset.sortIndex)===Number(index));
+ const duration=Math.max(420,Math.min(900,Number($(id+"Speed")?.value||700)*0.72));
+
+ const animateCell=(cell,fromRect,toRect,className)=>{
+   if(!cell||!fromRect||!toRect)return;
+   const dx=fromRect.left-toRect.left;
+   const dy=fromRect.top-toRect.top-24;
+
+   cell.classList.add(className);
+   cell.style.transition="none";
+   cell.style.transform=`translate(${dx}px,${dy}px)`;
+
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{
+     cell.style.transition=`transform ${duration}ms cubic-bezier(.22,.75,.24,1)`;
+     cell.style.transform="translate(0,0)";
+   }));
+
+   window.setTimeout(()=>{
+     cell.classList.remove(className);
+     cell.style.transition="";
+     cell.style.transform="";
+   },duration+80);
+ };
+
+ if(st.swap){
+   const [a,b]=st.swap;
+   const cellA=byIndex(a),cellB=byIndex(b);
+   if(cellA&&cellB){
+     const rectA=cellA.getBoundingClientRect();
+     const rectB=cellB.getBoundingClientRect();
+     cellA.classList.add("swap-source-a");
+     cellB.classList.add("swap-source-b");
+     animateCell(cellA,rectB,rectA,"swap-moving");
+     animateCell(cellB,rectA,rectB,"swap-moving");
+     window.setTimeout(()=>{
+       cellA.classList.remove("swap-source-a");
+       cellB.classList.remove("swap-source-b");
+     },duration+100);
+   }
+ }
+
+ if(st.move){
+   const moves=Array.isArray(st.move[0])?st.move:[st.move];
+   moves.forEach(([from,to])=>{
+     const destination=byIndex(to);
+     const source=byIndex(from);
+     const fromRect=source?.getBoundingClientRect();
+     const toRect=destination?.getBoundingClientRect();
+     animateCell(destination,fromRect,toRect,"shift-moving");
+   });
+ }
+
+ if(st.keyMove){
+   const [from,to]=st.keyMove;
+   const destination=byIndex(to);
+   const source=byIndex(from);
+   animateCell(
+     destination,
+     source?.getBoundingClientRect(),
+     destination?.getBoundingClientRect(),
+     "key-moving"
+   );
+ }
+}
+
 function nextAlgorithmStep(id){
  const s=states[id],st=s.steps[s.step];
  if(!st){setStatus(id,"Algorithm เสร็จสิ้น");stopAlgorithmAuto(id);updateAlgorithmDashboard(id);return}
  s.step++;s.comparisons=st.comparisons??s.comparisons;s.swaps=st.swaps??s.swaps;
  if(st.data)s.data=JSON.parse(JSON.stringify(st.data));
  s.active=st.active??-1;s.found=st.found??-1;s.view=st.view||{};
+ if(st.recursionTree)s.recursionTree=cloneRecursionTree(st.recursionTree);
  renderAlgorithmModule(id,st);
+ requestAnimationFrame(()=>animateSortingMovement(id,st));
  if($(id+"Detail"))$(id+"Detail").textContent=st.detail||"";
- setStatus(id,st.text);
+ setStatus(id,(st.swap?"↔ กำลังสลับตำแหน่ง: ":st.move?"→ กำลังเลื่อนข้อมูล: ":st.keyMove?"↓ กำลังวาง Key: ":"")+st.text);
  highlightAlgorithmLine(id,st.line||1);
  updateAlgorithmDashboard(id);
 }
@@ -1402,6 +2632,61 @@ function heapTreeSvg(arr,heapSize,st={}){
  return `<svg class="tree-svg" viewBox="0 0 ${width} ${height}">${edges}${nodes}</svg>`;
 }
 
+
+
+function cloneRecursionTree(tree){
+ return JSON.parse(JSON.stringify(tree||[]));
+}
+
+function flattenTreeLevels(nodes){
+ const levels=[];
+ const walk=(node,depth)=>{
+   if(!node)return;
+   if(!levels[depth])levels[depth]=[];
+   levels[depth].push(node);
+   (node.children||[]).forEach(child=>walk(child,depth+1));
+ };
+ nodes.forEach(node=>walk(node,0));
+ return levels;
+}
+
+function renderRecursionTree(id,tree=[],st={}){
+ const title=id==="merge"?"Merge Sort Division Tree":"Quick Sort Partition Tree";
+ const levels=flattenTreeLevels(tree);
+
+ const levelHtml=levels.map(level=>
+   `<div class="recursion-level">${
+     level.map(node=>{
+       let cls="recursion-node";
+       if(node.id===st.treeNodeId)cls+=" active";
+       if(node.done)cls+=" done";
+       if(node.pivot!==undefined)cls+=" pivot";
+       const arrText=`[${(node.values||[]).join(", ")}]`;
+       const info=node.pivot!==undefined?`Pivot = ${node.pivot}`:(node.action||"");
+       return `<div class="${cls}">${arrText}${info?`<small>${info}</small>`:""}</div>`;
+     }).join("")
+   }</div>`
+ ).join("");
+
+ const meta=id==="merge"
+   ? `<div class="recursion-tree-meta">
+        <div class="recursion-meta-card"><strong>Current Level</strong>${st.level ?? "-"}</div>
+        <div class="recursion-meta-card"><strong>Current Subarray</strong>[${(st.subarray||[]).join(", ")}]</div>
+        <div class="recursion-meta-card"><strong>Action</strong>${st.treeAction||"-"}</div>
+      </div>`
+   : `<div class="recursion-tree-meta">
+        <div class="recursion-meta-card"><strong>Current Level</strong>${st.level ?? "-"}</div>
+        <div class="recursion-meta-card"><strong>Current Subarray</strong>[${(st.subarray||[]).join(", ")}]</div>
+        <div class="recursion-meta-card"><strong>Pivot</strong>${st.pivotValue ?? "-"}</div>
+      </div>`;
+
+ return `<div class="recursion-tree-wrap">
+   <div class="recursion-tree-title">${title}</div>
+   <div class="recursion-tree">${levelHtml||"<div>-</div>"}</div>
+   ${meta}
+ </div>`;
+}
+
 function renderAlgorithmModule(id,st={}){
  const cfg=configs.find(x=>x.id===id),s=states[id];
 
@@ -1414,7 +2699,7 @@ function renderAlgorithmModule(id,st={}){
        if(st.compare?.includes(i))cls+=" compare";
        if(st.active===i)cls+=" active";
        if(st.sorted?.includes(i))cls+=" sorted";
-       return `<div class="${cls}"><span class="sort-index">${i}</span>${v}</div>`;
+       return `<div class="${cls}" data-sort-index="${i}"><span class="sort-index">${i}</span>${v}</div>`;
      }).join("")+"</div>";
 
      $(id+"Visual").innerHTML=`
@@ -1448,7 +2733,7 @@ function renderAlgorithmModule(id,st={}){
        <div class="radix-wrap">
          <div class="radix-pass">กำลังพิจารณาหลัก ${exp===1?"หน่วย":exp===10?"สิบ":exp===100?"ร้อย":exp}</div>
          <div class="sort-row">${
-           (s.data||[]).map((v,i)=>`<div class="sort-cell ${st.active===i?"active":""}">
+           (s.data||[]).map((v,i)=>`<div class="sort-cell ${st.active===i?"active":""}" data-sort-index="${i}">
              <span class="sort-index">${i}</span>${v}
            </div>`).join("")
          }</div>
@@ -1458,15 +2743,19 @@ function renderAlgorithmModule(id,st={}){
    }
 
    const arr=s.data||[];
-   $(id+"Visual").innerHTML='<div class="sort-row">'+arr.map((v,i)=>{
+   const floatingKey=id==="insertion" && st.keyValue!==undefined ? `<div class="insertion-key-floating"><span class="floating-key">${st.keyValue}</span></div>` : "";
+   $(id+"Visual").innerHTML=floatingKey+'<div class="sort-row">'+arr.map((v,i)=>{
      let cls="sort-cell";
      if(st.compare?.includes(i))cls+=" compare";
      if(st.active===i)cls+=" active";
      if(st.sorted?.includes(i))cls+=" sorted";
      if(st.pivot===i)cls+=" pivot";
      if(st.found===i)cls+=" search-cell found";
-     return `<div class="${cls}"><span class="sort-index">${i}</span>${v}</div>`;
-   }).join("")+"</div>";
+     return `<div class="${cls}" data-sort-index="${i}"><span class="sort-index">${i}</span>${v}</div>`;
+   }).join("")+"</div>"
+   + ((id==="merge"||id==="quick") ? renderRecursionTree(id,st.recursionTree||[],st) : "");
+
+   if(id==="insertion")updateInsertionKeyPanel(st);
 
    if(id==="selection"){
      const valueElement=$("selectionSelectedValue");
@@ -1880,6 +3169,8 @@ function sortingTrack(algo){
  };return tracks[algo];
 }
 function prepareSorting(id){
+ if(["selection","insertion","bubble"].includes(id))renderSortingTabs(id);
+ if(id==="insertion")resetInsertionKeyPanel();
  stopAlgorithmAuto(id);
 
  const s=states[id];
@@ -1893,6 +3184,7 @@ function prepareSorting(id){
  s.comparisons=0;
  s.swaps=0;
  s.data=[...a];
+ s.recursionTree=[];
 
  setAlgorithmTrack(id,sortingTrack(cfg.algorithm));
 
@@ -1948,11 +3240,13 @@ function prepareSorting(id){
      }
 
      if(selected!==i){
+       const swapA=i,swapB=selected;
        [arr[i],arr[selected]]=[arr[selected],arr[i]];
        w++;
 
        s.steps.push({
          data:[...arr],
+         swap:[swapA,swapB],
          sorted:[...Array(i+1).keys()],
          selectedIndex:i,
          selectedValue:arr[i],
@@ -1993,19 +3287,23 @@ function prepareSorting(id){
  if(cfg.algorithm==="insertion"){
    for(let i=1;i<arr.length;i++){
      let key=arr[i],j=i-1;
-     s.steps.push({data:[...arr],active:i,line:1,text:`เลือก key = ${key}`,comparisons:c,swaps:w});
+     s.steps.push({data:[...arr],active:i,keyValue:key,keyOriginal:i,compareIndex:j,insertPosition:i,keyStatus:"เลือก Key",line:1,text:`เลือก key = ${key} จาก index ${i}`,comparisons:c,swaps:w});
      while(j>=0){
        c++;
-       s.steps.push({data:[...arr],compare:[j,j+1],line:2,text:`เปรียบเทียบ ${arr[j]} กับ key ${key}`,comparisons:c,swaps:w});
+       s.steps.push({data:[...arr],compare:[j,j+1],keyValue:key,keyOriginal:i,compareIndex:j,insertPosition:j+1,keyStatus:"กำลังเปรียบเทียบ",line:2,text:`เปรียบเทียบ ${arr[j]} กับ key ${key}`,comparisons:c,swaps:w});
        const shouldShift=ascending ? arr[j]>key : arr[j]<key;
        if(shouldShift){
+         const shiftFrom=j,shiftTo=j+1;
          arr[j+1]=arr[j];w++;
-         s.steps.push({data:[...arr],active:j+1,line:3,text:`Shift ${arr[j]} ไปขวา`,comparisons:c,swaps:w});
+         s.steps.push({data:[...arr],move:[shiftFrom,shiftTo],active:j+1,keyValue:key,keyOriginal:i,compareIndex:j,insertPosition:j,keyStatus:"กำลัง Shift",line:3,text:`Shift ${arr[j]} จาก index ${shiftFrom} → ${shiftTo}`,comparisons:c,swaps:w});
          j--;
-       }else break;
+       }else{
+         s.steps.push({data:[...arr],keyValue:key,keyOriginal:i,compareIndex:j,insertPosition:j+1,keyStatus:"หยุดการเลื่อน",line:2,text:`หยุด Shift และเตรียมวาง key ${key} ที่ index ${j+1}`,comparisons:c,swaps:w});
+         break;
+       }
      }
      arr[j+1]=key;
-     s.steps.push({data:[...arr],sorted:[...Array(i+1).keys()],line:4,text:`วาง key ที่ index ${j+1}`,comparisons:c,swaps:w});
+     s.steps.push({data:[...arr],keyMove:[i,j+1],active:j+1,sorted:[...Array(i+1).keys()],keyValue:key,keyOriginal:i,compareIndex:j,insertPosition:j+1,keyStatus:"Inserted",line:4,text:`วาง key ${key} จาก index ${i} → ${j+1}`,comparisons:c,swaps:w});
    }
  }
 
@@ -2016,9 +3314,10 @@ function prepareSorting(id){
        s.steps.push({data:[...arr],compare:[j,j+1],line:2,text:`เปรียบเทียบ ${arr[j]} กับ ${arr[j+1]}`,comparisons:c,swaps:w});
        const shouldSwap=ascending ? arr[j]>arr[j+1] : arr[j]<arr[j+1];
        if(shouldSwap){
+         const swapA=j,swapB=j+1;
          [arr[j],arr[j+1]]=[arr[j+1],arr[j]];
          w++;
-         s.steps.push({data:[...arr],line:3,text:`Swap index ${j},${j+1}`,comparisons:c,swaps:w});
+         s.steps.push({data:[...arr],swap:[swapA,swapB],compare:[swapA,swapB],line:3,text:`Swap index ${j} ↔ ${j+1}`,comparisons:c,swaps:w});
        }
      }
    }
@@ -2108,51 +3407,193 @@ function prepareSorting(id){
  }
 
  if(cfg.algorithm==="merge"){
-   function mergeSort(l,r){
-     if(r-l<=1)return;
-     const m=Math.floor((l+r)/2);
-     s.steps.push({data:[...arr],compare:[l,r-1],line:1,text:`แบ่งช่วง ${l}-${r-1}`,comparisons:c,swaps:w});
-     mergeSort(l,m);mergeSort(m,r);
-     const left=arr.slice(l,m),right=arr.slice(m,r),merged=[];
-     while(left.length&&right.length){
-       c++;
-       const takeLeft=ascending ? left[0]<=right[0] : left[0]>=right[0];
-       merged.push(takeLeft?left.shift():right.shift());
+   let nodeCounter=0;
+   const rootNodes=[];
+
+   function mergeSortVisual(values,level=0,parentList=rootNodes){
+     const node={
+       id:`merge-${nodeCounter++}`,
+       values:[...values],
+       level,
+       action:values.length<=1?"Base Case":"Split",
+       done:false,
+       children:[]
+     };
+     parentList.push(node);
+
+     s.steps.push({
+       data:[...arr],
+       recursionTree:cloneRecursionTree(rootNodes),
+       treeNodeId:node.id,
+       level,
+       subarray:[...values],
+       treeAction:values.length<=1?"Base Case":"Split",
+       line:1,
+       text:`ระดับ ${level}: แสดงและแบ่งข้อมูล [${values.join(", ")}]`,
+       comparisons:c,
+       swaps:w
+     });
+
+     if(values.length<=1){
+       node.done=true;
+       return [...values];
      }
-     merged.push(...left,...right);
-     for(let i=0;i<merged.length;i++){arr[l+i]=merged[i];w++}
-     s.steps.push({data:[...arr],sorted:[...Array(r-l).keys()].map(x=>x+l),line:4,text:`Merge ช่วง ${l}-${r-1}`,comparisons:c,swaps:w});
+
+     const mid=Math.floor(values.length/2);
+     const left=mergeSortVisual(values.slice(0,mid),level+1,node.children);
+     const right=mergeSortVisual(values.slice(mid),level+1,node.children);
+
+     const merged=[];
+     let i=0,j=0;
+     while(i<left.length && j<right.length){
+       c++;
+       if((ascending && left[i]<=right[j]) || (!ascending && left[i]>=right[j])){
+         merged.push(left[i++]);
+       }else{
+         merged.push(right[j++]);
+       }
+     }
+     merged.push(...left.slice(i),...right.slice(j));
+
+     node.values=[...merged];
+     node.action="Merge";
+     node.done=true;
+     w+=merged.length;
+
+     s.steps.push({
+       data:[...arr],
+       recursionTree:cloneRecursionTree(rootNodes),
+       treeNodeId:node.id,
+       level,
+       subarray:[...merged],
+       treeAction:`Merge [${left.join(", ")}] + [${right.join(", ")}]`,
+       line:4,
+       text:`Merge เป็น [${merged.join(", ")}]`,
+       comparisons:c,
+       swaps:w
+     });
+
+     return merged;
    }
-   mergeSort(0,arr.length);
+
+   arr=mergeSortVisual([...arr]);
+   s.recursionTree=[];
+
+   s.steps.push({
+     data:[...arr],
+     recursionTree:cloneRecursionTree(rootNodes),
+     treeNodeId:rootNodes[0]?.id,
+     level:0,
+     subarray:[...arr],
+     treeAction:"Complete",
+     sorted:[...Array(arr.length).keys()],
+     line:5,
+     text:"Merge Sort เสร็จสิ้น",
+     comparisons:c,
+     swaps:w
+   });
  }
 
  if(cfg.algorithm==="quick"){
-   function qs(l,r){
-     if(l>=r)return;
-     const pivot=arr[r];
-     let i=l;
+   let nodeCounter=0;
+   const rootNodes=[];
 
-     s.steps.push({data:[...arr],pivot:r,line:1,text:`เลือก pivot = ${pivot}`,comparisons:c,swaps:w});
+   function quickVisual(values,level=0,parentList=rootNodes){
+     if(values.length===0)return [];
 
-     for(let j=l;j<r;j++){
-       c++;
-       s.steps.push({data:[...arr],compare:[j,r],pivot:r,line:3,text:`เปรียบเทียบ ${arr[j]} กับ pivot`,comparisons:c,swaps:w});
+     const pivot=values[values.length-1];
+     const node={
+       id:`quick-${nodeCounter++}`,
+       values:[...values],
+       level,
+       pivot,
+       done:false,
+       children:[]
+     };
+     parentList.push(node);
 
-       const belongsLeft=ascending ? arr[j]<pivot : arr[j]>pivot;
-       if(belongsLeft){
-         [arr[i],arr[j]]=[arr[j],arr[i]];
-         w++;
-         i++;
-       }
+     s.steps.push({
+       data:[...arr],
+       recursionTree:cloneRecursionTree(rootNodes),
+       treeNodeId:node.id,
+       level,
+       subarray:[...values],
+       pivotValue:pivot,
+       pivot:values.length-1,
+       line:1,
+       text:`ระดับ ${level}: แสดงชุดข้อมูล [${values.join(", ")}] และเลือก pivot = ${pivot}`,
+       comparisons:c,
+       swaps:w
+     });
+
+     if(values.length<=1){
+       node.done=true;
+       return [...values];
      }
 
-     [arr[i],arr[r]]=[arr[r],arr[i]];
-     w++;
+     const left=[],right=[];
+     for(let i=0;i<values.length-1;i++){
+       c++;
+       const goLeft=ascending ? values[i] < pivot : values[i] > pivot;
+       (goLeft?left:right).push(values[i]);
+     }
 
-     s.steps.push({data:[...arr],pivot:i,sorted:[i],line:4,text:`วาง pivot ที่ index ${i}`,comparisons:c,swaps:w});
-     qs(l,i-1);qs(i+1,r);
+     node.children=[];
+     s.steps.push({
+       data:[...arr],
+       recursionTree:cloneRecursionTree(rootNodes),
+       treeNodeId:node.id,
+       level,
+       subarray:[...values],
+       pivotValue:pivot,
+       treeAction:`Left [${left.join(", ")}] | Right [${right.join(", ")}]`,
+       line:3,
+       text:`Partition ด้วย pivot ${pivot}`,
+       comparisons:c,
+       swaps:w
+     });
+
+     const sortedLeft=quickVisual(left,level+1,node.children);
+     const sortedRight=quickVisual(right,level+1,node.children);
+     const result=[...sortedLeft,pivot,...sortedRight];
+
+     node.values=[...result];
+     node.done=true;
+
+     s.steps.push({
+       data:[...arr],
+       recursionTree:cloneRecursionTree(rootNodes),
+       treeNodeId:node.id,
+       level,
+       subarray:[...result],
+       pivotValue:pivot,
+       treeAction:"Combine",
+       line:4,
+       text:`รวมผลเป็น [${result.join(", ")}]`,
+       comparisons:c,
+       swaps:w
+     });
+
+     return result;
    }
-   qs(0,arr.length-1);
+
+   arr=quickVisual([...arr]);
+   s.recursionTree=[];
+
+   s.steps.push({
+     data:[...arr],
+     recursionTree:cloneRecursionTree(rootNodes),
+     treeNodeId:rootNodes[0]?.id,
+     level:0,
+     subarray:[...arr],
+     pivotValue:rootNodes[0]?.pivot,
+     treeAction:"Complete",
+     sorted:[...Array(arr.length).keys()],
+     line:5,
+     text:"Quick Sort เสร็จสิ้น",
+     comparisons:c,
+     swaps:w
+   });
  }
 
 
@@ -2193,10 +3634,12 @@ function prepareSorting(id){
      }
 
      if(largest!==i){
+       const swapA=i,swapB=largest;
        [arr[i],arr[largest]]=[arr[largest],arr[i]];
        w++;
        s.steps.push({
          data:[...arr],
+         swap:[swapA,swapB],
          compare:[i,largest],
          active:largest,
          line:3,
@@ -2232,10 +3675,12 @@ function prepareSorting(id){
    });
 
    for(let end=arr.length-1;end>0;end--){
+     const swapA=0,swapB=end;
      [arr[0],arr[end]]=[arr[end],arr[0]];
      w++;
      s.steps.push({
        data:[...arr],
+       swap:[swapA,swapB],
        sorted:[...Array(arr.length-end).keys()].map(x=>end+x),
        compare:[0,end],
        line:4,
@@ -2582,6 +4027,39 @@ function arrangeHeapSortControls(){
 
 build();
 arrangeHeapSortControls();
+renderSortingTabs("selection");
+
+
+
+
+
+
+
+function syncBSTTraversalSummary(){
+ const mode=$("bstTraversal")?.value||"inorder";
+ const s=states.bst;
+ let values=[];
+
+ if(Array.isArray(s?.traversalResult)){
+   values=s.traversalResult;
+ }else if(Array.isArray(s?.result)){
+   values=s.result;
+ }else if(Array.isArray(s?.steps)){
+   values=s.steps
+    .map(step=>step?.visitValue ?? step?.value ?? step?.nodeValue)
+    .filter(v=>v!==undefined && v!==null);
+   values=[...new Set(values)];
+ }
+
+ renderTraversalSummary(mode,values);
+}
+
+document.addEventListener("change",e=>{
+ if(e.target?.id==="bstTraversal"){
+   renderTraversalSummary(e.target.value,[]);
+ }
+});
+
 </script>
 </body>
 </html>
