@@ -145,7 +145,12 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 .link-arrow.removing{color:#c62828;font-weight:900;text-decoration:line-through}
 @keyframes linkPulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
 
-.dll-link-wrap{display:flex;flex-direction:column;gap:2px;align-items:center;min-width:58px}
+
+/* DLL connector order:
+   top = previous (blue, ←)
+   bottom = next (orange, →) */
+
+.dll-link-wrap{display:flex;flex-direction:column;gap:2px;align-items:center;min-width:58px;transform:translateY(10px)}
 .dll-next{color:#ef6c00;font-weight:900;font-size:28px;line-height:1}
 .dll-prev{color:#1565c0;font-weight:900;font-size:28px;line-height:1}
 .dll-next.creating,.dll-prev.creating{animation:linkPulse .7s ease infinite}
@@ -722,6 +727,962 @@ aside .topic-popup-btn.active{
 @media(max-width:900px){
   .recursion-tree-meta{grid-template-columns:1fr}
 }
+
+/* v33 Quick Sort L/R pointer visualization */
+.quick-pointer-row{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:8px;
+  min-height:42px;
+  margin-bottom:4px;
+}
+.quick-pointer-track{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+}
+.quick-pointer-label{
+  position:absolute;
+  top:-34px;
+  min-width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  color:#fff;
+  font-weight:900;
+  font-size:13px;
+  box-shadow:0 5px 12px rgba(0,0,0,.18);
+}
+.quick-pointer-label::after{
+  content:"↓";
+  position:absolute;
+  top:22px;
+  color:inherit;
+  font-size:18px;
+}
+.quick-pointer-label.left{
+  background:#1565c0;
+}
+.quick-pointer-label.right{
+  background:#ef6c00;
+}
+.quick-compare-note{
+  margin:8px 0 12px;
+  padding:10px 12px;
+  border-radius:9px;
+  background:#fff8e1;
+  color:#6d4c41;
+  font-weight:800;
+  text-align:center;
+}
+.sort-cell.quick-left{
+  border-color:#1565c0!important;
+  box-shadow:0 0 0 4px rgba(21,101,192,.14);
+}
+.sort-cell.quick-right{
+  border-color:#ef6c00!important;
+  box-shadow:0 0 0 4px rgba(239,108,0,.14);
+}
+
+/* v34 Singly Linked List staged insert */
+#sllVisual .head-pointer{
+  transition:transform .55s cubic-bezier(.22,.75,.24,1);
+  will-change:transform;
+}
+#sllVisual .sll-caption{
+  width:100%;
+  margin:0 0 12px;
+  padding:9px 12px;
+  border-radius:9px;
+  background:#e3f2fd;
+  color:#0d47a1;
+  font-weight:800;
+}
+#sllVisual .link-arrow.pending{
+  opacity:.25;
+}
+#sllVisual .link-arrow.creating{
+  color:#ef6c00;
+  transform:scale(1.18);
+  font-weight:900;
+}
+
+/* v35 Singly Linked List node structure and curved links */
+#sllVisual .linked-stage{
+  position:relative;
+  align-items:flex-start;
+  padding-top:72px;
+  padding-bottom:76px;
+}
+#sllVisual .node-block{
+  position:relative;
+  display:flex;
+  align-items:center;
+  min-width:142px;
+}
+#sllVisual .node{
+  display:grid;
+  grid-template-columns:minmax(64px,1fr) 48px;
+  min-width:112px;
+  padding:0;
+  overflow:hidden;
+}
+#sllVisual .sll-data-part,
+#sllVisual .sll-next-part{
+  min-height:58px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+#sllVisual .sll-data-part{
+  border-right:2px solid currentColor;
+}
+#sllVisual .sll-part-label{
+  font-size:10px;
+  font-weight:700;
+  opacity:.7;
+}
+#sllVisual .sll-data-value{
+  margin-top:3px;
+  font-size:19px;
+  font-weight:900;
+}
+#sllVisual .sll-next-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:currentColor;
+}
+
+#sllVisual .sll-null{
+  display:flex;
+  align-items:center;
+  height:58px;
+  margin-left:8px;
+  font-weight:900;
+  color:#78909c;
+}
+@keyframes sllDrawCurve{
+  from{clip-path:inset(0 100% 0 0)}
+  to{clip-path:inset(0 0 0 0)}
+}
+#sllVisual .sll-pointer{
+  position:absolute;
+  top:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:68px;
+  font-weight:900;
+  transition:left .5s cubic-bezier(.22,.75,.24,1);
+  z-index:30;
+}
+#sllVisual .sll-pointer::after{
+  content:"↓";
+  font-size:22px;
+  line-height:1;
+}
+#sllVisual .sll-pointer.current{color:#1565c0}
+#sllVisual .sll-pointer.del{color:#c62828;top:42px}
+#sllVisual .sll-item-panel{
+  position:absolute;
+  right:12px;
+  bottom:8px;
+  padding:9px 13px;
+  border:2px solid #7b1fa2;
+  border-radius:10px;
+  background:#f3e5f5;
+  color:#7b1fa2;
+  font-weight:900;
+}
+#sllVisual .sll-bypass{
+  position:absolute;
+  top:106px;
+  height:58px;
+  border-top:4px dashed #2e7d32;
+  border-radius:50%;
+  pointer-events:none;
+}
+#sllVisual .sll-bypass::after{
+  content:"";
+  position:absolute;
+  right:-4px;
+  top:-8px;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:11px solid #2e7d32;
+}
+
+/* v36 Singly Linked List straight links and aligned pointers */
+
+#sllVisual .sll-pointer{
+  top:10px;
+  width:112px;
+  min-width:112px;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+#sllVisual .sll-pointer.current{
+  top:12px;
+}
+#sllVisual .sll-pointer.del{
+  top:42px;
+}
+#sllVisual .sll-pointer::after{
+  margin-top:1px;
+}
+#sllVisual .linked-stage{
+  padding-top:92px;
+}
+
+/* v37 definitive SLL straight link and exact pointer alignment */
+#sllVisual .sll-link{
+  position:relative;
+  width:42px;
+  height:58px;
+  flex:0 0 42px;
+  margin:0;
+}
+#sllVisual .sll-link::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:32px;
+  border-top:3px solid #ef6c00;
+  transform:translateY(-50%);
+}
+#sllVisual .sll-link::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:10px solid #ef6c00;
+}
+#sllVisual .sll-link.creating::before{
+  animation:sllStraightDraw .55s ease both;
+}
+#sllVisual .sll-link.removing{
+  opacity:.22;
+}
+#sllVisual .sll-link.pending{
+  opacity:.18;
+}
+@keyframes sllStraightDraw{
+  from{width:0}
+  to{width:32px}
+}
+#sllVisual .sll-pointer{
+  position:absolute;
+  width:112px;
+  min-width:112px;
+  transform:translateX(-50%);
+  text-align:center;
+}
+#sllVisual .sll-pointer.current{
+  top:10px;
+}
+#sllVisual .sll-pointer.del{
+  top:42px;
+}
+
+/* v38 SLL grouped operation menu and newNode pointer */
+.sll-operation-groups{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(220px,1fr));
+  gap:12px;
+  margin-top:8px;
+}
+.sll-operation-group{
+  border:1px solid #dfe7e3;
+  border-radius:12px;
+  padding:10px;
+  background:#fbfdfc;
+}
+.sll-operation-group-title{
+  display:block;
+  margin-bottom:8px;
+  font-weight:900;
+  color:#2e7d32;
+}
+.sll-operation-group .action{
+  margin:3px;
+}
+#sllVisual .sll-pointer.newnode{
+  top:68px;
+  color:#7b1fa2;
+}
+@media(max-width:900px){
+  .sll-operation-groups{grid-template-columns:1fr}
+}
+
+/* v39 SLL visual cleanup and exact vertical pointers */
+#sllVisual .sll-caption{
+  display:none!important;
+}
+#sllVisual .head-pointer.sll-head-vertical{
+  position:absolute;
+  top:8px;
+  width:112px;
+  min-width:112px;
+  transform:translateX(-50%)!important;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  color:#2e7d32;
+  font-weight:900;
+  z-index:40;
+}
+#sllVisual .head-pointer.sll-head-vertical .head-arrow{
+  margin:0;
+  font-size:24px;
+  line-height:1;
+}
+#sllVisual .head-pointer.sll-head-empty{
+  position:relative;
+}
+#sllVisual .sll-pointer.newnode{
+  position:absolute;
+  top:38px;
+  width:112px;
+  min-width:112px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#7b1fa2;
+  font-weight:900;
+  z-index:45;
+}
+#sllVisual .sll-pointer.newnode::after{
+  content:"↓";
+  display:block;
+  margin-top:1px;
+  font-size:22px;
+  line-height:1;
+}
+#sllVisual .linked-stage{
+  padding-top:104px;
+}
+
+/* v40 SLL left-aligned first node */
+#sllVisual .linked-stage{
+  justify-content:flex-start!important;
+  align-items:flex-start;
+  padding-left:24px;
+  overflow-x:auto;
+}
+
+.selected-function-badge{
+  margin:10px 0;
+  padding:8px 12px;
+  border-radius:9px;
+  background:#eef7f0;
+  color:#2e7d32;
+  font-weight:700;
+}
+
+/* v44 SLL visual alignment refinements */
+#sllVisual .node-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+#sllVisual .sll-node-label-bottom{
+  margin-top:7px;
+  margin-bottom:0;
+  order:2;
+  font-size:12px;
+  font-weight:800;
+  color:#607d8b;
+}
+#sllVisual .head-pointer.sll-head-vertical{
+  top:28px!important;
+}
+#sllVisual .head-pointer.sll-head-vertical .head-arrow{
+  margin-top:-2px;
+}
+#sllVisual .sll-pointer.current{
+  top:42px!important;
+}
+#sllVisual .sll-pointer.del{
+  top:42px!important;
+}
+#sllVisual .sll-pointer.current::after,
+#sllVisual .sll-pointer.del::after{
+  margin-top:-1px;
+}
+#sllVisual .linked-stage{
+  padding-top:112px!important;
+}
+#sllVisual .sll-bypass{
+  position:absolute;
+  top:148px!important;
+  height:54px;
+  border-top:4px dashed #2e7d32;
+  border-radius:50% 50% 0 0;
+  pointer-events:none;
+  overflow:visible;
+}
+#sllVisual .sll-bypass::after{
+  content:none!important;
+}
+#sllVisual .sll-bypass-arrow{
+  position:absolute;
+  right:-1px;
+  top:-8px;
+  width:0;
+  height:0;
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  border-left:12px solid #2e7d32;
+  transform:translateX(50%);
+}
+
+/* v45 final SLL pointer/link geometry */
+#sllVisual .sll-part-label{
+  display:none!important;
+}
+#sllVisual .sll-data-part,
+#sllVisual .sll-next-part{
+  padding-top:0!important;
+}
+#sllVisual .sll-next-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#111;
+  display:block;
+}
+#sllVisual .sll-link{
+  position:relative;
+  width:42px;
+  height:58px;
+  flex:0 0 42px;
+  margin:0;
+  overflow:visible;
+}
+#sllVisual .sll-link::before{
+  content:"";
+  position:absolute;
+  left:-24px;
+  top:29px;
+  width:56px;
+  border-top:3px solid #111;
+  transform:none;
+}
+#sllVisual .sll-link::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:22px;
+  transform:none;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:10px solid #111;
+}
+#sllVisual .sll-link.creating::before{
+  animation:sllStraightDrawV45 .55s ease both;
+}
+@keyframes sllStraightDrawV45{
+  from{width:0}
+  to{width:56px}
+}
+#sllVisual .sll-bypass{
+  position:absolute;
+  top:156px!important;
+  height:0!important;
+  border:0!important;
+  border-top:4px dashed #2e7d32!important;
+  border-radius:0!important;
+  overflow:visible;
+}
+#sllVisual .sll-bypass-arrow{
+  position:absolute;
+  right:-2px;
+  top:-10px;
+  width:0;
+  height:0;
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  border-left:12px solid #2e7d32;
+  transform:none;
+}
+#sllVisual .head-pointer.sll-head-vertical{
+  top:38px!important;
+}
+#sllVisual .sll-pointer.current{
+  top:50px!important;
+}
+#sllVisual .sll-pointer.del{
+  top:50px!important;
+}
+#sllVisual .sll-pointer.current::after,
+#sllVisual .sll-pointer.del::after{
+  margin-top:0!important;
+}
+#sllVisual .sll-node-label-bottom{
+  display:block!important;
+  order:2;
+  margin-top:8px!important;
+}
+#sllVisual .linked-stage{
+  padding-top:118px!important;
+}
+
+/* v47 SLL next pointer starts at black dot center */
+#sllVisual .sll-next-part{
+  position:relative;
+  overflow:visible;
+}
+#sllVisual .sll-next-dot{
+  position:relative;
+  z-index:3;
+}
+#sllVisual .sll-link{
+  position:relative;
+  width:40px;
+  height:58px;
+  flex:0 0 40px;
+  margin:0;
+  overflow:visible;
+}
+
+/* ลูกศร next เป็นชิ้นเดียว: ก้านและหัวลูกศรอยู่ใน shape เดียวกัน */
+#sllVisual .sll-link::before{
+  content:"";
+  position:absolute;
+  left:-30px;
+  top:7px;
+  width:65px;
+  height:18px;
+  background:#f57c00;
+  clip-path:polygon(
+    0 42%,
+    78% 42%,
+    78% 8%,
+    100% 50%,
+    78% 92%,
+    78% 58%,
+    0 58%
+  );
+  transform-origin:left center;
+}
+
+/* ไม่ใช้หัวลูกศรแยกอีกต่อไป */
+#sllVisual .sll-link::after{
+  content:none;
+}
+
+#sllVisual .sll-link.creating::before{
+  animation:sllSingleArrowDrawV53 .55s ease both;
+}
+
+@keyframes sllSingleArrowDrawV53{
+  from{
+    transform:scaleX(0);
+    opacity:.25;
+  }
+  to{
+    transform:scaleX(1);
+    opacity:1;
+  }
+}
+
+/* v55: move SLL current and del pointers right by 30px */
+#sllVisual .sll-pointer.current,
+#sllVisual .sll-pointer.del{
+  transform:translateX(30px);
+}
+
+
+/* v56: requested SLL pointer refinements */
+#sllVisual .sll-pointer.newnode{
+  transform:translateX(30px);
+}
+
+
+/* v59: SLL setposition comparison and print_list output panels */
+#sllVisual .sll-compare-panel,
+#sllVisual .sll-result-panel{
+  position:absolute;
+  top:12px;
+  right:18px;
+  z-index:30;
+  min-width:230px;
+  max-width:420px;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:800;
+  box-shadow:0 8px 20px rgba(0,0,0,.14);
+}
+#sllVisual .sll-compare-panel{
+  background:#fff3e0;
+  border:2px solid #fb8c00;
+  color:#8a4200;
+}
+#sllVisual .sll-result-panel{
+  background:#e8f5e9;
+  border:2px solid #43a047;
+  color:#1b5e20;
+  white-space:normal;
+}
+
+
+.cell.moving-source{
+  outline:3px solid #ff9800;
+  transform:translateY(-8px);
+  transition:transform .3s ease, outline .3s ease;
+}
+.cell.moving-target{
+  outline:3px dashed #2e7d32;
+  transform:translateX(8px);
+  transition:transform .3s ease, outline .3s ease;
+}
+
+
+.cell.moving-left-source{
+  outline:3px solid #d84315;
+  transform:translateX(-8px);
+  transition:transform .3s ease, outline .3s ease;
+}
+.cell.moving-left-target{
+  outline:3px dashed #1565c0;
+  transform:translateX(-8px);
+  transition:transform .3s ease, outline .3s ease;
+}
+
+
+.array-output-panel{
+  margin-top:14px;
+  padding:14px 16px;
+  border:2px solid #90caf9;
+  border-radius:12px;
+  background:#f7fbff;
+  box-shadow:0 3px 10px rgba(25,118,210,.08);
+}
+.array-output-title{
+  font-weight:800;
+  color:#1565c0;
+  margin-bottom:8px;
+}
+.array-output-name{
+  display:inline-block;
+  padding:3px 9px;
+  margin-bottom:8px;
+  border-radius:999px;
+  background:#e3f2fd;
+  color:#0d47a1;
+  font-weight:800;
+}
+.array-output-value{
+  min-height:34px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#fff;
+  border:1px dashed #64b5f6;
+  color:#263238;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+
+.array-compare-panel{
+  margin-top:14px;
+  padding:14px 16px;
+  border:2px solid #ffcc80;
+  border-radius:12px;
+  background:#fffaf3;
+  box-shadow:0 3px 10px rgba(239,108,0,.08);
+}
+.array-compare-title{
+  font-weight:800;
+  color:#e65100;
+  margin-bottom:10px;
+}
+.array-compare-grid{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:12px;
+  align-items:center;
+  text-align:center;
+}
+.array-compare-box{
+  padding:10px;
+  border-radius:9px;
+  background:#fff;
+  border:1px solid #ffcc80;
+}
+.array-compare-label{
+  display:block;
+  font-size:.82rem;
+  color:#6d4c41;
+  margin-bottom:4px;
+}
+.array-compare-value{
+  font-size:1.2rem;
+  font-weight:800;
+  color:#263238;
+}
+.array-compare-op{
+  font-size:1.35rem;
+  font-weight:900;
+  color:#ef6c00;
+}
+.array-compare-result{
+  margin-top:10px;
+  padding:8px 10px;
+  border-radius:8px;
+  font-weight:800;
+  text-align:center;
+}
+.array-compare-result.true{background:#e8f5e9;color:#1b5e20}
+.array-compare-result.false{background:#ffebee;color:#b71c1c}
+
+
+.dll-stage{
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+  min-height:180px;
+  padding:78px 12px 24px 12px;
+}
+.dll-stage .node-block{
+  align-items:center;
+}
+.dll-stage .node-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.dll-stage .dll-node-label-bottom{
+  margin-top:8px;
+  margin-bottom:0;
+  font-size:12px;
+  font-weight:700;
+  color:#455a64;
+}
+.dll-head-vertical{
+  position:absolute;
+  top:8px;
+  left:56px;
+  width:112px;
+  min-width:112px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  color:#2e7d32;
+  font-weight:900;
+  z-index:40;
+}
+.dll-head-vertical .head-arrow{
+  margin-top:-2px;
+  font-size:24px;
+  line-height:1;
+}
+
+
+.dll-vertical-node{
+  display:flex;
+  flex-direction:column;
+  width:112px;
+  min-width:112px;
+  padding:0;
+  overflow:hidden;
+}
+.dll-node-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  padding:6px 8px;
+  border-bottom:1px solid #b0bec5;
+  text-align:center;
+}
+.dll-node-row:last-child{
+  border-bottom:none;
+}
+.dll-node-row.data{
+  min-height:44px;
+  font-weight:900;
+  font-size:1.15rem;
+}
+.dll-node-row.pointer{
+  gap:6px;
+  font-size:.82rem;
+  color:#455a64;
+}
+.dll-pointer-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#263238;
+  display:inline-block;
+  flex:0 0 auto;
+}
+
+
+.dll-stage .dll-link-wrap{
+  align-self:center;
+  margin-top:-8px;
+}
+
+
+.dll-newnode-pointer{
+  position:absolute;
+  top:8px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:#7b1fa2;
+  font-weight:900;
+  z-index:45;
+  pointer-events:none;
+}
+.dll-newnode-pointer .pointer-arrow{
+  font-size:22px;
+  line-height:1;
+}
+.dll-pointer-detail{
+  width:100%;
+  margin-top:14px;
+  padding:12px 14px;
+  border:2px solid #ce93d8;
+  border-radius:10px;
+  background:#fcf7ff;
+  color:#4a148c;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:pre-wrap;
+}
+.dll-node-row.pointer.highlight-pointer{
+  background:#fff3e0;
+  color:#e65100;
+  font-weight:800;
+}
+
+
+.dll-start-pointer{
+  position:absolute;
+  top:8px;
+  left:56px;
+  width:112px;
+  min-width:112px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#2e7d32;
+  font-weight:900;
+  z-index:40;
+}
+.dll-tail-pointer{
+  position:absolute;
+  top:8px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#c62828;
+  font-weight:900;
+  z-index:40;
+}
+.dll-tail-pointer .tail-arrow,
+.dll-start-pointer .start-arrow{
+  margin-top:-2px;
+  font-size:24px;
+  line-height:1;
+}
+.dll-empty-pointers{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  font-weight:900;
+}
+
+
+.dll-current-pointer,
+.dll-del-pointer{
+  position:absolute;
+  top:8px;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-weight:900;
+  z-index:46;
+  pointer-events:none;
+}
+.dll-current-pointer{color:#1565c0}
+.dll-del-pointer{color:#c62828}
+.dll-current-pointer .pointer-arrow,
+.dll-del-pointer .pointer-arrow{
+  font-size:22px;
+  line-height:1;
+}
+
+
+.dll-p-pointer,
+.dll-previous-node-pointer,
+.dll-next-node-pointer{
+  position:absolute;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-weight:900;
+  z-index:47;
+  pointer-events:none;
+}
+.dll-p-pointer{
+  top:8px;
+  color:#6a1b9a;
+}
+.dll-previous-node-pointer{
+  top:8px;
+  color:#00695c;
+}
+.dll-next-node-pointer{
+  top:8px;
+  color:#ad1457;
+}
+.dll-p-pointer .pointer-arrow,
+.dll-previous-node-pointer .pointer-arrow,
+.dll-next-node-pointer .pointer-arrow{
+  font-size:22px;
+  line-height:1;
+}
+
+
+/* v96: align DLL algorithm pointers with start */
+.dll-p-pointer,
+.dll-previous-node-pointer,
+.dll-newnode-pointer,
+.dll-next-node-pointer{
+  top:8px !important;
+}
+
 </style>
 </head>
 <body>
@@ -750,9 +1711,9 @@ const configs=[
  {id:"physicalq",title:"Physical Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
  {id:"linearq",title:"Linear Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
  {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
- {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","append","insert","delete","delete_index","delete_item","isFull","isEmpty","size","index_of","print_list"]},
- {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","append","insert","delete","delete_index","delete_item","isEmpty","size","index_of","print_list"]},
- {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","append","insert","delete","delete_index","delete_item","isEmpty","size","index_of","print_list","print_backward"]},
+ {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","add_item","add_index","delete","delete_index","delete_item","isFull","isEmpty","size","get_index","get_item","print_list"]},
+ {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_last","insert_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_list"]},
+ {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","add_first","add_last","add_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_dll","print_backward"]},
  {id:"bst",title:"BST",kind:"nonlinear",structure:"bst"},
  {id:"heap",title:"Heap Tree",kind:"nonlinear",structure:"heap"},
  {id:"hash",title:"Hash Table",kind:"nonlinear",structure:"hash"},
@@ -776,7 +1737,9 @@ const configs=[
 const states={};
 
 function makeState(id){
- return {id,data:[],capacity:6,front:-1,rear:-1,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1};
+ const defaultData=(id==="sll"||id==="dll"||id==="arraylist")?[10,20,30,40]:[];
+ const defaultCapacity=id==="arraylist"?5:6;
+ return {id,data:[...defaultData],capacity:defaultCapacity,front:-1,rear:-1,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1};
 }
 function val(id){const raw=$(id+"Data").value.trim();const n=Number(raw);return Number.isNaN(n)?raw:n}
 function idx(id){return Number($(id+"Index").value)}
@@ -790,66 +1753,179 @@ function updateInfo(id){
  if($(id+"Pointer")){
    if(id==="stack")$(id+"Pointer").textContent=`top = ${s.top}`;
    else if(["physicalq","linearq","circularq"].includes(id))$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}`;
+   else if(id==="dll")$(id+"Pointer").textContent=`start = ${size?"node 1":"None"}, tail = ${size?`node ${size}`:"None"}, size = ${size} | Engine V2`;
    else $(id+"Pointer").textContent="-";
  }
 }
+function escapeHTML(value){
+ return String(value??"")
+   .replace(/&/g,"&amp;")
+   .replace(/</g,"&lt;")
+   .replace(/>/g,"&gt;")
+   .replace(/"/g,"&quot;")
+   .replace(/'/g,"&#039;");
+}
+
 function arrayHTML(a,o={}){
  return '<div class="array">'+a.map((v,i)=>{
    let c="cell"+(v===null?" empty":"");
    if(o.front===i)c+=" front";if(o.rear===i)c+=" rear";if(o.top===i)c+=" top";
+   if(o.active===i)c+=" active";
+   if(o.movingFrom===i)c+=" moving-source";
+   if(o.movingTo===i)c+=" moving-target";
+   if(o.movingLeftFrom===i)c+=" moving-left-source";
+   if(o.movingLeftTo===i)c+=" moving-left-target";
    const p=[];if(o.front===i)p.push("front");if(o.rear===i)p.push("rear");if(o.top===i)p.push("top");
    return `<div class="${c}"><span class="idx">index ${i}</span>${v===null?"ว่าง":v}${p.length?`<span class="ptr">${p.join(" / ")}</span>`:""}</div>`;
  }).join("")+"</div>";
 }
 function linkedHTML(a,double=false,o={}){
+ const headIndex=!double ? (o.headIndex ?? 0) : 0;
+ const headStyle=!double && a.length ? ` style="left:calc(${Math.max(0,headIndex)} * 154px + 56px)"` : "";
  const head=a.length
-   ? `<div class="head-pointer"><span>head</span><span class="head-arrow">→</span></div>`
-   : `<div class="head-pointer"><span>head</span><span class="head-arrow">→</span><strong>NULL</strong></div>`;
+   ? `<div class="head-pointer sll-head-vertical"${headStyle}><span>head</span><span class="head-arrow">↓</span></div>`
+   : `<div class="head-pointer sll-head-empty"><span>head</span><span class="head-arrow">→</span><strong>NULL</strong></div>`;
+ const caption="";
 
- if(!a.length)return `<div class="linked-stage">${head}</div>`;
+ if(!a.length)return double?`<div class="dll-stage">${head}</div>`:`<div class="linked-stage">${head}</div>`;
 
- return `<div class="linked-stage">${head}`+a.map((v,i)=>{
+ if(!double){
+   const currentPointer=Number.isInteger(o.currentIndex) && o.currentIndex>=0
+     ? `<div class="sll-pointer current" style="left:calc(${o.currentIndex} * 154px + 68px)">current</div>`
+     : "";
+   const delPointer=Number.isInteger(o.delIndex) && o.delIndex>=0
+     ? `<div class="sll-pointer del" style="left:calc(${o.delIndex} * 154px + 68px)">del</div>`
+     : "";
+   const newNodePointer=Number.isInteger(o.newNodeIndex) && o.newNodeIndex>=0
+     ? `<div class="sll-pointer newnode" style="left:calc(${o.newNodeIndex} * 154px + 56px)">newNode</div>`
+     : "";
+   const itemPanel=o.itemValue!==undefined
+     ? `<div class="sll-item-panel">item = ${o.itemValue}</div>`
+     : "";
+   const comparePanel=o.compareValue!==undefined
+     ? `<div class="sll-compare-panel">${o.compareValue}</div>`
+     : "";
+   const resultPanel=o.resultValue!==undefined
+     ? `<div class="sll-result-panel">${o.resultValue}</div>`
+     : "";
+   const bypass=Number.isInteger(o.bypassFrom) && Number.isInteger(o.bypassTo) && o.bypassTo>o.bypassFrom
+     ? `<div class="sll-bypass" style="left:calc(${o.bypassFrom} * 154px + 92px);width:calc((${o.bypassTo-o.bypassFrom}) * 154px - 18px)"><span class="sll-bypass-arrow"></span></div>`
+     : "";
+
+   const nodes=a.map((v,i)=>{
+     let cls="node";
+     if(o.active===i)cls+=" active-node";
+     if(o.newIndex===i)cls+=" new-node";
+     if(o.deleteIndex===i)cls+=" delete-node";
+
+     const connector=i<a.length-1
+       ? `<span class="sll-link ${o.linkCreating===i?"creating":""} ${o.linkRemoving===i?"removing":""} ${o.linkPending===i?"pending":""}"></span>`
+       : `<span class="sll-null">NULL</span>`;
+
+     return `<div class="node-block">
+       <div class="node-col">
+         <div class="${cls}">
+           <div class="sll-data-part">
+             <span class="sll-data-value">${v}</span>
+           </div>
+           <div class="sll-next-part">
+             <span class="sll-next-dot"></span>
+           </div>
+         </div>
+         <div class="node-label sll-node-label-bottom">node ${i}</div>
+       </div>
+       ${connector}
+     </div>`;
+   }).join("");
+
+   return `<div class="linked-stage">${head}${currentPointer}${delPointer}${newNodePointer}${bypass}${itemPanel}${comparePanel}${resultPanel}${nodes}</div>`;
+ }
+
+ const dllStart=a.length
+   ? `<div class="dll-start-pointer"><span>start</span><span class="start-arrow">↓</span></div>`
+   : `<div class="head-pointer sll-head-empty dll-empty-pointers"><span>start → NULL</span><span>tail → NULL</span></div>`;
+ const dllTailIndex=Number.isInteger(o.tailIndex) && o.tailIndex>=0
+   ? o.tailIndex
+   : a.length-1;
+ const dllTail=a.length && dllTailIndex>=0
+   ? `<div class="dll-tail-pointer" style="left:calc(${dllTailIndex} * 192px + 68px)">
+        <span>tail</span><span class="tail-arrow">↓</span>
+      </div>`
+   : "";
+ const dllNewNodePointer=Number.isInteger(o.newNodeIndex) && o.newNodeIndex>=0
+   ? `<div class="dll-newnode-pointer" style="left:calc(${o.newNodeIndex} * 192px + 68px)">
+        <span>newNode</span><span class="pointer-arrow">↓</span>
+      </div>`
+   : "";
+ const dllCurrentPointer=Number.isInteger(o.currentIndex) && o.currentIndex>=0
+   ? `<div class="dll-current-pointer" style="left:calc(${o.currentIndex} * 192px + 68px)">
+        <span>current</span><span class="pointer-arrow">↓</span>
+      </div>`
+   : "";
+ const dllDelPointer=Number.isInteger(o.delIndex) && o.delIndex>=0
+   ? `<div class="dll-del-pointer" style="left:calc(${o.delIndex} * 192px + 68px)">
+        <span>delnode</span><span class="pointer-arrow">↓</span>
+      </div>`
+   : "";
+ const dllPPointer=Number.isInteger(o.pIndex) && o.pIndex>=0
+   ? `<div class="dll-p-pointer" style="left:calc(${o.pIndex} * 192px + 68px)">
+        <span>p</span><span class="pointer-arrow">↓</span>
+      </div>`
+   : "";
+ const dllPreviousNodePointer=Number.isInteger(o.previousNodeIndex) && o.previousNodeIndex>=0
+   ? `<div class="dll-previous-node-pointer" style="left:calc(${o.previousNodeIndex} * 192px + 68px)">
+        <span>previousNode</span><span class="pointer-arrow">↓</span>
+      </div>`
+   : "";
+ const dllNextNodePointer=Number.isInteger(o.nextNodeIndex) && o.nextNodeIndex>=0
+   ? `<div class="dll-next-node-pointer" style="left:calc(${o.nextNodeIndex} * 192px + 68px)">
+        <span>nextNode</span><span class="pointer-arrow">↓</span>
+      </div>`
+   : "";
+ const dllFloatingNewNode=o.floatingNewNode
+   ? `<div class="dll-pointer-detail" style="border-style:dashed">
+        newNode(data=${escapeHTML(o.floatingNewNodeValue)})
+      </div>`
+   : "";
+ const dllPointerDetail=o.pointerDetail
+   ? `<div class="dll-pointer-detail">${escapeHTML(o.pointerDetail)}</div>`
+   : "";
+
+ return `<div class="dll-stage">${dllStart}${dllTail}${dllNewNodePointer}${dllCurrentPointer}${dllDelPointer}${dllPPointer}${dllPreviousNodePointer}${dllNextNodePointer}`+a.map((v,i)=>{
    let cls="node";
    if(o.active===i)cls+=" active-node";
    if(o.newIndex===i)cls+=" new-node";
    if(o.deleteIndex===i)cls+=" delete-node";
 
-   const body=double
-     ? `<small>prev</small> | <strong>${v}</strong> | <small>next</small>`
-     : `<strong>${v}</strong><small><br>next</small>`;
-
-   let connector="";
-   if(double){
-     const nextCreating=o.nextCreating===i;
-     const prevCreating=o.prevCreating===i;
-     const nextRemoving=o.nextRemoving===i;
-     const prevRemoving=o.prevRemoving===i;
-
-     connector=i<a.length-1
-       ? `<span class="dll-link-wrap">
-            <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→</span>
-            <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
-          </span>`
-       : `<span class="dll-link-wrap">
-            <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→ NULL</span>
-            <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
-          </span>`;
-   }else{
-     const creating=o.linkCreating===i;
-     const removing=o.linkRemoving===i;
-     connector=i<a.length-1
-       ? `<span class="link-arrow ${creating?"creating":""} ${removing?"removing":""}">→</span>`
-       : `<span class="link-arrow ${creating?"creating":""} ${removing?"removing":""}">→ NULL</span>`;
-   }
+   const prevHighlight=o.pointerField==="prev" && o.pointerNode===i;
+   const nextHighlight=o.pointerField==="next" && o.pointerNode===i;
+   const prevText=i===0 ? "NULL" : "prev";
+   const nextText=i===a.length-1 ? "NULL" : "next";
+   const body=`<div class="dll-node-row data">${v}</div>
+     <div class="dll-node-row pointer ${prevHighlight?"highlight-pointer":""}"><span>${prevText}</span><span class="dll-pointer-dot"></span></div>
+     <div class="dll-node-row pointer ${nextHighlight?"highlight-pointer":""}"><span>${nextText}</span><span class="dll-pointer-dot"></span></div>`;
+   const nextCreating=o.nextCreating===i;
+   const prevCreating=o.prevCreating===i;
+   const nextRemoving=o.nextRemoving===i;
+   const prevRemoving=o.prevRemoving===i;
+   const connector=i<a.length-1
+     ? `<span class="dll-link-wrap">
+          <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
+          <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→</span>
+        </span>`
+     : `<span class="dll-link-wrap">
+          <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
+          <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→ NULL</span>
+        </span>`;
 
    return `<div class="node-block">
      <div class="node-col">
-       <div class="node-label">node ${i}</div>
-       <div class="${cls}">${body}</div>
+       <div class="${cls} dll-vertical-node">${body}</div>
+       <div class="node-label dll-node-label-bottom">node ${i}</div>
      </div>
      ${connector}
    </div>`;
- }).join("")+"</div>";
+ }).join("")+dllFloatingNewNode+dllPointerDetail+"</div>";
 }
 function render(id){
  const s=states[id],cfg=configs.find(x=>x.id===id);
@@ -858,7 +1934,38 @@ function render(id){
    let display=[];
    if(id==="linearq"||id==="circularq")display=s.data.length?[...s.data]:Array(s.capacity).fill(null);
    else{display=Array(s.capacity).fill(null);s.data.forEach((v,i)=>{if(i<s.capacity)display[i]=v})}
-   $(id+"Visual").innerHTML=`<div style="font-weight:700;color:#546e7a;margin-bottom:12px">Array Capacity = ${s.capacity} ช่อง</div>${arrayHTML(display,{front:s.front,rear:s.rear,top:s.top})}`;
+   const capacityLabel=id==="arraylist"
+     ? `maxlist = ${s.capacity} | size = ${s.data.length}`
+     : `Array Capacity = ${s.capacity} ช่อง`;
+   const showArrayOutput=id==="arraylist" && s.view?.showOutputVariable===true;
+   const outputPanel=showArrayOutput
+     ? `<div class="array-output-panel">
+          <div class="array-output-title">Output Variable</div>
+          <div class="array-output-name">data</div>
+          <div class="array-output-value">${escapeHTML(s.view?.dataValue ?? "")}</div>
+        </div>`
+     : "";
+   const showComparePanel=id==="arraylist" && s.view?.showComparePanel===true;
+   const comparePanel=showComparePanel
+     ? `<div class="array-compare-panel">
+          <div class="array-compare-title">Compare</div>
+          <div class="array-compare-grid">
+            <div class="array-compare-box">
+              <span class="array-compare-label">items[${escapeHTML(s.view?.compareIndex ?? "")}]</span>
+              <span class="array-compare-value">${escapeHTML(s.view?.compareLeft ?? "")}</span>
+            </div>
+            <div class="array-compare-op">==</div>
+            <div class="array-compare-box">
+              <span class="array-compare-label">item</span>
+              <span class="array-compare-value">${escapeHTML(s.view?.compareRight ?? "")}</span>
+            </div>
+          </div>
+          <div class="array-compare-result ${s.view?.compareResult===true?"true":"false"}">
+            Result : ${s.view?.compareResult===true?"True":"False"}
+          </div>
+        </div>`
+     : "";
+   $(id+"Visual").innerHTML=`<div style="font-weight:700;color:#546e7a;margin-bottom:12px">${capacityLabel}</div>${arrayHTML(display,{front:s.front,rear:s.rear,top:s.top,active:s.active,movingFrom:s.view?.movingFrom,movingTo:s.view?.movingTo,movingLeftFrom:s.view?.movingLeftFrom,movingLeftTo:s.view?.movingLeftTo})}${outputPanel}${comparePanel}`;
  }
  updateInfo(id);
 }
@@ -882,6 +1989,1152 @@ function algorithmDashboard(id){
  </div>`;
 }
 
+
+
+const functionCodeLibrary={
+ stack:{
+  create:{a:["กำหนด top = -1","สร้างพื้นที่ Stack","พร้อมใช้งาน"],p:`CREATE_STACK(maxSize)
+  stack ← array of maxSize
+  top ← -1`,c:`class Stack:
+    def __init__(self, max_size):
+        self.items = [None] * max_size
+        self.top = -1`},
+  push:{a:["ตรวจสอบ Stack เต็ม","เพิ่ม top","เก็บ item ที่ stack[top]"],p:`PUSH(item)
+  IF top = maxSize - 1
+    DISPLAY "Stack Overflow"
+  ELSE
+    top ← top + 1
+    stack[top] ← item`,c:`def push(self, item):
+    if self.top == len(self.items) - 1:
+        raise OverflowError("Stack Overflow")
+    self.top += 1
+    self.items[self.top] = item`},
+  pop:{a:["ตรวจสอบ Stack ว่าง","อ่านค่า stack[top]","ลดค่า top","คืนค่า item"],p:`POP()
+  IF top = -1
+    DISPLAY "Stack Underflow"
+  ELSE
+    item ← stack[top]
+    top ← top - 1
+    RETURN item`,c:`def pop(self):
+    if self.top == -1:
+        raise IndexError("Stack Underflow")
+    item = self.items[self.top]
+    self.top -= 1
+    return item`},
+  isFull:{a:["เปรียบเทียบ top กับ maxSize - 1","คืนค่า True หรือ False"],p:`IS_FULL()
+  RETURN top = maxSize - 1`,c:`def is_full(self):
+    return self.top == len(self.items) - 1`},
+  isEmpty:{a:["ตรวจสอบ top = -1","คืนค่า True หรือ False"],p:`IS_EMPTY()
+  RETURN top = -1`,c:`def is_empty(self):
+    return self.top == -1`},
+  size:{a:["คำนวณ top + 1","คืนค่าจำนวนสมาชิก"],p:`SIZE()
+  RETURN top + 1`,c:`def size(self):
+    return self.top + 1`},
+  popAll:{a:["ทำซ้ำขณะ Stack ไม่ว่าง","Pop ข้อมูลทุกตัว"],p:`POP_ALL()
+  WHILE top ≠ -1
+    DISPLAY POP()`,c:`def pop_all(self):
+    result = []
+    while not self.is_empty():
+        result.append(self.pop())
+    return result`}
+ },
+ physicalq:{
+  create:{a:["กำหนด front = 0","กำหนด rear = -1","สร้าง Queue"],p:`CREATE_QUEUE(maxSize)
+  queue ← array of maxSize
+  front ← 0
+  rear ← -1`,c:`class PhysicalQueue:
+    def __init__(self, max_size):
+        self.data = [None] * max_size
+        self.front = 0
+        self.rear = -1`},
+  enqueue:{a:["ตรวจสอบ Queue เต็ม","เพิ่ม rear","เก็บ item ที่ queue[rear]"],p:`ENQUEUE(item)
+  rear ← rear + 1
+  queue[rear] ← item`,c:`def enqueue(self, item):
+    self.rear += 1
+    self.data[self.rear] = item`},
+  dequeue:{a:["อ่าน queue[front]","เลื่อนข้อมูลเข้าซ้าย","ลด rear"],p:`DEQUEUE()
+  item ← queue[0]
+  FOR i ← 0 TO rear - 1
+    queue[i] ← queue[i + 1]
+  rear ← rear - 1
+  RETURN item`,c:`def dequeue(self):
+    item = self.data[0]
+    for i in range(self.rear):
+        self.data[i] = self.data[i + 1]
+    self.rear -= 1
+    return item`}
+ },
+ linearq:{
+  create:{a:["กำหนด front = 0","กำหนด rear = -1","สร้าง Queue"],p:`CREATE_QUEUE(maxSize)
+  queue ← array of maxSize
+  front ← 0
+  rear ← -1`,c:`class LinearQueue:
+    def __init__(self, max_size):
+        self.data = [None] * max_size
+        self.front = 0
+        self.rear = -1`},
+  enqueue:{a:["ตรวจสอบ rear","เพิ่ม rear","เก็บ item"],p:`ENQUEUE(item)
+  rear ← rear + 1
+  queue[rear] ← item`,c:`def enqueue(self, item):
+    self.rear += 1
+    self.data[self.rear] = item`},
+  dequeue:{a:["อ่าน queue[front]","เพิ่ม front","คืนค่า item"],p:`DEQUEUE()
+  item ← queue[front]
+  front ← front + 1
+  RETURN item`,c:`def dequeue(self):
+    item = self.data[self.front]
+    self.front += 1
+    return item`}
+ },
+ circularq:{
+  create:{a:["กำหนด front = 0","กำหนด rear = -1","กำหนด size = 0"],p:`CREATE_CIRCULAR_QUEUE(maxSize)
+  front ← 0
+  rear ← -1
+  size ← 0`,c:`class CircularQueue:
+    def __init__(self, max_size):
+        self.data = [None] * max_size
+        self.front = 0
+        self.rear = -1
+        self.size = 0`},
+  enqueue:{a:["คำนวณ rear แบบวนรอบ","เก็บ item","เพิ่ม size"],p:`ENQUEUE(item)
+  rear ← (rear + 1) MOD maxSize
+  queue[rear] ← item
+  size ← size + 1`,c:`def enqueue(self, item):
+    self.rear = (self.rear + 1) % len(self.data)
+    self.data[self.rear] = item
+    self.size += 1`},
+  dequeue:{a:["อ่าน queue[front]","เลื่อน front แบบวนรอบ","ลด size"],p:`DEQUEUE()
+  item ← queue[front]
+  front ← (front + 1) MOD maxSize
+  size ← size - 1
+  RETURN item`,c:`def dequeue(self):
+    item = self.data[self.front]
+    self.front = (self.front + 1) % len(self.data)
+    self.size -= 1
+    return item`}
+ },
+ arraylist:{
+  create:{a:[
+    "สร้างอาร์เรย์ items จำนวน maxlist ช่อง",
+    "กำหนด size = 0",
+    "แสดงผล Create List complete"
+  ],p:`CREATE_LIST(maxlist)
+  items ← array of maxlist
+  size ← 0
+  DISPLAY "Create List complete"`,c:`class ArrayList:
+    def __init__(self, maxlist):
+        self.maxlist = maxlist
+        self.items = [None] * maxlist
+        self.size = 0
+        print("Create List complete")`},
+
+  add_item:{a:[
+    "ตรวจสอบ isFull()",
+    "ถ้าเต็ม แสดง List is full !!",
+    "เก็บ item ที่ items[size]",
+    "เพิ่ม size ขึ้น 1",
+    "แสดงผล Add item complete"
+  ],p:`ADD_ITEM(item)
+  IF IS_FULL()
+    DISPLAY "List is full !!"
+  ELSE
+    items[size] ← item
+    size ← size + 1
+    DISPLAY "Add item complete"`,c:`def add_item(self, item):
+    if self.isFull():
+        return "List is full !!"
+    else:
+        self.items[self.size] = item
+        self.size = self.size + 1
+        return "Add item complete"`},
+
+  add_index:{a:[
+    "รับค่า item และ index",
+    "ตรวจสอบ index ให้อยู่ระหว่าง 0 ถึง size",
+    "ถ้า index ผิด แสดง index is error",
+    "ตรวจสอบ isFull()",
+    "ถ้าเต็ม แสดง List is full !!",
+    "กำหนด i = size - 1",
+    "เลื่อน items[i] ไป items[i + 1]",
+    "ลดค่า i ลง 1 และทำซ้ำจน i < index",
+    "กำหนด items[index] = item",
+    "เพิ่ม size ขึ้น 1",
+    "แสดงผล Add index complete"
+  ],p:`ADD_INDEX(index, item)
+  RECEIVE item, index
+  IF index < 0 OR index > size
+    DISPLAY "index is error"
+    RETURN
+  IF IS_FULL()
+    DISPLAY "List is full !!"
+    RETURN
+  i ← size - 1
+  WHILE i >= index
+    items[i + 1] ← items[i]
+    i ← i - 1
+  items[index] ← item
+  size ← size + 1
+  DISPLAY "Add index complete"`,c:`def add_index(self, index, item):
+    if (index < 0) or (index > self.size):
+        return "index is error"
+    elif self.isFull():
+        return "List is full !!"
+    else:
+        for i in range(self.size - 1, index - 1, -1):
+            self.items[i + 1] = self.items[i]
+        self.items[index] = item
+        self.size = self.size + 1
+        return "Add index complete"`},
+
+  delete:{a:[
+    "ตรวจสอบ isEmpty()",
+    "ถ้าว่าง แสดง List is empty !!",
+    "อ่านข้อมูลตำแหน่งท้ายลิสต์",
+    "ลด size ลง 1",
+    "คืนค่า item ที่ลบ"
+  ],p:`DELETE()
+  IF IS_EMPTY()
+    RETURN "List is empty !!"
+  item ← items[size - 1]
+  size ← size - 1
+  RETURN item`,c:`def delete(self):
+    if self.isEmpty():
+        return "List is empty !!"
+    else:
+        item = self.items[self.size - 1]
+        self.items[self.size - 1] = None
+        self.size = self.size - 1
+        return item`},
+
+  delete_index:{a:[
+    "ตรวจสอบ isEmpty()",
+    "ตรวจสอบช่วงของ index",
+    "อ่านข้อมูล items[index]",
+    "เลื่อนข้อมูลถัดไปมาทางซ้ายทีละตำแหน่ง",
+    "แสดงการเคลื่อนไหวจาก index i+1 ไป index i",
+    "ลด size ลง 1",
+    "คืนค่า item ที่ลบ"
+  ],p:`DELETE_INDEX(index)
+  IF IS_EMPTY()
+    RETURN "List is empty !!"
+  ELSE IF index < 0 OR index > size - 1
+    RETURN "index is error"
+  item ← items[index]
+  FOR i ← index TO size - 2
+    items[i] ← items[i + 1]
+  items[size - 1] ← NULL
+  size ← size - 1
+  RETURN item`,c:`def delete_index(self, index):
+    if self.isEmpty():
+        return "List is empty !!"
+    elif (index < 0) or (index > self.size - 1):
+        return "index is error"
+    else:
+        item = self.items[index]
+        for i in range(index, self.size - 1):
+            self.items[i] = self.items[i + 1]
+        self.items[self.size - 1] = None
+        self.size = self.size - 1
+        return item`},
+
+  delete_item:{a:[
+    "ตรวจสอบ isEmpty()",
+    "ค้นหา index ด้วย get_index(item)",
+    "ถ้าไม่พบ แสดง item is not found",
+    "ถ้าพบ เลื่อนข้อมูลถัดไปมาทางซ้ายทีละตำแหน่ง",
+    "แสดงการเคลื่อนไหวจาก index i+1 ไป index i",
+    "คืนค่าข้อมูลที่ลบ"
+  ],p:`DELETE_ITEM(item)
+  IF IS_EMPTY()
+    RETURN "List is empty !!"
+  index ← GET_INDEX(item)
+  IF index = -1
+    RETURN "item is not found"
+  RETURN DELETE_INDEX(index)`,c:`def delete_item(self, item):
+    if self.isEmpty():
+        return "List is empty !!"
+    index = self.get_index(item)
+    if index == -1:
+        return "item is not found"
+    return self.delete_index(index)`},
+
+  isFull:{a:[
+    "เปรียบเทียบ size กับ maxlist",
+    "คืนค่า True หรือ False"
+  ],p:`IS_FULL()
+  RETURN size = maxlist`,c:`def isFull(self):
+    return self.size == self.maxlist`},
+
+  isEmpty:{a:[
+    "ตรวจสอบว่า size เท่ากับ 0 หรือไม่",
+    "คืนค่า True หรือ False"
+  ],p:`IS_EMPTY()
+  RETURN size = 0`,c:`def isEmpty(self):
+    return self.size == 0`},
+
+  size:{a:[
+    "คืนค่าจำนวนสมาชิกปัจจุบัน"
+  ],p:`GET_SIZE()
+  RETURN size`,c:`def get_size(self):
+    return self.size`},
+
+  get_index:{a:[
+    "รับค่า item",
+    "ตรวจสอบ isEmpty()",
+    "กำหนด i เริ่มจาก 0",
+    "แสดงการเปรียบเทียบ items[i] == item",
+    "ถ้าผลเป็น True คืนค่า i",
+    "ถ้าตรวจครบแล้วไม่พบ คืนค่า -1"
+  ],p:`GET_INDEX(item)
+  RECEIVE item
+  IF IS_EMPTY()
+    RETURN "List is empty !!"
+  FOR i ← 0 TO size - 1
+    DISPLAY items[i], item
+    IF items[i] = item
+      RETURN i
+  RETURN -1`,c:`def get_index(self, item):
+    if self.isEmpty():
+        return "List is empty !!"
+    for i in range(0, self.size):
+        print(self.items[i], "==", item)
+        if self.items[i] == item:
+            return i
+    return -1`},
+
+  get_item:{a:[
+    "ตรวจสอบ isEmpty()",
+    "ตรวจสอบช่วงของ index",
+    "คืนค่า items[index]"
+  ],p:`GET_ITEM(index)
+  IF IS_EMPTY()
+    RETURN "List is empty !!"
+  ELSE IF index < 0 OR index > size - 1
+    RETURN "index is error"
+  RETURN items[index]`,c:`def get_item(self, index):
+    if self.isEmpty():
+        return "List is empty !!"
+    elif (index < 0) or (index > self.size - 1):
+        return "index is error"
+    return self.items[index]`},
+
+  print_list:{a:[
+    "ตรวจสอบ isEmpty()",
+    "กำหนดข้อความ List Member :",
+    "วนซ้ำสมาชิกตั้งแต่ index 0 ถึง size - 1",
+    "ต่อข้อมูลเข้ากับข้อความ",
+    "คืนค่าข้อความผลลัพธ์"
+  ],p:`PRINT_LIST()
+  IF IS_EMPTY()
+    RETURN "List is empty !!"
+  data ← "List Member :"
+  FOR i ← 0 TO size - 1
+    data ← data + " " + items[i]
+  RETURN data`,c:`def print_list(self):
+    if self.isEmpty():
+        return "List is empty !!"
+    data = "List Member :"
+    for i in range(0, self.size):
+        data = data + " " + str(self.items[i])
+    return data`}
+
+ },
+ sll:{
+  create:{a:["กำหนด head = None","กำหนด count = 0"],p:`CREATE_LIST()
+  head ← NULL
+  count ← 0`,c:`class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.count = 0`},
+
+  add_first:{a:["สร้าง newnode","newnode.next = head","head = newnode","count += 1"],p:`ADD_FIRST(data)
+  newNode ← Node(data)
+  newNode.next ← head
+  head ← newNode
+  count ← count + 1`,c:`def add_first(self, data):
+    newnode = node(data)
+    newnode.next = self.head
+    self.head = newnode
+    self.count += 1`},
+
+  add_last:{a:[
+    "ตรวจสอบ List ว่าง",
+    "ถ้าว่าง เรียก add_first(data)",
+    "สร้าง newnode",
+    "current = setposition(count - 1)",
+    "current.next = newnode",
+    "count += 1"
+  ],p:`ADD_LAST(data)
+  IF IS_EMPTY()
+    ADD_FIRST(data)
+  ELSE
+    newNode ← Node(data)
+    current ← SETPOSITION(count - 1)
+    current.next ← newNode
+    count ← count + 1`,c:`def add_last(self, data):
+    if self.isEmpty():
+        self.add_first(data)
+    else:
+        newnode = node(data)
+        current = self.setposition(self.count - 1)
+        current.next = newnode
+        self.count += 1`},
+
+  insert_index:{a:[
+    "ตรวจสอบ index",
+    "ถ้า index = 0 ให้เรียก add_first(data)",
+    "current = setposition(index - 1)",
+    "สร้าง newnode",
+    "newnode.next = current.next",
+    "current.next = newnode",
+    "count += 1"
+  ],p:`INSERT_INDEX(index, data)
+  IF index < 0 OR index > count
+    DISPLAY "index is error"
+  ELSE IF index = 0
+    ADD_FIRST(data)
+  ELSE
+    current ← SETPOSITION(index - 1)
+    newNode ← Node(data)
+    newNode.next ← current.next
+    current.next ← newNode
+    count ← count + 1`,c:`def insert_index(self, index, data):
+    if (index < 0) or (index > self.count):
+        print("index is error")
+    elif index == 0:
+        self.add_first(data)
+    else:
+        current = self.setposition(index - 1)
+        newnode = node(data)
+        newnode.next = current.next
+        current.next = newnode
+        self.count += 1`},
+
+  setposition:{a:[
+    "ตรวจสอบช่วงของ index",
+    "กำหนด p = 0",
+    "กำหนด current = head",
+    "ตรวจสอบ p != index",
+    "current = current.next",
+    "p = p + 1",
+    "คืนค่า current"
+  ],p:`SETPOSITION(index)
+  IF index < 0 OR index > count - 1
+    RETURN "index is error"
+  ELSE
+    p ← 0
+    current ← head
+    WHILE index ≠ p
+      current ← current.next
+      p ← p + 1
+    RETURN current`,c:`def setposition(self, index):
+    if (index < 0) or (index > self.count - 1):
+        return "index is error"
+    else:
+        p = 0
+        current = self.head
+        while index != p:
+            current = current.next
+            p += 1
+        return current`},
+
+  delete_first:{a:[
+    "ตรวจสอบ List ว่าง",
+    "delnode = head",
+    "item = delnode.data",
+    "head = head.next",
+    "count -= 1",
+    "ลบ delnode และคืนค่า item"
+  ],p:`DELETE_FIRST()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  ELSE
+    delNode ← head
+    item ← delNode.data
+    head ← head.next
+    count ← count - 1
+    DELETE delNode
+    RETURN item + ": deleted"`,c:`def delete_first(self):
+    if self.isEmpty():
+        return "List is empty"
+    else:
+        delnode = self.head
+        item = delnode.data
+        self.head = self.head.next
+        self.count -= 1
+        del delnode
+        return str(item) + ": deleted"`},
+
+  delete_last:{a:[
+    "ตรวจสอบ List ว่าง",
+    "ถ้า count = 1 เรียก delete_first()",
+    "current = setposition(count - 2)",
+    "delnode = current.next",
+    "item = delnode.data",
+    "current.next = None",
+    "count -= 1",
+    "ลบ delnode และคืนค่า item"
+  ],p:`DELETE_LAST()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  ELSE IF count = 1
+    RETURN DELETE_FIRST()
+  ELSE
+    current ← SETPOSITION(count - 2)
+    delNode ← current.next
+    item ← delNode.data
+    current.next ← NULL
+    count ← count - 1
+    DELETE delNode
+    RETURN item + ": deleted"`,c:`def delete_last(self):
+    if self.isEmpty():
+        return "List is empty"
+    elif self.count == 1:
+        return self.delete_first()
+    else:
+        current = self.setposition(self.count - 2)
+        delnode = current.next
+        item = delnode.data
+        current.next = None
+        self.count -= 1
+        del delnode
+        return str(item) + ": deleted"`},
+
+  delete_index:{a:["ตรวจสอบ index","ค้นหาโหนดก่อนหน้า","กำหนด delnode","เชื่อมข้าม delnode","ลด count และลบโหนด"],p:`DELETE_INDEX(index)
+  IF index = 0
+    RETURN DELETE_FIRST()
+  current ← SETPOSITION(index - 1)
+  delNode ← current.next
+  item ← delNode.data
+  current.next ← delNode.next
+  count ← count - 1
+  DELETE delNode
+  RETURN item`,c:`def delete_index(self, index):
+    if index == 0:
+        return self.delete_first()
+    current = self.setposition(index - 1)
+    delnode = current.next
+    item = delnode.data
+    current.next = delnode.next
+    self.count -= 1
+    del delnode
+    return item`},
+
+  delete_item:{a:["ค้นหา index ของ item","ถ้าพบ เรียก delete_index(index)"],p:`DELETE_ITEM(item)
+  index ← GET_INDEX(item)
+  IF index = -1
+    RETURN "item not found"
+  RETURN DELETE_INDEX(index)`,c:`def delete_item(self, item):
+    index = self.get_index(item)
+    if index == -1:
+        return "item not found"
+    return self.delete_index(index)`},
+
+  get_index:{a:[
+    "กำหนด current = head",
+    "กำหนด index = 0",
+    "เปรียบเทียบ item กับ current.data",
+    "เลื่อน current และเพิ่ม index",
+    "ถ้าไม่พบ คืนค่า -1"
+  ],p:`GET_INDEX(item)
+  current ← head
+  index ← 0
+  WHILE current ≠ NULL
+    IF item = current.data
+      RETURN index
+    current ← current.next
+    index ← index + 1
+  RETURN -1`,c:`def get_index(self, item):
+    current = self.head
+    index = 0
+    while current is not None:
+        if item == current.data:
+            return index
+        current = current.next
+        index += 1
+    return -1`},
+
+  isEmpty:{a:["ตรวจสอบ head เป็น None","คืนค่า True หรือ False"],p:`IS_EMPTY()
+  RETURN head = NULL`,c:`def isEmpty(self):
+    return self.head is None`},
+
+  size:{a:["คืนค่า count"],p:`SIZE()
+  RETURN count`,c:`def size(self):
+    return self.count`},
+
+  print_list:{a:[
+    "ตรวจสอบ List ว่าง",
+    "กำหนด data = 'List member :'",
+    "กำหนด current = head",
+    "อ่าน current.data ทีละโหนด",
+    "เลื่อน current = current.next",
+    "คืนค่า data"
+  ],p:`PRINT_LIST()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  ELSE
+    data ← "List member :"
+    current ← head
+    WHILE current ≠ NULL
+      data ← data + " " + current.data
+      current ← current.next
+    RETURN data`,c:`def print_list(self):
+    if self.isEmpty():
+        return "List is empty"
+    else:
+        data = "List member :"
+        current = self.head
+        while current is not None:
+            data = data + " " + str(current.data)
+            current = current.next
+        return data`}
+},
+ dll:{
+  create:{a:[
+    "กำหนด start = None",
+    "กำหนด size = 0",
+    "เพิ่มค่าเริ่มต้น 10, 20, 30, 40"
+  ],p:`CREATE_DLL()
+  start ← NULL
+  size ← 0
+  ADD_LAST(10)
+  ADD_LAST(20)
+  ADD_LAST(30)
+  ADD_LAST(40)`,c:`class DLL:
+    def __init__(self):
+        self.start = None
+        self.size = 0`},
+
+  add_first:{a:[
+    "สร้าง newNode และกำหนด data",
+    "newNode.next = start เดิม",
+    "newNode.prev = None",
+    "ถ้า start เดิมมีค่า: start เดิม.prev = newNode",
+    "start = newNode",
+    "size = size + 1"
+  ],p:`ADD_FIRST(new_data)
+  new_node ← Node(new_data)
+  new_node.next ← start
+  new_node.prev ← NULL
+  IF start ≠ NULL
+    start.prev ← new_node
+  start ← new_node
+  size ← size + 1`,c:`def add_first(self, new_data):
+    new_node = Node(new_data)
+    new_node.next = self.start
+    new_node.prev = None
+    if self.start is not None:
+        self.start.prev = new_node
+    self.start = new_node
+    self.size = self.size + 1`},
+
+  isEmpty:{a:[
+    "เปรียบเทียบ start กับ None",
+    "คืนค่า True หรือ False"
+  ],p:`IS_EMPTY()
+  RETURN start = NULL`,c:`def isEmpty(self):
+    return self.start == None`},
+
+  print_dll:{a:[
+    "ตรวจสอบ isEmpty()",
+    "สร้าง dll_data เป็นลิสต์ว่าง",
+    "กำหนด current = start",
+    "เพิ่ม current.data ลง dll_data",
+    "เลื่อน current = current.next",
+    "คืนค่า dll_data"
+  ],p:`PRINT_DLL()
+  IF IS_EMPTY()
+    DISPLAY "List is empty"
+    RETURN
+  dll_data ← []
+  current ← start
+  WHILE current ≠ NULL
+    APPEND current.data TO dll_data
+    current ← current.next
+  RETURN dll_data`,c:`def print_dll(self):
+    if self.isEmpty():
+        print("List is empty")
+        return
+    else:
+        dll_data = []
+        current = self.start
+        while current:
+            dll_data.append(current.data)
+            current = current.next
+        return dll_data`},
+
+  add_last:{a:[
+    "ตรวจสอบ isEmpty()",
+    "ถ้า List ว่าง เรียก add_first(new_data)",
+    "สร้าง newNode และกำหนด data",
+    "กำหนด newNode.prev = tail",
+    "กำหนด newNode.next = None",
+    "กำหนด tail.next = newNode",
+    "เลื่อน tail ไปชี้ newNode",
+    "size = size + 1"
+  ],p:`ADD_LAST(new_data)
+  IF isEmpty()
+    ADD_FIRST(new_data)
+    RETURN
+  newNode ← Node(new_data)
+  newNode.prev ← tail
+  newNode.next ← NULL
+  tail.next ← newNode
+  tail ← newNode
+  size ← size + 1`,c:`def add_last(self, new_data):
+    if self.isEmpty():
+        self.add_first(new_data)
+        return
+    new_node = Node(new_data)
+    new_node.prev = self.tail
+    new_node.next = None
+    self.tail.next = new_node
+    self.tail = new_node
+    self.size += 1
+    return`},
+
+  setposition:{a:[
+    "กำหนด current = start",
+    "กำหนด currentpos = 0",
+    "เลื่อน current จน currentpos เท่ากับ index",
+    "เพิ่ม currentpos ขึ้น 1 ในแต่ละรอบ",
+    "คืนค่า current"
+  ],p:`SETPOSITION(index)
+  current ← start
+  currentpos ← 0
+  WHILE currentpos ≠ index
+    current ← current.next
+    currentpos ← currentpos + 1
+  RETURN current`,c:`def setposition(self, index):
+    current = self.start
+    currentpos = 0
+    while currentpos != index:
+        current = current.next
+        currentpos += 1
+    return current`},
+
+  add_index:{a:[
+    "ตรวจสอบ index ให้อยู่ระหว่าง 0 ถึง size",
+    "ถ้า index ไม่ถูกต้อง คืนค่า index error",
+    "ถ้า index = 0 เรียก add_first(new_data)",
+    "ถ้า index = size เรียก add_last(new_data)",
+    "กำหนด current เป็นโหนด index - 1",
+    "กำหนด p = current.next",
+    "สร้าง newNode และกำหนด data",
+    "กำหนด newNode.next = p",
+    "กำหนด newNode.prev = current",
+    "กำหนด current.next = newNode",
+    "กำหนด p.prev = newNode",
+    "size = size + 1"
+  ],p:`ADD_INDEX(index, new_data)
+  IF index < 0 OR index > size
+    RETURN "index error"
+  IF index = 0
+    ADD_FIRST(new_data)
+    RETURN
+  IF index = size
+    ADD_LAST(new_data)
+    RETURN
+  current ← NODE AT index - 1
+  p ← current.next
+  newNode ← Node(new_data)
+  newNode.next ← p
+  newNode.prev ← current
+  current.next ← newNode
+  p.prev ← newNode
+  size ← size + 1`,c:`def add_index(self, index, new_data):
+    if index < 0 or index > self.size:
+        return "index error"
+    if index == 0:
+        self.add_first(new_data)
+        return
+    if index == self.size:
+        self.add_last(new_data)
+        return
+    current = self.start
+    for _ in range(index - 1):
+        current = current.next
+    p = current.next
+    new_node = Node(new_data)
+    new_node.next = p
+    new_node.prev = current
+    current.next = new_node
+    p.prev = new_node
+    self.size += 1
+    return`},
+
+  delete_first:{a:[
+    "ตรวจสอบ isEmpty()",
+    "กำหนด delnode = start",
+    "เลื่อน start ไปโหนดถัดไป",
+    "ถ้า start ไม่เป็น None ให้ start.prev = None",
+    "ลด size ลง 1",
+    "ลบ delnode"
+  ],p:`DELETE_FIRST()
+  IF IS_EMPTY()
+    DISPLAY "List is empty"
+    RETURN
+  delnode ← start
+  start ← start.next
+  IF start ≠ NULL
+    start.prev ← NULL
+  size ← size - 1
+  DELETE delnode`,c:`def delete_first(self):
+    if self.isEmpty():
+        print("List is empty")
+        return
+    else:
+        delnode = self.start
+        self.start = self.start.next
+        if self.start is not None:
+            self.start.prev = None
+        self.size -= 1
+        del delnode
+        return`},
+
+  delete_last:{a:[
+    "ตรวจสอบ isEmpty()",
+    "ถ้ามีโหนดเดียว เรียก delete_first()",
+    "เลื่อน current ไปโหนดสุดท้าย",
+    "กำหนด current.prev.next = None",
+    "ลด size ลง 1",
+    "ลบโหนดสุดท้าย"
+  ],p:`DELETE_LAST()
+  IF IS_EMPTY()
+    DISPLAY "List is empty"
+    RETURN
+  IF size = 1
+    DELETE_FIRST()
+    RETURN
+  current ← start
+  WHILE current.next ≠ NULL
+    current ← current.next
+  current.prev.next ← NULL
+  size ← size - 1
+  DELETE current`,c:`def delete_last(self):
+    if self.isEmpty():
+        print("List is empty")
+        return
+    elif self.size == 1:
+        self.delete_first()
+        return
+    else:
+        current = self.start
+        while current.next:
+            current = current.next
+        current.prev.next = None
+        self.size -= 1
+        del current
+        return`}
+
+ }
+};
+
+
+/* v60: standard list-operation names across Array List, SLL and DLL */
+functionCodeLibrary.arraylist.add_first={
+ a:["ตรวจสอบ List เต็ม","เลื่อนข้อมูลไปทางขวา","เพิ่มข้อมูลที่ index 0"],
+ p:`ADD_FIRST(item)
+  IF IS_FULL()
+    RETURN "List Full"
+  FOR i ← size DOWNTO 1
+    data[i] ← data[i-1]
+  data[0] ← item
+  size ← size + 1`,
+ c:`def add_first(self, item):
+    if len(self.data) >= self.capacity:
+        return "List Full"
+    self.data.insert(0, item)`
+};
+functionCodeLibrary.arraylist.add_item={
+ a:["ตรวจสอบ isFull(): size = capacity","ถ้าเต็ม ให้แสดง List Full และหยุด","ถ้ายังไม่เต็ม เพิ่ม item ที่ท้าย List"],
+ p:`ADD(item)
+  IF size = capacity
+    DISPLAY "List Full"
+    RETURN
+  data[size] ← item
+  size ← size + 1`,
+ c:`def add(self, item):
+    if len(self.data) == self.capacity:
+        return "List Full"
+    self.data.append(item)
+    return "Add complete"`
+};
+functionCodeLibrary.arraylist.add_index=functionCodeLibrary.arraylist.insert;
+functionCodeLibrary.arraylist.delete_first={
+ a:["ตรวจสอบ List ว่าง","อ่านข้อมูล index 0","เลื่อนข้อมูลไปทางซ้าย","ลด size"],
+ p:`DELETE_FIRST()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  item ← data[0]
+  FOR i ← 0 TO size-2
+    data[i] ← data[i+1]
+  size ← size - 1
+  RETURN item`,
+ c:`def delete_first(self):
+    if not self.data:
+        return "List is empty"
+    return self.data.pop(0)`
+};
+functionCodeLibrary.arraylist.delete={
+ a:["ตรวจสอบ List ว่าง","อ่านข้อมูลตำแหน่งท้าย List","ลด size","คืนค่า item"],
+ p:`DELETE()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  item ← data[size - 1]
+  size ← size - 1
+  RETURN item`,
+ c:`def delete(self):
+    if not self.data:
+        return "List is empty"
+    return self.data.pop()`
+};
+functionCodeLibrary.arraylist.get_index={
+ a:["ค้นหา item จาก index 0","เปรียบเทียบข้อมูลทีละตำแหน่ง","คืนค่า index หรือ -1"],
+ p:`GET_INDEX(item)
+  FOR index ← 0 TO size-1
+    IF data[index] = item
+      RETURN index
+  RETURN -1`,
+ c:`def get_index(self, item):
+    try:
+        return self.data.index(item)
+    except ValueError:
+        return -1`
+};
+
+functionCodeLibrary.dll.delete_first={
+ a:[
+   "ตรวจสอบ isEmpty()",
+   "กำหนด delnode = start",
+   "กำหนด start = delnode.next",
+   "ถ้า start ไม่เป็น None: start.prev = None",
+   "ถ้า size = 1: tail = None",
+   "ลด size ลง 1",
+   "ลบ delnode และคืนค่าข้อมูล"
+ ],
+ p:`DELETE_FIRST()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  delnode ← start
+  item ← delnode.data
+  start ← delnode.next
+  IF start ≠ NULL
+    start.prev ← NULL
+  ELSE
+    tail ← NULL
+  size ← size - 1
+  DELETE delnode
+  RETURN item`,
+ c:`def delete_first(self):
+    if self.isEmpty():
+        return "List is empty"
+    delnode = self.start
+    item = delnode.data
+    self.start = delnode.next
+    if self.start is not None:
+        self.start.prev = None
+    else:
+        self.tail = None
+    self.size -= 1
+    del delnode
+    return item`
+};
+
+functionCodeLibrary.dll.delete_last={
+ a:[
+   "ตรวจสอบ isEmpty()",
+   "กำหนด delnode = tail",
+   "เลื่อน tail ไปทางซ้าย: tail = delnode.prev",
+   "กำหนด tail.next = None",
+   "ถ้า size = 1: start = None และ tail = None",
+   "ลด size ลง 1",
+   "ลบ delnode และคืนค่าข้อมูล"
+ ],
+ p:`DELETE_LAST()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  delnode ← tail
+  item ← delnode.data
+  tail ← delnode.prev
+  IF tail ≠ NULL
+    tail.next ← NULL
+  ELSE
+    start ← NULL
+  size ← size - 1
+  DELETE delnode
+  RETURN item`,
+ c:`def delete_last(self):
+    if self.isEmpty():
+        return "List is empty"
+    delnode = self.tail
+    item = delnode.data
+    self.tail = delnode.prev
+    if self.tail is not None:
+        self.tail.next = None
+    else:
+        self.start = None
+    self.size -= 1
+    del delnode
+    return item`
+};
+
+functionCodeLibrary.dll.delete_index={
+ a:[
+   "ตรวจสอบ index ให้อยู่ระหว่าง 0 ถึง size - 1",
+   "ถ้า index = 0 เรียก delete_first()",
+   "ถ้า index = size - 1 เรียก delete_last()",
+   "กำหนด delnode = setposition(index)",
+   "กำหนด previousNode = delnode.prev",
+   "กำหนด nextNode = delnode.next",
+   "กำหนด previousNode.next = nextNode",
+   "กำหนด nextNode.prev = previousNode",
+   "ลด size ลง 1",
+   "ลบ delnode และคืนค่าข้อมูล"
+ ],
+ p:`DELETE_INDEX(index)
+  IF index < 0 OR index >= size
+    RETURN "index error"
+  IF index = 0
+    RETURN DELETE_FIRST()
+  IF index = size - 1
+    RETURN DELETE_LAST()
+  delnode ← SETPOSITION(index)
+  item ← delnode.data
+  previousNode ← delnode.prev
+  nextNode ← delnode.next
+  previousNode.next ← nextNode
+  nextNode.prev ← previousNode
+  size ← size - 1
+  DELETE delnode
+  RETURN item`,
+ c:`def delete_index(self, index):
+    if index < 0 or index >= self.size:
+        return "index error"
+    if index == 0:
+        return self.delete_first()
+    if index == self.size - 1:
+        return self.delete_last()
+    delnode = self.setposition(index)
+    item = delnode.data
+    previous_node = delnode.prev
+    next_node = delnode.next
+    previous_node.next = next_node
+    next_node.prev = previous_node
+    self.size -= 1
+    del delnode
+    return item`
+};
+
+functionCodeLibrary.dll.delete_item={
+ a:[
+   "ค้นหา index ของ item",
+   "ถ้าไม่พบ item คืนค่า item not found",
+   "เรียก delete_index(index)",
+   "เชื่อม previousNode.next ไปยัง nextNode",
+   "เชื่อม nextNode.prev กลับมายัง previousNode",
+   "คืนค่าข้อมูลที่ลบ"
+ ],
+ p:`DELETE_ITEM(item)
+  index ← GET_INDEX(item)
+  IF index = -1
+    RETURN "item not found"
+  RETURN DELETE_INDEX(index)`,
+ c:`def delete_item(self, item):
+    index = self.get_index(item)
+    if index == -1:
+        return "item not found"
+    return self.delete_index(index)`
+};
+
+functionCodeLibrary.dll.get_index=functionCodeLibrary.sll.get_index;
+functionCodeLibrary.dll.print_dll={
+ a:[
+   "ตรวจสอบ isEmpty()",
+   "กำหนด dll_data = []",
+   "กำหนด current = start",
+   "อ่าน current.data และเพิ่มลง dll_data",
+   "เลื่อน current = current.next",
+   "คืนค่า dll_data"
+ ],
+ p:`PRINT_DLL()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  dll_data ← []
+  current ← start
+  WHILE current ≠ NULL
+    APPEND current.data TO dll_data
+    current ← current.next
+  RETURN dll_data`,
+ c:`def print_dll(self):
+    if self.isEmpty():
+        return "List is empty"
+    dll_data = []
+    current = self.start
+    while current is not None:
+        dll_data.append(current.data)
+        current = current.next
+    return dll_data`
+};
+
+functionCodeLibrary.dll.setposition={
+ a:[
+   "ตรวจสอบ index ให้อยู่ระหว่าง 1 ถึง size",
+   "กำหนด current = start",
+   "กำหนด currentpos = 0",
+   "ตรวจสอบ currentpos ≠ index",
+   "เลื่อน current = current.next",
+   "เพิ่ม currentpos = currentpos + 1",
+   "คืนค่า current"
+ ],
+ p:`SETPOSITION(index)
+  IF index < 1 OR index > size
+    RETURN "index error"
+  current ← start
+  currentpos ← 1
+  WHILE currentpos ≠ index
+    current ← current.next
+    currentpos ← currentpos + 1
+  RETURN current`,
+ c:`def setposition(self, index):
+    if index < 1 or index > self.size:
+        return "index error"
+    current = self.start
+    currentpos = 0
+    while currentpos != index:
+        current = current.next
+        currentpos += 1
+    return current`
+};
+
+functionCodeLibrary.dll.print_backward={
+ a:[
+   "ตรวจสอบ isEmpty()",
+   "กำหนด dll_data = []",
+   "กำหนด current = tail",
+   "อ่าน current.data และเพิ่มลง dll_data",
+   "เลื่อน current = current.prev",
+   "คืนค่า dll_data"
+ ],
+ p:`PRINT_BACKWARD()
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  dll_data ← []
+  current ← tail
+  WHILE current ≠ NULL
+    APPEND current.data TO dll_data
+    current ← current.prev
+  RETURN dll_data`,
+ c:`def print_backward(self):
+    if self.isEmpty():
+        return "List is empty"
+    dll_data = []
+    current = self.tail
+    while current is not None:
+        dll_data.append(current.data)
+        current = current.prev
+    return dll_data`
+};
 
 const codeLibrary={
  stack:{p:`CREATE stack
@@ -990,14 +3243,37 @@ DEQUEUE()
         self.front = (self.front + 1) % self.max_size
         self.size -= 1
         return item`},
- sll:{p:`INSERT(index, item)
+ sll:{p:`ADD_FIRST(item)
   newNode ← Node(item)
-  current ← node at index - 1
+  newNode.next ← head
+  head ← newNode
+
+INSERT_AFTER(current, item)
+  newNode ← Node(item)
   newNode.next ← current.next
-  current.next ← newNode`,c:`def insert_after(current, item):
+  current.next ← newNode
+
+DELETE_AFTER(current)
+  del ← current.next
+  item ← del.data
+  current.next ← del.next
+  DELETE del
+  RETURN item`,c:`def add_first(self, item):
+    new_node = Node(item)
+    new_node.next = self.head
+    self.head = new_node
+
+def insert_after(current, item):
     new_node = Node(item)
     new_node.next = current.next
-    current.next = new_node`},
+    current.next = new_node
+
+def delete_after(current):
+    delete_node = current.next
+    item = delete_node.data
+    current.next = delete_node.next
+    del delete_node
+    return item`},
  dll:{p:`INSERT(index, item)
   newNode ← Node(item)
   prevNode ← node at index - 1
@@ -1118,313 +3394,39 @@ RETURN -1`,c:`def binary_search(data, target):
 function escCode(s){
  return String(s).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
 }
+
+function getFunctionCode(id,op){
+ const exact=functionCodeLibrary[id]?.[op];
+ if(exact)return exact;
+ const fallback=codeLibrary[id]||{p:"ยังไม่มี Pseudocode",c:"# ยังไม่มี Python Code"};
+ return {a:[`เลือกฟังก์ชัน ${op}`],p:fallback.p,c:fallback.c};
+}
+function updateFunctionCode(id,op){
+ const x=getFunctionCode(id,op);
+ const p=$(id+"PseudocodeCode");
+ const c=$(id+"PythonCode");
+ if(p)p.textContent=x.p;
+ if(c)c.textContent=x.c;
+ const track=$(id+"Track");
+ if(track)track.innerHTML=(x.a||[]).map((t,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${t}</span>`).join("");
+ const title=$(id+"SelectedFunction");
+ if(title)title.textContent=op;
+}
+
 function codeTabs(id){
- const x=codeLibrary[id]||{p:"ยังไม่มี Pseudocode สำหรับหัวข้อนี้",c:"# ยังไม่มี Python Code สำหรับหัวข้อนี้"};
+ const x=getFunctionCode(id,"create");
  return `<div class="code-tabs">
   <div class="code-tab-buttons">
-   <button type="button" class="code-tab-btn active" onclick="switchCodeTab(this,'${id}TabAlgorithm')">Algorithm</button>
+   <button type="button" class="code-tab-btn active" onclick="switchCodeTab(this,'${id}TabAlgorithm')">${["sll","dll"].includes(id)?"Algorithm Track":"Algorithm"}</button>
    <button type="button" class="code-tab-btn" onclick="switchCodeTab(this,'${id}TabPseudocode')">Pseudocode</button>
    <button type="button" class="code-tab-btn" onclick="switchCodeTab(this,'${id}TabPython')">Python Code</button>
   </div>
-  <div id="${id}TabAlgorithm" class="code-tab-panel active"><div id="${id}Track" class="algorithm-track"></div></div>
-  <div id="${id}TabPseudocode" class="code-tab-panel"><pre class="code-block">${escCode(x.p)}</pre></div>
-  <div id="${id}TabPython" class="code-tab-panel"><pre class="code-block">${escCode(x.c)}</pre></div>
+  <div class="selected-function-badge">Function: <strong id="${id}SelectedFunction">create</strong></div>
+  <div id="${id}TabAlgorithm" class="code-tab-panel active"><div id="${id}Track" class="algorithm-track">${(x.a||[]).map((t,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${t}</span>`).join("")}</div></div>
+  <div id="${id}TabPseudocode" class="code-tab-panel"><pre id="${id}PseudocodeCode" class="code-block">${escCode(x.p)}</pre></div>
+  <div id="${id}TabPython" class="code-tab-panel"><pre id="${id}PythonCode" class="code-block">${escCode(x.c)}</pre></div>
  </div>`;
 }
-
-
-const selectionTemplates={
- asc:{
-  label:"Selected Minimum",
-  nounEn:"minimum",
-  nounTh:"ค่าต่ำสุด",
-  compare:"<",
-  algorithm:[
-   "กำหนด selected = i",
-   "เปรียบเทียบ data[j] < data[selected]",
-   "ถ้าพบค่าน้อยกว่า ให้ selected = j",
-   "สลับ data[i] กับ data[selected]",
-   "จบรอบและขยายส่วนที่เรียงแล้ว"
-  ],
-  pseudocode:`FOR i ← 0 TO n - 2
-  selected ← i
-
-  FOR j ← i + 1 TO n - 1
-    IF data[j] < data[selected]
-      selected ← j
-
-  SWAP data[i], data[selected]`,
-  python:`def selection_sort(data):
-    for i in range(len(data) - 1):
-        selected = i
-
-        for j in range(i + 1, len(data)):
-            if data[j] < data[selected]:
-                selected = j
-
-        data[i], data[selected] = data[selected], data[i]
-
-    return data`
- },
- desc:{
-  label:"Selected Maximum",
-  nounEn:"maximum",
-  nounTh:"ค่าสูงสุด",
-  compare:">",
-  algorithm:[
-   "กำหนด selected = i",
-   "เปรียบเทียบ data[j] > data[selected]",
-   "ถ้าพบค่ามากกว่า ให้ selected = j",
-   "สลับ data[i] กับ data[selected]",
-   "จบรอบและขยายส่วนที่เรียงแล้ว"
-  ],
-  pseudocode:`FOR i ← 0 TO n - 2
-  selected ← i
-
-  FOR j ← i + 1 TO n - 1
-    IF data[j] > data[selected]
-      selected ← j
-
-  SWAP data[i], data[selected]`,
-  python:`def selection_sort_descending(data):
-    for i in range(len(data) - 1):
-        selected = i
-
-        for j in range(i + 1, len(data)):
-            if data[j] > data[selected]:
-                selected = j
-
-        data[i], data[selected] = data[selected], data[i]
-
-    return data`
- }
-};
-
-function getSelectionTemplate(){
- const order=$("selectionOrder")?.value||"asc";
- return selectionTemplates[order];
-}
-
-function renderSelectionTabs(){
- const t=getSelectionTemplate();
-
- const track=$("selectionTrack");
- if(track){
-   track.innerHTML=t.algorithm
-     .map((text,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${text}</span>`)
-     .join("");
- }
-
- const pseudo=$("selectionTabPseudocode")?.querySelector(".code-block");
- if(pseudo)pseudo.textContent=t.pseudocode;
-
- const python=$("selectionTabPython")?.querySelector(".code-block");
- if(python)python.textContent=t.python;
-
- const selectedLabel=document.querySelector("#selection .selected-panel strong");
- if(selectedLabel)selectedLabel.textContent=t.label+":";
-
- document.querySelector("#selection")?.classList.toggle("selection-desc",($("selectionOrder")?.value||"asc")==="desc");
-}
-
-
-
-const insertionTemplates={
- asc:{
-  algorithm:[
-   "เลือก key = data[i]",
-   "เปรียบเทียบ data[j] > key",
-   "ถ้าจริง ให้เลื่อน data[j] ไปขวา",
-   "วาง key ที่ตำแหน่ง j + 1",
-   "ขยายส่วนที่เรียงแล้ว"
-  ],
-  pseudocode:`FOR i ← 1 TO n - 1
-  key ← data[i]
-  j ← i - 1
-
-  WHILE j ≥ 0 AND data[j] > key
-    data[j + 1] ← data[j]
-    j ← j - 1
-
-  data[j + 1] ← key`,
-  python:`def insertion_sort(data):
-    for i in range(1, len(data)):
-        key = data[i]
-        j = i - 1
-
-        while j >= 0 and data[j] > key:
-            data[j + 1] = data[j]
-            j -= 1
-
-        data[j + 1] = key
-
-    return data`
- },
- desc:{
-  algorithm:[
-   "เลือก key = data[i]",
-   "เปรียบเทียบ data[j] < key",
-   "ถ้าจริง ให้เลื่อน data[j] ไปขวา",
-   "วาง key ที่ตำแหน่ง j + 1",
-   "ขยายส่วนที่เรียงแล้ว"
-  ],
-  pseudocode:`FOR i ← 1 TO n - 1
-  key ← data[i]
-  j ← i - 1
-
-  WHILE j ≥ 0 AND data[j] < key
-    data[j + 1] ← data[j]
-    j ← j - 1
-
-  data[j + 1] ← key`,
-  python:`def insertion_sort_descending(data):
-    for i in range(1, len(data)):
-        key = data[i]
-        j = i - 1
-
-        while j >= 0 and data[j] < key:
-            data[j + 1] = data[j]
-            j -= 1
-
-        data[j + 1] = key
-
-    return data`
- }
-};
-
-const bubbleTemplates={
- asc:{
-  algorithm:[
-   "เริ่มรอบการเปรียบเทียบ",
-   "เปรียบเทียบ data[j] > data[j + 1]",
-   "ถ้าจริง ให้ Swap",
-   "ค่ามากที่สุดของรอบไปอยู่ด้านขวา",
-   "ทำซ้ำจนเรียงเสร็จ"
-  ],
-  pseudocode:`FOR i ← 0 TO n - 2
-  FOR j ← 0 TO n - i - 2
-    IF data[j] > data[j + 1]
-      SWAP data[j], data[j + 1]`,
-  python:`def bubble_sort(data):
-    n = len(data)
-
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if data[j] > data[j + 1]:
-                data[j], data[j + 1] = data[j + 1], data[j]
-
-    return data`
- },
- desc:{
-  algorithm:[
-   "เริ่มรอบการเปรียบเทียบ",
-   "เปรียบเทียบ data[j] < data[j + 1]",
-   "ถ้าจริง ให้ Swap",
-   "ค่าน้อยที่สุดของรอบไปอยู่ด้านขวา",
-   "ทำซ้ำจนเรียงเสร็จ"
-  ],
-  pseudocode:`FOR i ← 0 TO n - 2
-  FOR j ← 0 TO n - i - 2
-    IF data[j] < data[j + 1]
-      SWAP data[j], data[j + 1]`,
-  python:`def bubble_sort_descending(data):
-    n = len(data)
-
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if data[j] < data[j + 1]:
-                data[j], data[j + 1] = data[j + 1], data[j]
-
-    return data`
- }
-};
-
-function renderSortingTabs(id){
- const order=$(id+"Order")?.value||"asc";
- const templates=id==="selection"?selectionTemplates:id==="insertion"?insertionTemplates:bubbleTemplates;
- const t=templates[order];
-
- const track=$(id+"Track");
- if(track){
-   track.innerHTML=t.algorithm.map((text,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${text}</span>`).join("");
- }
-
- const pseudo=$(id+"TabPseudocode")?.querySelector(".code-block");
- if(pseudo)pseudo.textContent=t.pseudocode;
-
- const python=$(id+"TabPython")?.querySelector(".code-block");
- if(python)python.textContent=t.python;
-
- if(id==="selection"){
-   const selectedLabel=document.querySelector("#selection .selected-panel strong");
-   if(selectedLabel)selectedLabel.textContent=selectionTemplates[order].label+":";
-   document.querySelector("#selection")?.classList.toggle("selection-desc",order==="desc");
- }else{
-   document.querySelector(`#${id}`)?.classList.toggle("sort-desc",order==="desc");
- }
-}
-
-function setSortingOrder(id,order){
- const input=$(id+"Order");
- if(input)input.value=order;
-
- $(id+"AscBtn")?.classList.toggle("active",order==="asc");
- $(id+"DescBtn")?.classList.toggle("active",order==="desc");
-
- renderSortingTabs(id);
-
- const s=states[id];
- if(s?.timer){
-   clearInterval(s.timer);
-   s.timer=null;
- }
- if(s){
-   s.steps=[];
-   s.step=0;
-   s.running=false;
- }
- if($(id+"Progress"))$(id+"Progress").style.width="0%";
- if($(id+"Status"))$(id+"Status").textContent="เปลี่ยนลำดับการเรียงแล้ว กรุณากด Prepare";
- if(id==="insertion")resetInsertionKeyPanel();
- renderAlgorithmModule(id,{});
-}
-
-
-function setSelectionOrder(order){
- setSortingOrder("selection",order);
-}
-
-function updateSelectionOrder(){
- const state=states.selection;
- if(state?.timer){
-   clearInterval(state.timer);
-   state.timer=null;
- }
-
- renderSortingTabs("selection");
-ensureStackCodeTabs();
-renderTraversalSummary($("bstTraversal")?.value||"inorder",[]);
-setSortingOrder("selection",$("selectionOrder")?.value||"asc");
-setSortingOrder("insertion",$("insertionOrder")?.value||"asc");
-setSortingOrder("bubble",$("bubbleOrder")?.value||"asc");
-resetInsertionKeyPanel();
-
- if(state){
-   state.steps=[];
-   state.step=0;
-   state.running=false;
- }
-
- if($("selectionProgress"))$("selectionProgress").style.width="0%";
- if($("selectionSelectedValue"))$("selectionSelectedValue").textContent="-";
- if($("selectionSelectedIndex"))$("selectionSelectedIndex").textContent="index -";
- if($("selectionPassInfo"))$("selectionPassInfo").textContent="pass -";
- if($("selectionStatus"))$("selectionStatus").textContent="เปลี่ยนลำดับการเรียงแล้ว กรุณากด Prepare";
-
- render("selection");
-}
-
-
 function switchCodeTab(btn,targetId){
  const root=btn.closest(".code-tabs");
  root.querySelectorAll(".code-tab-btn").forEach(x=>x.classList.remove("active"));
@@ -1674,9 +3676,66 @@ function panel(cfg){
 
  const needsIndex=["arraylist","sll","dll"].includes(cfg.id);
  const needsCapacity=["stack","physicalq","linearq","circularq","arraylist"].includes(cfg.id);
- const buttons=cfg.ops.map(op=>`<button class="action ${op==="create"?"green":op.includes("delete")||op==="pop"||op==="dequeue"?"blue":"gray"}" onclick="operate('${cfg.id}','${op}')">${op}</button>`).join("");
- const linkedTools=cfg.kind==="linked"?`<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>${codeTabs(cfg.id)}`:`<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>`;
- return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="6" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${buttons}</div>${linkedTools}<div class="info"><div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div><div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div></div><div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
+ const opLabel=op=>({
+   insert_index:"Insert Index",
+   add_first:"Add First",
+   add_last:"Add Last",
+   add:"Add",
+   delete_first:"Delete First",
+   delete_last:"Delete Last",
+   delete:"Delete",
+   delete_index:"Delete Index",
+   delete_item:"Delete Item",
+   setposition:"Set Position",
+   get_index:"Get Index",
+   print_list:"Print List",
+   print_backward:"Print Backward",
+   print_dll:"Print DLL",
+   add_item:"Add Item",
+   add_index:"Add Index",
+   get_item:"Get Item"
+ }[op]||op);
+ const buttonHTML=op=>`<button class="action ${op==="create"?"green":op.includes("delete")||op==="pop"||op==="dequeue"?"blue":"gray"}" onclick="operate('${cfg.id}','${op}')">${opLabel(op)}</button>`;
+ const listGroupOps={
+   arraylist:{
+     create:["create","add_item","add_index"],
+     remove:["delete","delete_index","delete_item"],
+     inspect:["isFull","isEmpty","size","get_index","get_item","print_list"]
+   },
+   sll:{
+     create:["create","add","insert_index"],
+     remove:["delete","delete_index","delete_item"],
+     inspect:["isEmpty","size","setposition","get_index","print_list"]
+   },
+   dll:{
+     create:["create","add_first","add_last","add_index"],
+     remove:["delete_first","delete_last","delete_index","delete_item"],
+     inspect:["isEmpty","size","setposition","get_index","print_dll","print_backward"]
+   }
+ };
+ const grouped=listGroupOps[cfg.id];
+ const buttons=grouped
+   ? `<div class="sll-operation-groups">
+       <div class="sll-operation-group">
+         <span class="sll-operation-group-title">การสร้างและเพิ่มข้อมูล</span>
+         ${grouped.create.map(buttonHTML).join("")}
+       </div>
+       <div class="sll-operation-group">
+         <span class="sll-operation-group-title">การลบข้อมูล</span>
+         ${grouped.remove.map(buttonHTML).join("")}
+       </div>
+       <div class="sll-operation-group">
+         <span class="sll-operation-group-title">การตรวจสอบและแสดงผล</span>
+         ${grouped.inspect.map(buttonHTML).join("")}
+       </div>
+     </div>`
+   : cfg.ops.map(buttonHTML).join("");
+ const linkedTools=cfg.kind==="linked"
+   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>${codeTabs(cfg.id)}`
+   : cfg.id==="arraylist"
+     ? `<div class="tools"><button class="action" onclick="nextArrayListStep()">Next Step</button><button class="action gray" onclick="resetArrayListAnimation()">Reset Animation</button><button class="action gray" onclick="resetArrayListDefault()">Reset Default</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div>${codeTabs(cfg.id)}`
+     : `<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>${["stack","physicalq","linearq","circularq"].includes(cfg.id)?codeTabs(cfg.id):""}`;
+ return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="${cfg.id==="arraylist"?5:6}" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${cfg.id==="sll"?`<button class="action green" onclick="resetSllDefault()">Reset Default</button><button class="action blue" onclick="clearSllList()">Clear List</button>`:""}${buttons}</div>${linkedTools}<div class="info"><div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div><div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div></div><div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
 }
 
 const topicGroups=[
@@ -1858,10 +3917,453 @@ function build(){
 }
 function clearLog(id){$(id+"Log").innerHTML=""}
 
+function resetSllDefault(){
+ states.sll=makeState("sll");
+ states.sll.data=[10,20,30,40];
+ states.sll.view={headIndex:0};
+ states.sll.steps=[];
+ states.sll.step=0;
+ states.sll.pending=null;
+ const progress=$("sllProgress");
+ if(progress)progress.style.width="0%";
+ updateFunctionCode("sll","create");
+ setStatus("sll","Reset Default: 10 → 20 → 30 → 40");
+ addLog("sll","reset default");
+ render("sll");
+}
+function clearSllList(){
+ const s=states.sll;
+ s.data=[];
+ s.view={};
+ s.steps=[];
+ s.step=0;
+ s.pending=null;
+ const progress=$("sllProgress");
+ if(progress)progress.style.width="0%";
+ updateFunctionCode("sll","create");
+ setStatus("sll","Clear List: head → NULL");
+ addLog("sll","clear list");
+ render("sll");
+}
+
+
+function arraySnap(data,text,active=-1){
+ return {data:[...data],text,active};
+}
+function prepareArrayList(op,item,index){
+ const s=states.arraylist;
+ const old=[...s.data];
+ const size=old.length;
+ const maxlist=s.capacity;
+ const steps=[];
+ const result=[...old];
+ updateFunctionCode("arraylist",op);
+
+ const addStep=(data,text,trackLine,active=-1,caption="",final=false,blocked=false,output="")=>{
+   steps.push({...arraySnap(data,text,active),trackLine,caption,final,blocked,output});
+ };
+ const stop=(message,trackLine=1,active=-1)=>{
+   addStep(old,message,trackLine,active,message,true,true,message);
+ };
+
+ if(op==="create"){
+   result.length=0;
+   addStep([],"สร้าง items จำนวน maxlist ช่อง",1,-1,`maxlist = ${maxlist}`);
+   addStep([],"กำหนด size = 0",2,-1,"size = 0");
+   addStep([],"Create List complete",3,-1,"Create List complete",true,false,"Create List complete");
+ }
+ else if(op==="add_item"){
+   addStep(old,`ตรวจสอบ isFull(): ${size} == ${maxlist}`,1,-1);
+   if(size===maxlist){
+     stop("List is full !!",2,size-1);
+   }else{
+     result.push(item);
+     addStep(result,`items[${size}] = ${item}`,3,size);
+     addStep(result,`size = ${size+1}`,4,-1);
+     addStep(result,"Add item complete",5,-1,"Add item complete",true,false,"Add item complete");
+   }
+ }
+ else if(op==="add_index"){
+   addStep(old,`รับ item = ${item}, index = ${index}`,1,-1,`item = ${item} | index = ${index}`);
+   addStep(old,`ตรวจสอบ 0 <= ${index} <= ${size}`,2,-1);
+   if(index<0||index>size){
+     stop("index is error",3,-1);
+   }else{
+     addStep(old,`ตรวจสอบ isFull(): ${size} == ${maxlist}`,4,-1);
+     if(size===maxlist){
+       stop("List is full !!",5,size-1);
+     }else{
+       let temp=[...old];
+       let i=size-1;
+       addStep(temp,`กำหนด i = ${i}`,6,i,`i = ${i}`);
+       while(i>=index){
+         const before=[...temp];
+         addStep(before,`เตรียมเลื่อน items[${i}] ไป items[${i+1}]`,7,i,
+           `i = ${i} | from index ${i} to ${i+1}`);
+         temp[i+1]=temp[i];
+         steps.push({
+           ...arraySnap([...temp],`เลื่อน ${temp[i]} จาก index ${i} ไป index ${i+1}`,i+1),
+           trackLine:7,
+           caption:`i = ${i} | ${temp[i]} : ${i} → ${i+1}`,
+           movingFrom:i,
+           movingTo:i+1
+         });
+         i=i-1;
+         addStep([...temp],`ลด i เหลือ ${i}`,8,i,`i = ${i}`);
+       }
+       temp[index]=item;
+       result.length=0;
+       result.push(...temp);
+       addStep(result,`items[${index}] = ${item}`,9,index,`insert ${item} at index ${index}`);
+       addStep(result,`size = ${size+1}`,10,-1,`size = ${size+1}`);
+       addStep(result,"Add index complete",11,-1,"Add index complete",true,false,"Add index complete");
+     }
+   }
+ }
+ else if(op==="delete"){
+   addStep(old,`ตรวจสอบ isEmpty(): ${size} == 0`,1,-1);
+   if(size===0){
+     stop("List is empty !!",2,-1);
+   }else{
+     const removed=old[size-1];
+     addStep(old,`item = items[${size-1}] = ${removed}`,3,size-1);
+     result.pop();
+     addStep(result,`size = ${size-1}`,4,-1);
+     addStep(result,`return ${removed}`,5,-1,`Deleted item = ${removed}`,true,false,String(removed));
+   }
+ }
+ else if(op==="delete_index"){
+   addStep(old,`ตรวจสอบ isEmpty(): ${size} == 0`,1,-1);
+   if(size===0){
+     stop("List is empty !!",2,-1);
+   }else if(index<0||index>size-1){
+     stop("index is error",3,-1);
+   }else{
+     const removed=old[index];
+     addStep(old,`item = items[${index}] = ${removed}`,4,index,`ลบ ${removed} ที่ index ${index}`);
+     let temp=[...old];
+     for(let i=index;i<size-1;i++){
+       const before=[...temp];
+       addStep(before,`เตรียมเลื่อน items[${i+1}] ไป items[${i}]`,5,i+1,
+         `from index ${i+1} → ${i}`);
+       temp[i]=temp[i+1];
+       steps.push({
+         ...arraySnap([...temp],`เลื่อน ${temp[i]} จาก index ${i+1} ไป index ${i}`,i),
+         trackLine:5,
+         caption:`${temp[i]} : ${i+1} → ${i}`,
+         movingLeftFrom:i+1,
+         movingLeftTo:i
+       });
+     }
+     temp.pop();
+     result.length=0; result.push(...temp);
+     addStep(result,`ล้างตำแหน่งท้ายเดิมและลด size = ${size-1}`,6,-1,`size = ${size-1}`);
+     addStep(result,`return ${removed}`,7,-1,`Deleted item = ${removed}`,true,false,String(removed));
+   }
+ }
+ else if(op==="delete_item"){
+   addStep(old,`ตรวจสอบ isEmpty(): ${size} == 0`,1,-1);
+   if(size===0){
+     stop("List is empty !!",2,-1);
+   }else{
+     let found=-1;
+     for(let i=0;i<size;i++){
+       addStep(old,`เปรียบเทียบ ${item} กับ items[${i}] = ${old[i]}`,3,i);
+       if(old[i]===item){found=i;break;}
+     }
+     if(found===-1){
+       stop("item is not found",4,-1);
+     }else{
+       addStep(old,`get_index(${item}) = ${found}`,3,found);
+       const removed=old[found];
+       let temp=[...old];
+       for(let i=found;i<size-1;i++){
+         const before=[...temp];
+         addStep(before,`เตรียมเลื่อน items[${i+1}] ไป items[${i}]`,5,i+1,
+           `from index ${i+1} → ${i}`);
+         temp[i]=temp[i+1];
+         steps.push({
+           ...arraySnap([...temp],`เลื่อน ${temp[i]} จาก index ${i+1} ไป index ${i}`,i),
+           trackLine:5,
+           caption:`${temp[i]} : ${i+1} → ${i}`,
+           movingLeftFrom:i+1,
+           movingLeftTo:i
+         });
+       }
+       temp.pop();
+       result.length=0; result.push(...temp);
+       addStep(result,`ล้างตำแหน่งท้ายเดิมและลด size = ${size-1}`,5,-1,`size = ${size-1}`);
+       addStep(result,`return ${removed}`,5,-1,`Deleted item = ${removed}`,true,false,String(removed));
+     }
+   }
+ }
+ else if(op==="isFull"){
+   const answer=size===maxlist;
+   addStep(old,`size == maxlist → ${size} == ${maxlist}`,1,-1);
+   addStep(old,`return ${answer}`,2,-1,`isFull() = ${answer}`,true,false,String(answer));
+ }
+ else if(op==="isEmpty"){
+   const answer=size===0;
+   addStep(old,`size == 0 → ${size} == 0`,1,-1);
+   addStep(old,`return ${answer}`,2,-1,`isEmpty() = ${answer}`,true,false,String(answer));
+ }
+ else if(op==="size"){
+   addStep(old,`return size = ${size}`,1,-1,`size = ${size}`,true,false,String(size));
+ }
+ else if(op==="get_index"){
+   addStep(old,`รับ item = ${item}`,1,-1,`item = ${item}`);
+   addStep(old,`ตรวจสอบ isEmpty(): ${size} == 0`,2,-1);
+   if(size===0){
+     steps.push({
+       ...arraySnap(old,"List is empty !!",-1),
+       trackLine:3,
+       caption:"List is empty !!",
+       blocked:true,
+       final:true,
+       output:"List is empty !!"
+     });
+   }else{
+     let found=-1;
+     for(let i=0;i<size;i++){
+       const resultCompare=old[i]===item;
+       steps.push({
+         ...arraySnap(old,`เปรียบเทียบ items[${i}] == item`,i),
+         trackLine:4,
+         caption:`${old[i]} == ${item} → ${resultCompare}`,
+         showComparePanel:true,
+         compareIndex:i,
+         compareLeft:old[i],
+         compareRight:item,
+         compareResult:resultCompare
+       });
+       if(resultCompare){
+         found=i;
+         break;
+       }
+     }
+     steps.push({
+       ...arraySnap(old,`return ${found}`,found),
+       trackLine:found>=0?5:6,
+       caption:found>=0?`พบข้อมูลที่ index ${found}`:"ไม่พบข้อมูล",
+       final:true,
+       output:String(found),
+       showComparePanel:true,
+       compareIndex:found>=0?found:size-1,
+       compareLeft:found>=0?old[found]:old[size-1],
+       compareRight:item,
+       compareResult:found>=0
+     });
+   }
+ }
+ else if(op==="get_item"){
+   addStep(old,`ตรวจสอบ isEmpty(): ${size} == 0`,1,-1);
+   if(size===0){
+     stop("List is empty !!",2,-1);
+   }else if(index<0||index>size-1){
+     stop("index is error",3,-1);
+   }else{
+     addStep(old,`return items[${index}] = ${old[index]}`,4,index,`get_item(${index}) = ${old[index]}`,true,false,String(old[index]));
+   }
+ }
+ else if(op==="print_list"){
+   addStep(old,`ตรวจสอบ isEmpty(): ${size} == 0`,1,-1);
+   if(size===0){
+     steps.push({
+       ...arraySnap(old,"List is empty !!",-1),
+       trackLine:2,
+       caption:"List is empty !!",
+       blocked:true,
+       final:true,
+       output:"List is empty !!",
+       dataValue:"List is empty !!"
+     });
+   }else{
+     let output="List Member :";
+     steps.push({
+       ...arraySnap(old,`data = "${output}"`,-1),
+       trackLine:3,
+       caption:output,
+       dataValue:output
+     });
+     for(let i=0;i<size;i++){
+       output += ` ${old[i]}`;
+       steps.push({
+         ...arraySnap(old,`data = data + " " + items[${i}]`,i),
+         trackLine:4,
+         caption:`i = ${i} | data = "${output}"`,
+         dataValue:output
+       });
+     }
+     steps.push({
+       ...arraySnap(old,`return data`,-1),
+       trackLine:5,
+       caption:`return "${output}"`,
+       final:true,
+       output:output,
+       dataValue:output
+     });
+   }
+ }
+ else{
+   return false;
+ }
+
+ s.steps=steps;
+ s.step=0;
+ s.pending=result;
+ s.view={
+   showOutputVariable:op==="print_list",
+   dataValue:"",
+   showComparePanel:op==="get_index",
+   compareIndex:null,
+   compareLeft:"",
+   compareRight:item,
+   compareResult:false
+ };
+ s.lastOutput="";
+ const progress=$("arraylistProgress");
+ if(progress)progress.style.width="0%";
+ setStatus("arraylist",`เตรียม ${op} แล้ว กด Next Step`);
+ addLog("arraylist",`prepare ${op}`);
+ render("arraylist");
+ return true;
+}
+
+function nextArrayListStep(){
+ const s=states.arraylist;
+ if(!s.steps.length)return setStatus("arraylist","กรุณาเลือกคำสั่งก่อน");
+ const st=s.steps[s.step];
+ if(!st)return setStatus("arraylist","Animation เสร็จสิ้น");
+ s.data=[...st.data];
+ s.active=st.active;
+ s.view=s.view||{};
+ s.view.movingFrom=Number.isInteger(st.movingFrom)?st.movingFrom:null;
+ s.view.movingTo=Number.isInteger(st.movingTo)?st.movingTo:null;
+ s.view.movingLeftFrom=Number.isInteger(st.movingLeftFrom)?st.movingLeftFrom:null;
+ s.view.movingLeftTo=Number.isInteger(st.movingLeftTo)?st.movingLeftTo:null;
+ if(Object.prototype.hasOwnProperty.call(st,"dataValue")){
+   s.view.showOutputVariable=true;
+   s.view.dataValue=st.dataValue;
+ }
+ if(st.showComparePanel===true){
+   s.view.showComparePanel=true;
+   s.view.compareIndex=st.compareIndex;
+   s.view.compareLeft=st.compareLeft;
+   s.view.compareRight=st.compareRight;
+   s.view.compareResult=st.compareResult;
+ }else if(st.showComparePanel===false){
+   s.view.showComparePanel=false;
+ }
+ if(st.output)s.lastOutput=st.output;
+ s.step++;
+ const message=st.output?`${st.text} | Output: ${st.output}`:st.text;
+ setStatus("arraylist",message);
+ highlightLinkedTrack("arraylist",st.trackLine||1);
+ addLog("arraylist",`Step ${s.step}: ${message}`);
+ const progress=$("arraylistProgress");
+ if(progress)progress.style.width=(s.step/s.steps.length*100)+"%";
+ render("arraylist");
+ if(st.final){
+   s.data=st.blocked?[...st.data]:[...s.pending];
+   s.steps=[];
+   s.step=0;
+   s.pending=null;
+   const keepOutputPanel=Object.prototype.hasOwnProperty.call(st,"dataValue");
+   const keepComparePanel=st.showComparePanel===true;
+   s.view={
+     showOutputVariable:keepOutputPanel,
+     dataValue:keepOutputPanel?st.dataValue:"",
+     showComparePanel:keepComparePanel,
+     compareIndex:keepComparePanel?st.compareIndex:null,
+     compareLeft:keepComparePanel?st.compareLeft:"",
+     compareRight:keepComparePanel?st.compareRight:"",
+     compareResult:keepComparePanel?st.compareResult:false
+   };
+   const finalMessage=st.output
+     ? `Output: ${st.output}`
+     : (st.blocked ? st.text : "ฟังก์ชันทำงานเสร็จสิ้น");
+   setTimeout(()=>{render("arraylist");setStatus("arraylist",finalMessage)},350);
+ }
+}
+
+function resetArrayListAnimation(){
+ const s=states.arraylist;
+ s.view={showOutputVariable:false,dataValue:"",showComparePanel:false,compareIndex:null,compareLeft:"",compareRight:"",compareResult:false};
+ s.lastOutput="";
+ s.steps=[];
+ s.step=0;
+ s.pending=null;
+ s.active=-1;
+ const progress=$("arraylistProgress");
+ if(progress)progress.style.width="0%";
+ setStatus("arraylist","Reset Animation");
+ render("arraylist");
+}
+
+function resetArrayListDefault(){
+ states.arraylist=makeState("arraylist");
+ states.arraylist.data=[10,20,30,40];
+ states.arraylist.capacity=5;
+ const cap=$("arraylistCapacity");
+ if(cap)cap.value=5;
+ updateFunctionCode("arraylist","create");
+ setStatus("arraylist","Reset Default: [10, 20, 30, 40], maxlist = 5");
+ render("arraylist");
+}
+
 function operate(id,op){
- const s=states[id],cfg=configs.find(x=>x.id===id),item=val(id),index=idx(id),cap=Math.max(1,Number($(id+"Capacity").value)||6);
- if(op==="create"){states[id]=makeState(id);states[id].capacity=cap;if(id==="linearq"||id==="circularq")states[id].data=Array(cap).fill(null);setStatus(id,cfg.kind==="linked"?"create: head → NULL":`สร้างอาร์เรย์ขนาด ${cap} ช่องแล้ว`);addLog(id,"create");render(id);return}
- if(cfg.kind==="linked"&&["append","insert","delete","delete_index","delete_item"].includes(op)){prepareLinked(id,op,item,index);return}
+ const s=states[id],cfg=configs.find(x=>x.id===id),item=val(id);
+ let index=idx(id);
+ const cap=Math.max(1,Number($(id+"Capacity").value)||6);
+ const requestedOp=op;
+ s.requestedOp=requestedOp;
+ updateFunctionCode(id,requestedOp);
+
+ if(id==="arraylist"){
+   const map={add_item:"add_item",add_index:"add_index",delete:"delete",get_index:"get_index",get_item:"get_item",print_list:"print_list"};
+   op=map[op]||op;
+ }
+ if(id==="dll"){
+   if(op==="add_first"){op="insert";index=0}
+   else if(op==="add_last"){op="append"}
+   else if(op==="add_index"){
+     if(index<0||index>s.data.length){
+       setStatus(id,"index error");
+       addLog(id,requestedOp);
+       render(id);
+       return;
+     }
+     op="add_index";
+   }
+   else if(op==="delete_first"){op="delete_index";index=0}
+   else if(op==="delete_last"){op="delete_index";index=Math.max(0,s.data.length-1)}
+   else if(op==="setposition"){op="setposition"}
+   else if(op==="print_dll"){op="print_dll"}
+ }
+ if(op==="create"){
+   states[id]=makeState(id);
+   states[id].capacity=id==="arraylist"?5:cap;
+   if(id==="arraylist")states[id].data=[];
+   if(id==="linearq"||id==="circularq")states[id].data=Array(cap).fill(null);
+   if(id==="sll"){
+     states[id].data=[10,20,30,40];
+     states[id].view={headIndex:0};
+     setStatus(id,"create: 10 → 20 → 30 → 40");
+   }else if(id==="dll"){
+     states[id].data=[10,20,30,40];
+     states[id].view={startIndex:0,tailIndex:3};
+     setStatus(id,"create: start → 10 ↔ 20 ↔ 30 ↔ 40 ← tail | size = 4");
+   }else{
+     setStatus(id,cfg.kind==="linked"?"create: head → NULL":`สร้างอาร์เรย์ขนาด ${cap} ช่องแล้ว`);
+   }
+   addLog(id,"create");
+   render(id);
+   return
+ }
+ if(cfg.kind==="linked"&&["add_first","add_last","add_index","append","insert","insert_index","delete_first","delete_last","delete_index","delete_item","setposition","print_list","print_dll","print_backward"].includes(op)){
+   prepareLinked(id,op,item,index);
+   return
+ }
  if(id==="stack"){
    if(op==="push"){if(s.data.length>=s.capacity)return setStatus(id,"Stack Overflow");s.data.push(item);s.top=s.data.length-1;setStatus(id,`push ${item} ลงใน array[${s.top}]`)}
    if(op==="pop"){if(!s.data.length)return setStatus(id,"Stack Underflow");const x=s.data.pop();s.top=s.data.length-1;setStatus(id,`pop ${x}`)}
@@ -1894,25 +4396,409 @@ function operate(id,op){
    if(op==="print_queue"){let vals=[];if(id==="physicalq")vals=[...s.data];else if(s.front!==-1){let i=s.front;while(true){vals.push(s.data[i]);if(i===s.rear)break;i=id==="circularq"?(i+1)%s.capacity:i+1}}setStatus(id,`front → ${vals.join(" → ")} ← rear`)}
  }
  if(id==="arraylist"){
-   if(op==="append"){if(s.data.length>=s.capacity)return setStatus(id,"List Full");const i=s.data.length;s.data.push(item);setStatus(id,`append ${item} ลงใน array[${i}]`)}
-   if(op==="insert"){if(index<0||index>s.data.length)return setStatus(id,"Index ไม่ถูกต้อง");if(s.data.length>=s.capacity)return setStatus(id,"List Full");s.data.splice(index,0,item);setStatus(id,`insert ${item} at index ${index}`)}
-   if(op==="delete"){const x=s.data.pop();setStatus(id,`delete ${x}`)}
-   if(op==="delete_index"){if(index<0||index>=s.data.length)return setStatus(id,"Index ไม่ถูกต้อง");setStatus(id,`delete_index ${index}: ${s.data.splice(index,1)[0]}`)}
-   if(op==="delete_item"){const i=s.data.indexOf(item);if(i<0)return setStatus(id,"ไม่พบ item");s.data.splice(i,1);setStatus(id,`delete_item ${item}`)}
-   if(op==="isFull")setStatus(id,`isFull = ${s.data.length===s.capacity}`);
-   if(op==="isEmpty")setStatus(id,`isEmpty = ${s.data.length===0}`);
-   if(op==="size")setStatus(id,`size = ${s.data.length}`);
-   if(op==="index_of")setStatus(id,`index_of(${item}) = ${s.data.indexOf(item)}`);
-   if(op==="print_list")setStatus(id,`[${s.data.join(", ")}]`);
+   if(op!=="print_list"){
+     states.arraylist.view.showOutputVariable=false;
+     states.arraylist.view.dataValue="";
+     states.arraylist.lastOutput="";
+   }
+   if(op!=="get_index"){
+     states.arraylist.view.showComparePanel=false;
+     states.arraylist.view.compareIndex=null;
+     states.arraylist.view.compareLeft="";
+     states.arraylist.view.compareRight="";
+     states.arraylist.view.compareResult=false;
+   }
+   const supported=["create","add_item","add_index","delete","delete_index","delete_item","isFull","isEmpty","size","get_index","get_item","print_list"];
+   if(supported.includes(op)){
+     if(prepareArrayList(op,item,index))return;
+   }
  }
  if(cfg.kind==="linked"){
    if(op==="isEmpty")setStatus(id,`isEmpty = ${s.data.length===0}`);
    if(op==="size")setStatus(id,`size = ${s.data.length}`);
-   if(op==="index_of")setStatus(id,`index_of(${item}) = ${s.data.indexOf(item)}`);
-   if(op==="print_list")setStatus(id,`head → ${s.data.join(cfg.double?" ↔ ":" → ")}${s.data.length?" → NULL":"NULL"}`);
-   if(op==="print_backward"&&cfg.double)setStatus(id,`tail → ${[...s.data].reverse().join(" ↔ ")}${s.data.length?" → NULL":"NULL"}`);
+   if(op==="index_of")setStatus(id,`get_index(${item}) = ${s.data.indexOf(item)}`);
+   if(op==="setposition" && id==="dll"){
+     if(index<0||index>=s.data.length)setStatus(id,"index error");
+     else{
+       s.view={currentIndex:index,startIndex:s.data.length?0:-1};
+       setStatus(id,`setposition(${index}) → node ${index}, data = ${s.data[index]}`);
+     }
+   }
+   if(op==="setposition" && id==="sll"){
+     if(index<0||index>s.data.length-1)setStatus(id,"index is error");
+     else{
+       s.view={currentIndex:index,headIndex:s.data.length?0:-1};
+       setStatus(id,`setposition(${index}) → node ${index}, data = ${s.data[index]}`);
+     }
+   }
+   if(op==="get_index" && id==="sll")setStatus(id,`get_index(${item}) = ${s.data.indexOf(item)}`);
+   if(op==="print_list" && id==="sll")setStatus(id,s.data.length?`List member : ${s.data.join(" ")}`:"List is empty");
+   else if(op==="print_list")setStatus(id,`head → ${s.data.join(cfg.double?" ↔ ":" → ")}${s.data.length?" → NULL":"NULL"}`);
+   if(op==="print_dll"&&id==="dll")setStatus(id,s.data.length?`[${s.data.join(", ")}]`:"List is empty");
+   if(op==="print_backward"&&cfg.double)setStatus(id,`last → ${[...s.data].reverse().join(" ↔ ")}${s.data.length?" → NULL":"NULL"}`);
  }
- addLog(id,op);render(id);
+ addLog(id,requestedOp);render(id);
+}
+
+
+/* =========================================================
+   Data Structure Visualizer Engine V2
+   Phase 1: standardized actions + DLL model/step generator
+   Legacy modules continue through the compatibility layer.
+   ========================================================= */
+
+const DSActionType=Object.freeze({
+  CHECK:"CHECK",
+  CREATE_NODE:"CREATE_NODE",
+  MOVE_POINTER:"MOVE_POINTER",
+  SET_NEXT:"SET_NEXT",
+  SET_PREV:"SET_PREV",
+  SET_START:"SET_START",
+  DELETE_NODE:"DELETE_NODE",
+  COMPARE:"COMPARE",
+  RETURN:"RETURN",
+  UPDATE_SIZE:"UPDATE_SIZE",
+  MESSAGE:"MESSAGE"
+});
+
+function dsAction(type,payload={}){
+  return Object.freeze({type,...payload});
+}
+
+class DLLModelV2{
+  constructor(values=[]){
+    this.values=[...values];
+    this.size=this.values.length;
+  }
+
+  isEmpty(){
+    return this.size===0;
+  }
+
+  addFirst(value){
+    this.values.unshift(value);
+    this.size+=1;
+  }
+
+  addLast(value){
+    this.values.push(value);
+    this.size+=1;
+  }
+
+  addIndex(deleteIndexBased,value){
+    if(this.isEmpty())return {ok:false,message:"List is empty"};
+    if(deleteIndexBased<1 || deleteIndexBased>this.size+1){
+      return {ok:false,message:"index error"};
+    }
+    this.values.splice(deleteIndexBased-1,0,value);
+    this.size+=1;
+    return {ok:true};
+  }
+
+  deleteFirst(){
+    if(this.isEmpty())return {ok:false,message:"List is empty"};
+    const value=this.values.shift();
+    this.size-=1;
+    return {ok:true,value};
+  }
+
+  deleteLast(){
+    if(this.isEmpty())return {ok:false,message:"List is empty"};
+    const value=this.values.pop();
+    this.size-=1;
+    return {ok:true,value};
+  }
+
+  printDLL(){
+    if(this.isEmpty())return {ok:false,message:"List is empty"};
+    return {ok:true,value:[...this.values]};
+  }
+}
+
+class DLLStepGeneratorV2{
+  static addFirst(values,item){
+    const old=[...values];
+    const result=[item,...old];
+    const actions=[
+      dsAction(DSActionType.CREATE_NODE,{
+        line:1,text:`สร้าง newNode และกำหนด data = ${item}`,
+        data:result,newNodeIndex:0,active:0,
+        pointerDetail:`newNode.data = ${item}`
+      }),
+      dsAction(DSActionType.SET_NEXT,{
+        line:2,text:"newNode.next = start เดิม",
+        data:result,newNodeIndex:0,active:0,
+        pointerNode:0,pointerField:"next",
+        pointerDetail:old.length?`newNode.next = node 2 (data = ${old[0]})`:"newNode.next = None"
+      }),
+      dsAction(DSActionType.SET_PREV,{
+        line:3,text:"newNode.prev = None",
+        data:result,newNodeIndex:0,active:0,
+        pointerNode:0,pointerField:"prev",
+        pointerDetail:"newNode.prev = None"
+      })
+    ];
+    if(old.length){
+      actions.push(dsAction(DSActionType.SET_PREV,{
+        line:4,text:"start เดิม.prev = newNode",
+        data:result,newNodeIndex:0,active:1,
+        pointerNode:1,pointerField:"prev",
+        pointerDetail:"node 2.prev = newNode (node 1)"
+      }));
+    }else{
+      actions.push(dsAction(DSActionType.CHECK,{
+        line:4,text:"start เดิมเป็น None จึงไม่ต้องปรับ previous",
+        data:result,newNodeIndex:0,active:0,
+        pointerDetail:"start is None"
+      }));
+    }
+    actions.push(
+      dsAction(DSActionType.SET_START,{
+        line:5,text:"start = newNode",
+        data:result,newNodeIndex:0,active:0,
+        pointerDetail:"start → newNode (node 1)"
+      }),
+      dsAction(DSActionType.UPDATE_SIZE,{
+        line:6,text:`size = ${result.length}`,
+        data:result,active:0,final:true,
+        pointerDetail:`size = ${old.length} + 1 = ${result.length}`
+      })
+    );
+    return {actions,result};
+  }
+
+  static addLast(values,item){
+    const old=[...values];
+    if(!old.length)return this.addFirst(values,item);
+
+    const result=[...old,item];
+    const last=old.length-1;
+    const newIndex=old.length;
+    const actions=[
+      dsAction(DSActionType.CHECK,{
+        line:1,text:"ตรวจสอบ List ไม่ว่าง",data:old,
+        tailIndex:last,
+        pointerDetail:"isEmpty() = False"
+      }),
+      dsAction(DSActionType.CREATE_NODE,{
+        line:3,text:`สร้าง newNode และกำหนด data = ${item}`,
+        data:result,newNodeIndex:newIndex,active:newIndex,
+        tailIndex:last,
+        pointerDetail:`newNode.data = ${item}`
+      }),
+      dsAction(DSActionType.SET_PREV,{
+        line:4,text:"newNode.prev = tail",
+        data:result,newNodeIndex:newIndex,active:newIndex,
+        tailIndex:last,
+        pointerNode:newIndex,pointerField:"prev",
+        pointerDetail:`newNode.prev = tail (node ${last+1})`
+      }),
+      dsAction(DSActionType.SET_NEXT,{
+        line:5,text:"newNode.next = None",
+        data:result,newNodeIndex:newIndex,active:newIndex,
+        tailIndex:last,
+        pointerNode:newIndex,pointerField:"next",
+        pointerDetail:"newNode.next = None"
+      }),
+      dsAction(DSActionType.SET_NEXT,{
+        line:6,text:"tail.next = newNode",
+        data:result,newNodeIndex:newIndex,active:last,
+        tailIndex:last,
+        pointerNode:last,pointerField:"next",
+        pointerDetail:`node ${last+1}.next = newNode (node ${newIndex+1})`
+      }),
+      dsAction(DSActionType.MOVE_POINTER,{
+        line:7,text:"tail = newNode",
+        data:result,newNodeIndex:newIndex,active:newIndex,
+        tailIndex:newIndex,
+        pointerDetail:`tail → newNode (node ${newIndex+1})`
+      }),
+      dsAction(DSActionType.UPDATE_SIZE,{
+        line:8,text:`size = ${result.length}`,
+        data:result,active:newIndex,final:true,
+        tailIndex:newIndex,
+        pointerDetail:`size = ${old.length} + 1 = ${result.length}`
+      })
+    ];
+    return {actions,result};
+  }
+
+  static addIndex(values,index,item){
+    const old=[...values];
+
+    if(index<0 || index>old.length){
+      return {
+        actions:[
+          dsAction(DSActionType.CHECK,{
+            line:1,
+            text:`ตรวจสอบ index = ${index}`,
+            data:old,
+            pointerDetail:`valid index: 0 ถึง ${old.length}`
+          }),
+          dsAction(DSActionType.RETURN,{
+            line:2,
+            text:"index error",
+            data:old,
+            final:true,
+            pointerDetail:'RETURN "index error"'
+          })
+        ],
+        result:old
+      };
+    }
+
+    if(index===0){
+      return this.addFirst(values,item);
+    }
+
+    if(index===old.length){
+      return this.addLast(values,item);
+    }
+
+    const insertArrayIndex=index;
+    const previousArrayIndex=index-1;
+    const nextArrayIndex=index;
+
+    const result=[...old];
+    result.splice(insertArrayIndex,0,item);
+
+    const actions=[
+      dsAction(DSActionType.CHECK,{
+        line:1,
+        text:`ตรวจสอบ index = ${index}`,
+        data:old,
+        pointerDetail:`valid index: 0 ถึง ${old.length}`
+      })
+    ];
+
+    for(let i=0;i<=previousArrayIndex;i++){
+      actions.push(dsAction(DSActionType.MOVE_POINTER,{
+        line:4,
+        text:i===0
+          ? "current = start"
+          : `current = current.next → node ${i}`,
+        data:old,
+        active:i,
+        currentIndex:i,
+        pointerDetail:`current → node ${i}`
+      }));
+    }
+
+    actions.push(
+      dsAction(DSActionType.MOVE_POINTER,{
+        line:5,
+        text:"p = current.next",
+        data:old,
+        active:nextArrayIndex,
+        currentIndex:previousArrayIndex,
+        pIndex:nextArrayIndex,
+        pointerDetail:`p → node ${nextArrayIndex}`
+      }),
+      dsAction(DSActionType.CREATE_NODE,{
+        line:6,
+        text:`สร้าง newNode และกำหนด data = ${item}`,
+        data:old,
+        currentIndex:previousArrayIndex,
+        pIndex:nextArrayIndex,
+        floatingNewNode:true,
+        floatingNewNodeValue:item,
+        pointerDetail:`newNode.data = ${item}`
+      }),
+      dsAction(DSActionType.SET_NEXT,{
+        line:7,
+        text:"newNode.next = p",
+        data:old,
+        currentIndex:previousArrayIndex,
+        pIndex:nextArrayIndex,
+        floatingNewNode:true,
+        floatingNewNodeValue:item,
+        pointerDetail:`newNode.next = node ${nextArrayIndex}`
+      }),
+      dsAction(DSActionType.SET_PREV,{
+        line:8,
+        text:"newNode.prev = current",
+        data:old,
+        currentIndex:previousArrayIndex,
+        pIndex:nextArrayIndex,
+        floatingNewNode:true,
+        floatingNewNodeValue:item,
+        pointerDetail:`newNode.prev = node ${previousArrayIndex}`
+      }),
+      dsAction(DSActionType.SET_NEXT,{
+        line:9,
+        text:"current.next = newNode",
+        data:result,
+        currentIndex:previousArrayIndex,
+        newNodeIndex:insertArrayIndex,
+        active:previousArrayIndex,
+        pointerNode:previousArrayIndex,
+        pointerField:"next",
+        pointerDetail:`node ${previousArrayIndex}.next = newNode (node ${insertArrayIndex})`
+      }),
+      dsAction(DSActionType.SET_PREV,{
+        line:10,
+        text:"p.prev = newNode",
+        data:result,
+        currentIndex:previousArrayIndex,
+        pIndex:insertArrayIndex+1,
+        newNodeIndex:insertArrayIndex,
+        active:insertArrayIndex+1,
+        pointerNode:insertArrayIndex+1,
+        pointerField:"prev",
+        pointerDetail:`node ${insertArrayIndex+1}.prev = newNode (node ${insertArrayIndex})`
+      }),
+      dsAction(DSActionType.UPDATE_SIZE,{
+        line:11,
+        text:`size = ${result.length}`,
+        data:result,
+        newNodeIndex:insertArrayIndex,
+        active:insertArrayIndex,
+        final:true,
+        pointerDetail:`size = ${old.length} + 1 = ${result.length}`
+      })
+    );
+
+    return {actions,result};
+  }
+}
+
+class StepEngineV2{
+  static toLegacyStep(action){
+    return {
+      data:[...(action.data||[])],
+      text:action.text||action.type,
+      active:Number.isInteger(action.active)?action.active:-1,
+      newIndex:Number.isInteger(action.newNodeIndex)?action.newNodeIndex:-1,
+      deleteIndex:-1,
+      final:action.final===true,
+      linkCreating:-1,
+      linkRemoving:-1,
+      nextCreating:action.type===DSActionType.SET_NEXT && Number.isInteger(action.pointerNode)
+        ? action.pointerNode : -1,
+      prevCreating:action.type===DSActionType.SET_PREV && Number.isInteger(action.pointerNode)
+        ? action.pointerNode : -1,
+      nextRemoving:-1,
+      prevRemoving:-1,
+      trackLine:action.line||1,
+      headIndex:(action.data||[]).length?0:-1,
+      newNodeIndex:action.newNodeIndex,
+      currentIndex:action.currentIndex,
+      pointerNode:action.pointerNode,
+      pointerField:action.pointerField,
+      pointerDetail:action.pointerDetail,
+      tailIndex:action.tailIndex,
+      pIndex:action.pIndex,
+      previousNodeIndex:action.previousNodeIndex,
+      nextNodeIndex:action.nextNodeIndex,
+      floatingNewNode:action.floatingNewNode,
+      floatingNewNodeValue:action.floatingNewNodeValue,
+      caption:action.text||action.type
+    };
+  }
+
+  static adapt(actions){
+    return actions.map(action=>this.toLegacyStep(action));
+  }
 }
 
 function snap(data,text,active=-1,newIndex=-1,deleteIndex=-1,final=false,linkCreating=-1,linkRemoving=-1,nextCreating=-1,prevCreating=-1,nextRemoving=-1,prevRemoving=-1){
@@ -1921,43 +4807,82 @@ function snap(data,text,active=-1,newIndex=-1,deleteIndex=-1,final=false,linkCre
 
 function setLinkedTrack(id,op){
  const tracks={
+   add_last:[
+     "ตรวจสอบ List ว่าง",
+     "ถ้าว่าง เรียก add_first(data)",
+     "สร้าง newnode",
+     "current = setposition(count - 1)",
+     "current.next = newnode",
+     "count += 1"
+   ],
+   delete_first:[
+     "ตรวจสอบ List ว่าง",
+     "delnode = head",
+     "item = delnode.data",
+     "head = head.next",
+     "count -= 1",
+     "ลบ delnode"
+   ],
+   delete_last:[
+     "ตรวจสอบ List ว่าง",
+     "ถ้า count = 1 เรียก delete_first()",
+     "current = setposition(count - 2)",
+     "delnode = current.next",
+     "item = delnode.data",
+     "current.next = None",
+     "count -= 1",
+     "ลบ delnode"
+   ],
+   add_first:[
+     "สร้าง NewNode และกำหนด data",
+     "newNode.next ชี้ไปยัง head เดิม",
+     "head ชี้ไปยัง NewNode",
+     "Add First Complete"
+   ],
    append:[
      "สร้าง NewNode",
      "เชื่อม Pointer ของโหนดเดิมกับ NewNode",
      "กำหนด Pointer ของ NewNode",
      "Append Complete"
    ],
+   insert_index:[
+     "ตรวจสอบ index",
+     "ถ้า index = 0 ให้เรียก add_first(data)",
+     "current = setposition(index - 1)",
+     "สร้าง newnode และกำหนด data",
+     "newnode.next = current.next",
+     "current.next = newnode",
+     "count = count + 1"
+   ],
    insert:[
      "สร้าง NewNode",
      "newNode.next ชี้ไปโหนดถัดไป",
-     "newNode.previous ชี้ไปโหนดก่อนหน้า",
-     "next ของโหนดก่อนหน้า ชี้มาที่ NewNode",
-     "previous ของโหนดถัดไปเดิม ชี้มาที่ NewNode",
+     "previous.next หรือ HEAD ชี้มาที่ NewNode",
      "Insert Complete"
    ],
    delete:[
-     "ค้นหาโหนดเป้าหมาย",
-     "ยกเลิก next ของโหนดก่อนหน้า",
-     "ยกเลิก previous ของโหนดถัดไป",
-     "เชื่อมโหนดก่อนหน้าและโหนดถัดไป",
-     "Delete Complete"
+     "current ค้นหาโหนดก่อนหน้า",
+     "del = current.next",
+     "item = del.data",
+     "current.next = del.next",
+     "ลบ del และ Delete Complete"
    ],
    delete_index:[
-     "ค้นหาโหนดตาม index",
-     "ยกเลิก next ของโหนดก่อนหน้า",
-     "ยกเลิก previous ของโหนดถัดไป",
-     "เชื่อมโหนดก่อนหน้าและโหนดถัดไป",
-     "Delete Complete"
+     "current ค้นหาโหนดก่อนหน้า",
+     "del = current.next",
+     "item = del.data",
+     "current.next = del.next",
+     "ลบ del และ Delete Complete"
    ],
    delete_item:[
-     "ค้นหาโหนดตามค่า",
-     "ยกเลิก next ของโหนดก่อนหน้า",
-     "ยกเลิก previous ของโหนดถัดไป",
-     "เชื่อมโหนดก่อนหน้าและโหนดถัดไป",
-     "Delete Complete"
+     "current ค้นหาโหนดก่อนหน้า",
+     "del = current.next",
+     "item = del.data",
+     "current.next = del.next",
+     "ลบ del และ Delete Complete"
    ]
  };
- const lines=tracks[op]||["ดำเนินการ Linked List"];
+ const lines=functionCodeLibrary[id]?.[op]?.a || tracks[op] || ["ดำเนินการ Linked List"];
  if($(id+"Track")){
    $(id+"Track").innerHTML=lines.map((x,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${x}</span>`).join("");
  }
@@ -1969,8 +4894,531 @@ function highlightLinkedTrack(id,line){
 
 function prepareLinked(id,op,item,index){
  const s=states[id],old=[...s.data],steps=[],result=[...old];
+ updateFunctionCode(id,op);
  setLinkedTrack(id,op);
- if(op==="append"){
+
+ if(id==="dll" && (op==="insert" || op==="append" || op==="add_index")){
+   let generated;
+   let mode;
+
+   if(op==="append"){
+     mode="add_last";
+     generated=DLLStepGeneratorV2.addLast(old,item);
+   }else if(op==="insert" && index===0){
+     mode="add_first";
+     generated=DLLStepGeneratorV2.addFirst(old,item);
+   }else{
+     mode="add_index";
+     generated=DLLStepGeneratorV2.addIndex(old,index,item);
+   }
+
+   updateFunctionCode(id,mode);
+   setLinkedTrack(id,mode);
+
+   steps.push(...StepEngineV2.adapt(generated.actions));
+   s.steps=steps;
+   s.step=0;
+   s.pending=[...generated.result];
+   s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,`เตรียม ${mode} ด้วย Engine V2 แล้ว กด Next Step`);
+   addLog(id,`prepare ${mode} via Engine V2`);
+   render(id);
+   return;
+ }
+
+
+
+ if(id==="dll" && op==="setposition"){
+   const targetIndex=index;
+
+   steps.push({
+     ...snap(old,`ตรวจสอบ index = ${targetIndex}`,-1),
+     trackLine:1,
+     compareValue:`index = ${targetIndex} | valid: 0–${Math.max(0,old.length-1)}`,
+     pointerDetail:`index = ${targetIndex}`,
+     caption:`ตรวจสอบ index ${targetIndex}`
+   });
+
+   if(targetIndex<0 || targetIndex>=old.length){
+     steps.push({
+       ...snap(old,"index error",-1),
+       trackLine:1,
+       compareValue:`index = ${targetIndex} | FALSE`,
+       pointerDetail:"RETURN index error",
+       caption:"index error",
+       final:true
+     });
+   }else{
+     let currentpos=0;
+
+     steps.push({
+       ...snap(old,"current = start → node 0",0),
+       trackLine:2,
+       currentIndex:0,
+       compareValue:`currentpos = ${currentpos} | index = ${targetIndex}`,
+       pointerDetail:`current → node 0 (data = ${old[0]})`
+     });
+
+     steps.push({
+       ...snap(old,"currentpos = 0",0),
+       trackLine:3,
+       currentIndex:0,
+       compareValue:`currentpos = 0 | index = ${targetIndex}`,
+       pointerDetail:"currentpos = 0"
+     });
+
+     while(currentpos!==targetIndex){
+       steps.push({
+         ...snap(old,`ตรวจสอบ ${currentpos} ≠ ${targetIndex} → TRUE`,currentpos),
+         trackLine:4,
+         currentIndex:currentpos,
+         compareValue:`currentpos = ${currentpos} | index = ${targetIndex} | TRUE`,
+         pointerDetail:`current ยังอยู่ที่ node ${currentpos}`
+       });
+
+       const nextIndex=currentpos+1;
+       steps.push({
+         ...snap(old,`current = current.next → node ${nextIndex}`,nextIndex),
+         trackLine:5,
+         currentIndex:nextIndex,
+         pointerDetail:`current → node ${nextIndex} (data = ${old[nextIndex]})`
+       });
+
+       currentpos=nextIndex;
+       steps.push({
+         ...snap(old,`currentpos = ${currentpos}`,currentpos),
+         trackLine:6,
+         currentIndex:currentpos,
+         compareValue:`currentpos = ${currentpos} | index = ${targetIndex}`,
+         pointerDetail:`currentpos = ${currentpos}`
+       });
+     }
+
+     steps.push({
+       ...snap(old,`ตรวจสอบ ${currentpos} ≠ ${targetIndex} → FALSE`,currentpos),
+       trackLine:4,
+       currentIndex:currentpos,
+       compareValue:`currentpos = ${currentpos} | index = ${targetIndex} | FALSE`,
+       pointerDetail:`current → node ${currentpos}`
+     });
+
+     steps.push({
+       ...snap(old,`คืนค่า current → node ${targetIndex}, data = ${old[targetIndex]}`,targetIndex),
+       trackLine:7,
+       currentIndex:targetIndex,
+       resultValue:`Output: node ${targetIndex}, data = ${old[targetIndex]}`,
+       pointerDetail:`RETURN current (node ${targetIndex})`,
+       caption:`RETURN node ${targetIndex}`,
+       final:true
+     });
+   }
+
+   s.steps=steps;s.step=0;s.pending=[...old];s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,`เตรียม setposition(${targetIndex}) แล้ว กด Next Step`);
+   addLog(id,`prepare setposition(${targetIndex})`);
+   render(id);
+   return;
+ }
+
+ if(id==="dll" && op==="print_dll"){
+   let output=[];
+   steps.push({
+     ...snap(old,"ตรวจสอบ isEmpty()",old.length?0:-1),
+     trackLine:1,
+     resultValue:"Output: []",
+     pointerDetail:`isEmpty() = ${old.length===0}`
+   });
+
+   if(!old.length){
+     steps.push({
+       ...snap(old,'คืนค่า "List is empty"',-1),
+       trackLine:1,
+       resultValue:"Output: List is empty",
+       pointerDetail:'RETURN "List is empty"',
+       final:true
+     });
+   }else{
+     steps.push({
+       ...snap(old,"dll_data = []",-1),
+       trackLine:2,resultValue:"Output: []",
+       pointerDetail:"dll_data = []"
+     });
+     steps.push({
+       ...snap(old,"current = start",0),
+       trackLine:3,currentIndex:0,
+       resultValue:"Output: []",
+       pointerDetail:"current → start (node 1)"
+     });
+     old.forEach((value,i)=>{
+       output.push(value);
+       steps.push({
+         ...snap(old,`เพิ่ม current.data = ${value} ลง dll_data`,i),
+         trackLine:4,currentIndex:i,
+         resultValue:`Output: [${output.join(", ")}]`,
+         pointerDetail:`dll_data.append(${value})`
+       });
+       steps.push({
+         ...snap(old,i<old.length-1?`current = current.next → node ${i+2}`:"current = current.next → None",i<old.length-1?i+1:-1),
+         trackLine:5,
+         currentIndex:i<old.length-1?i+1:undefined,
+         resultValue:`Output: [${output.join(", ")}]`,
+         pointerDetail:i<old.length-1?`current → node ${i+2}`:"current = None"
+       });
+     });
+     steps.push({
+       ...snap(old,`คืนค่า [${output.join(", ")}]`,-1),
+       trackLine:6,
+       resultValue:`Output: [${output.join(", ")}]`,
+       pointerDetail:"RETURN dll_data",
+       final:true
+     });
+   }
+
+   s.steps=steps;s.step=0;s.pending=[...old];s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,"เตรียม print_dll แล้ว กด Next Step");
+   addLog(id,"prepare print_dll");
+   render(id);
+   return;
+ }
+
+ if(id==="dll" && op==="print_backward"){
+   let output=[];
+   const last=old.length-1;
+   steps.push({
+     ...snap(old,"ตรวจสอบ isEmpty()",old.length?last:-1),
+     trackLine:1,
+     resultValue:"Output: []",
+     pointerDetail:`isEmpty() = ${old.length===0}`
+   });
+
+   if(!old.length){
+     steps.push({
+       ...snap(old,'คืนค่า "List is empty"',-1),
+       trackLine:1,
+       resultValue:"Output: List is empty",
+       pointerDetail:'RETURN "List is empty"',
+       final:true
+     });
+   }else{
+     steps.push({
+       ...snap(old,"dll_data = []",-1),
+       trackLine:2,resultValue:"Output: []",
+       pointerDetail:"dll_data = []"
+     });
+     steps.push({
+       ...snap(old,`current = tail → node ${old.length}`,last),
+       trackLine:3,currentIndex:last,
+       resultValue:"Output: []",
+       pointerDetail:`current → tail (node ${old.length})`
+     });
+     for(let i=last;i>=0;i--){
+       output.push(old[i]);
+       steps.push({
+         ...snap(old,`เพิ่ม current.data = ${old[i]} ลง dll_data`,i),
+         trackLine:4,currentIndex:i,
+         resultValue:`Output: [${output.join(", ")}]`,
+         pointerDetail:`dll_data.append(${old[i]})`
+       });
+       steps.push({
+         ...snap(old,i>0?`current = current.prev → node ${i}`:"current = current.prev → None",i>0?i-1:-1),
+         trackLine:5,
+         currentIndex:i>0?i-1:undefined,
+         resultValue:`Output: [${output.join(", ")}]`,
+         pointerDetail:i>0?`current → node ${i}`:"current = None"
+       });
+     }
+     steps.push({
+       ...snap(old,`คืนค่า [${output.join(", ")}]`,-1),
+       trackLine:6,
+       resultValue:`Output: [${output.join(", ")}]`,
+       pointerDetail:"RETURN dll_data",
+       final:true
+     });
+   }
+
+   s.steps=steps;s.step=0;s.pending=[...old];s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,"เตรียม print_backward แล้ว กด Next Step");
+   addLog(id,"prepare print_backward");
+   render(id);
+   return;
+ }
+
+
+ if(op==="setposition"){
+   if(id!=="sll")return setStatus(id,"setposition ใช้กับ Singly Linked List เท่านั้น");
+
+   steps.push({
+     ...snap(old,`รับค่า index = ${index}`,-1),
+     trackLine:1,
+     headIndex:old.length?0:-1,
+     compareValue:`index = ${index}`,
+     caption:`ตรวจสอบ index ${index}`
+   });
+
+   if(index<0 || index>=old.length){
+     steps.push({
+       ...snap(old,`index ${index} อยู่นอกช่วง 0 ถึง ${Math.max(0,old.length-1)}`,-1),
+       trackLine:1,
+       headIndex:old.length?0:-1,
+       compareValue:`index = ${index} | valid: 0–${Math.max(0,old.length-1)} | FALSE`,
+       caption:"index is error"
+     });
+   }else{
+     let p=0;
+
+     steps.push({
+       ...snap(old,"กำหนด p = 0",0),
+       trackLine:2,
+       headIndex:0,
+       currentIndex:0,
+       compareValue:`p = ${p} | index = ${index}`,
+       compareValue:`p = ${p} | index = ${index}`,
+         caption:`p = ${p}, index = ${index}`
+     });
+
+     steps.push({
+       ...snap(old,"กำหนด current = head",0),
+       trackLine:3,
+       headIndex:0,
+       currentIndex:0,
+       compareValue:`p = ${p} | index = ${index}`,
+       caption:"current = head"
+     });
+
+     while(p !== index){
+       steps.push({
+         ...snap(old,`ตรวจสอบ p != index → ${p} != ${index}`,p),
+         trackLine:4,
+         headIndex:0,
+         currentIndex:p,
+         compareValue:`p = ${p} | index = ${index} | p != index : TRUE`,
+         caption:"เงื่อนไขเป็นจริง"
+       });
+
+       steps.push({
+         ...snap(old,`current = current.next → node ${p+1}`,p+1),
+         trackLine:5,
+         headIndex:0,
+         currentIndex:p+1,
+         compareValue:`p = ${p} | index = ${index}`,
+         caption:`current เลื่อนไป node ${p+1}`
+       });
+
+       p++;
+
+       steps.push({
+         ...snap(old,`p = p + 1 → ${p}`,p),
+         trackLine:6,
+         headIndex:0,
+         currentIndex:p,
+         compareValue:`p = ${p} | index = ${index}`,
+         caption:`p = ${p}, index = ${index}`
+       });
+     }
+
+     steps.push({
+       ...snap(old,`ตรวจสอบ p != index → ${p} != ${index}`,p),
+       trackLine:4,
+       headIndex:0,
+       currentIndex:p,
+       compareValue:`p = ${p} | index = ${index} | p != index : FALSE`,
+       caption:"เงื่อนไขเป็นเท็จ"
+     });
+
+     steps.push({
+       ...snap(old,`คืนค่า current → node ${index}, data = ${old[index]}`,index),
+       trackLine:7,
+       headIndex:0,
+       currentIndex:index,
+       compareValue:`p = ${p} | index = ${index} | p == index : TRUE`,
+       caption:`RETURN current (node ${index})`
+     });
+   }
+
+   s.steps=steps;
+   s.step=0;
+   s.pending=[...old];
+   s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,`เตรียม setposition(${index}) แล้ว กด Next Step`);
+   addLog(id,`prepare setposition(${index})`);
+   render(id);
+   return;
+ }
+
+ if(op==="print_list"){
+   if(id!=="sll")return setStatus(id,"print_list แบบ Animation ใช้กับ Singly Linked List เท่านั้น");
+
+   steps.push({
+     ...snap(old,"ตรวจสอบว่า List ว่างหรือไม่",-1),
+     trackLine:1,
+     headIndex:old.length?0:-1,
+     resultValue:"Output: (ยังไม่มีผลลัพธ์)",
+     caption:"ตรวจสอบ List ว่าง"
+   });
+
+   if(!old.length){
+     steps.push({
+       ...snap(old,'คืนค่า "List is empty"',-1),
+       trackLine:1,
+       headIndex:-1,
+       resultValue:'Output: List is empty',
+       caption:'RETURN "List is empty"'
+     });
+   }else{
+     let output="List member :";
+
+     steps.push({
+       ...snap(old,`กำหนด data = "${output}"`,-1),
+       trackLine:2,
+       headIndex:0,
+       resultValue:`Output: ${output}`,
+       caption:`data = "${output}"`
+     });
+
+     steps.push({
+       ...snap(old,"กำหนด current = head",0),
+       trackLine:3,
+       headIndex:0,
+       currentIndex:0,
+       resultValue:`Output: ${output}`,
+       caption:"current = head"
+     });
+
+     old.forEach((value,i)=>{
+       output += ` ${value}`;
+
+       steps.push({
+         ...snap(old,`อ่าน current.data = ${value} และต่อท้าย data`,i),
+         trackLine:4,
+         headIndex:0,
+         currentIndex:i,
+         resultValue:`Output: ${output}`,
+       caption:`data = "${output}"`
+       });
+
+       steps.push({
+         ...snap(old,i<old.length-1?`current = current.next → node ${i}`:"current = current.next → NULL",i<old.length-1?i+1:-1),
+         trackLine:5,
+         headIndex:0,
+         currentIndex:i<old.length-1?i+1:undefined,
+         resultValue:`Output: ${output}`,
+         caption:i<old.length-1?`current เลื่อนไป node ${i}`:"current = NULL"
+       });
+     });
+
+     steps.push({
+       ...snap(old,`คืนค่า "${output}"`,-1),
+       trackLine:6,
+       headIndex:0,
+       resultValue:`Output: ${output}`,
+       caption:`RETURN "${output}"`
+     });
+   }
+
+   s.steps=steps;
+   s.step=0;
+   s.pending=[...old];
+   s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,"เตรียม print_list แล้ว กด Next Step");
+   addLog(id,"prepare print_list");
+   render(id);
+   return;
+ }
+
+ if(op==="add_first"){
+   if(id!=="sll")return setStatus(id,"add_first ใช้กับ Singly Linked List เท่านั้น");
+
+   result.unshift(item);
+
+   steps.push({
+     ...snap(result,`สร้าง NewNode และกำหนด data = ${item}`,0,0,-1,false,-1,-1),
+     trackLine:1,
+     headIndex:old.length?1:0,
+     newNodeIndex:0,
+     caption:`Step 1: สร้าง NewNode และกำหนด data = ${item}`
+   });
+
+   steps.push({
+     ...snap(result,"newNode.next ชี้ไปยัง head เดิม",0,0,-1,false,0,-1),
+     trackLine:2,
+     headIndex:old.length?1:0,
+     newNodeIndex:0,
+     caption:old.length
+       ? "Step 2: newNode.next ชี้ไปยังโหนด head เดิม"
+       : "Step 2: newNode.next = NULL"
+   });
+
+   steps.push({
+     ...snap(result,"head ชี้ไปยัง NewNode",0,0,-1,false,0,-1),
+     trackLine:3,
+     headIndex:0,
+     newNodeIndex:0,
+     caption:"Step 3: head ชี้ไปยัง NewNode"
+   });
+
+   steps.push({
+     ...snap(result,"Add First Complete",0,0,-1,true,0,-1),
+     trackLine:4,
+     headIndex:0,
+     caption:"Add First Complete"
+   });
+ }else if(op==="add_last" && id==="sll"){
+   if(old.length===0){
+     result.push(item);
+     steps.push({...snap(old,"ตรวจสอบ List ว่าง",-1,-1,-1),trackLine:1,headIndex:-1});
+     steps.push({...snap(old,"List ว่าง จึงเรียก add_first(data)",-1,-1,-1),trackLine:2,headIndex:-1});
+     steps.push({...snap(result,`สร้าง newnode data = ${item}`,0,0,-1,false,-1,-1),trackLine:3,headIndex:0,newNodeIndex:0});
+     steps.push({...snap(result,"head ชี้ newnode",0,0,-1,true,-1,-1),trackLine:6,headIndex:0});
+   }else{
+     const last=old.length-1;
+     steps.push({...snap(old,"ตรวจสอบ List ไม่ว่าง",-1,-1,-1),trackLine:1,headIndex:0});
+     for(let i=0;i<=last;i++){
+       steps.push({...snap(old,`current = setposition(${i})`,i,-1,-1),trackLine:4,headIndex:0,currentIndex:i});
+     }
+     result.push(item);
+     steps.push({...snap(result,`สร้าง newnode data = ${item}`,last+1,last+1,-1,false,-1,-1),trackLine:3,headIndex:0,currentIndex:last,newNodeIndex:last+1});
+     steps.push({...snap(result,"current.next = newnode",last,last+1,-1,false,last,-1),trackLine:5,headIndex:0,currentIndex:last,newNodeIndex:last+1});
+     steps.push({...snap(result,"count = count + 1",last+1,last+1,-1,true,last,-1),trackLine:6,headIndex:0,currentIndex:last});
+   }
+ }else if(op==="delete_first" && id==="sll"){
+   if(old.length===0)return setStatus(id,"List is empty");
+   const itemValue=old[0];
+   steps.push({...snap(old,"ตรวจสอบ List ไม่ว่าง",0,-1,-1),trackLine:1,headIndex:0});
+   steps.push({...snap(old,"delnode = head",0,-1,0),trackLine:2,headIndex:0,delIndex:0});
+   steps.push({...snap(old,`item = delnode.data = ${itemValue}`,0,-1,0),trackLine:3,headIndex:0,delIndex:0,itemValue});
+   result.shift();
+   steps.push({...snap(result,"head = head.next",result.length?0:-1,-1,-1,false),trackLine:4,headIndex:result.length?0:-1,itemValue});
+   steps.push({...snap(result,"count = count - 1",result.length?0:-1,-1,-1,false),trackLine:5,headIndex:result.length?0:-1,itemValue});
+   steps.push({...snap(result,"ลบ delnode",result.length?0:-1,-1,-1,true),trackLine:6,headIndex:result.length?0:-1,itemValue});
+ }else if(op==="delete_last" && id==="sll"){
+   if(old.length===0)return setStatus(id,"List is empty");
+   if(old.length===1){
+     const itemValue=old[0];
+     steps.push({...snap(old,"count = 1 จึงเรียก delete_first()",0,-1,0),trackLine:2,headIndex:0,delIndex:0});
+     result.shift();
+     steps.push({...snap(result,"ลบโหนดแรกและโหนดสุดท้าย", -1,-1,-1,true),trackLine:8,headIndex:-1,itemValue});
+   }else{
+     const currentIndex=old.length-2;
+     const target=old.length-1;
+     const itemValue=old[target];
+     steps.push({...snap(old,"ตรวจสอบ List ไม่ว่าง",-1,-1,-1),trackLine:1,headIndex:0});
+     for(let i=0;i<=currentIndex;i++){
+       steps.push({...snap(old,`current = setposition(${i})`,i,-1,-1),trackLine:3,headIndex:0,currentIndex:i});
+     }
+     steps.push({...snap(old,"delnode = current.next",currentIndex,-1,target),trackLine:4,headIndex:0,currentIndex,delIndex:target});
+     steps.push({...snap(old,`item = delnode.data = ${itemValue}`,currentIndex,-1,target),trackLine:5,headIndex:0,currentIndex,delIndex:target,itemValue});
+     steps.push({...snap(old,"current.next = None",currentIndex,-1,target,false,currentIndex,-1),trackLine:6,headIndex:0,currentIndex,delIndex:target,itemValue});
+     result.pop();
+     steps.push({...snap(result,"count = count - 1",currentIndex,-1,-1,false),trackLine:7,headIndex:0,currentIndex,itemValue});
+     steps.push({...snap(result,"ลบ delnode",currentIndex,-1,-1,true),trackLine:8,headIndex:0,currentIndex,itemValue});
+   }
+ }else if(op==="append"){
    steps.push(snap(old,`สร้างโหนดใหม่ ค่า ${item}`,-1,old.length));
    for(let i=0;i<old.length;i++)steps.push(snap(old,`pointer เดินผ่าน node ${i}`,i,old.length));
    result.push(item);
@@ -1985,18 +5433,114 @@ function prepareLinked(id,op,item,index){
      steps.push(snap(result,"สร้างเส้นเชื่อมจาก head ไปยังโหนดใหม่",0,0,-1,false,-1,-1));
    }
    steps.push(snap(result,old.length?`เชื่อม node ${old.length-1} ไปยังโหนดใหม่`:"กำหนด head ให้ชี้โหนดใหม่",-1,old.length,-1,true));
+ }else if(op==="insert_index" && id==="sll"){
+   if(!Number.isInteger(index)||index<0||index>old.length){
+     setStatus(id,"index is error");
+     return;
+   }
+
+   if(index===0){
+     result.unshift(item);
+
+     steps.push({
+       ...snap(old,`ตรวจสอบ index ${index}`,-1,-1,-1),
+       trackLine:1,
+       headIndex:old.length?0:-1
+     });
+     steps.push({
+       ...snap(old,"index = 0 จึงเรียก add_first(data)",-1,-1,-1),
+       trackLine:2,
+       headIndex:old.length?0:-1
+     });
+     steps.push({
+       ...snap(result,`สร้าง NewNode และกำหนด data = ${item}`,0,0,-1,false,-1,-1),
+       trackLine:4,
+       headIndex:old.length?1:0,
+       newNodeIndex:0
+     });
+     steps.push({
+       ...snap(result,"newNode.next ชี้ไปยัง head เดิม",0,0,-1,false,0,-1),
+       trackLine:5,
+       headIndex:old.length?1:0,
+       newNodeIndex:0
+     });
+     steps.push({
+       ...snap(result,"head ชี้ไปยัง NewNode",0,0,-1,false,0,-1),
+       trackLine:6,
+       headIndex:0,
+       newNodeIndex:0
+     });
+     steps.push({
+       ...snap(result,"count = count + 1",0,0,-1,true,0,-1),
+       trackLine:7,
+       headIndex:0
+     });
+   }else{
+     const currentIndex=index-1;
+
+     steps.push({
+       ...snap(old,`ตรวจสอบ index ${index}`,-1,-1,-1),
+       trackLine:1,
+       headIndex:old.length?0:-1
+     });
+
+     for(let i=0;i<=currentIndex;i++){
+       steps.push({
+         ...snap(old,`current = setposition(${i})`,i,-1,-1),
+         trackLine:3,
+         headIndex:0,
+         currentIndex:i
+       });
+     }
+
+     result.splice(index,0,item);
+
+     steps.push({
+       ...snap(result,`สร้าง newnode และกำหนด data = ${item}`,index,index,-1,false,-1,-1),
+       trackLine:4,
+       headIndex:0,
+       currentIndex,
+       newNodeIndex:index,
+       linkPending:currentIndex
+     });
+     steps.push({
+       ...snap(result,"newnode.next = current.next",index,index,-1,false,index,-1),
+       trackLine:5,
+       headIndex:0,
+       currentIndex,
+       newNodeIndex:index,
+       linkPending:currentIndex
+     });
+     steps.push({
+       ...snap(result,"current.next = newnode",currentIndex,index,-1,false,currentIndex,-1),
+       trackLine:6,
+       headIndex:0,
+       currentIndex,
+       newNodeIndex:index
+     });
+     steps.push({
+       ...snap(result,"count = count + 1",index,index,-1,true,currentIndex,-1),
+       trackLine:7,
+       headIndex:0,
+       currentIndex
+     });
+   }
  }else if(op==="insert"){
    if(!Number.isInteger(index)||index<0||index>old.length)return setStatus(id,"Index ไม่ถูกต้อง");
 
    steps.push({
      ...snap(old,`สร้าง NewNode ค่า ${item}`,-1,index),
-     trackLine:1
+     trackLine:1,
+     headIndex:old.length?0:-1,
+     caption:`สร้าง NewNode ค่า ${item}`
    });
 
    for(let i=0;i<index;i++){
      steps.push({
        ...snap(old,`pointer เดินผ่าน node ${i}`,i,index),
-       trackLine:1
+       trackLine:1,
+       headIndex:old.length?0:-1,
+       caption:`pointer เดินผ่าน node ${i}`
      });
    }
 
@@ -2072,63 +5616,420 @@ function prepareLinked(id,op,item,index){
    }else{
      if(index===0){
        steps.push({
-         ...snap(result,"สร้างเส้นเชื่อมจากโหนดใหม่ไปยัง head เดิม",0,0,-1,false,0,-1),
-         trackLine:2
+         ...snap(result,"newNode.next ชี้ไปยัง head เดิม",0,0,-1,false,0,-1),
+         trackLine:2,
+         headIndex:1,
+         caption:"Step 1: newNode.next ชี้ไปยัง head เดิม"
        });
        steps.push({
-         ...snap(result,"ปรับ head ให้ชี้โหนดใหม่",0,0,-1,true),
-         trackLine:3
+         ...snap(result,"HEAD เลื่อนไปชี้ NewNode",0,0,-1,false,0,-1),
+         trackLine:3,
+         headIndex:0,
+         caption:"Step 2: HEAD เลื่อนไปชี้ NewNode"
+       });
+       steps.push({
+         ...snap(result,"Insert Complete",0,0,-1,true),
+         trackLine:4,
+         headIndex:0,
+         caption:"Insert Complete"
        });
      }else{
        steps.push({
-         ...snap(result,`สร้างเส้นเชื่อมจาก node ${index-1} ไปยังโหนดใหม่`,index,index,-1,false,index-1,-1),
-         trackLine:2
+         ...snap(result,`newNode.next ชี้ไป node ${index+1}`,index,index,-1,false,index,-1),
+         trackLine:2,
+         headIndex:0,
+         linkPending:index-1,
+         caption:`Step 1: newNode.next ชี้ไป node ${index+1}`
        });
        steps.push({
-         ...snap(result,`สร้างเส้นเชื่อมจากโหนดใหม่ไปยัง node ${index+1}`,index,index,-1,false,index,-1),
-         trackLine:3
+         ...snap(result,`node ${index-1}.next ชี้มาที่ NewNode`,index-1,index,-1,false,index-1,-1),
+         trackLine:3,
+         headIndex:0,
+         caption:`Step 2: node ${index-1}.next ชี้มาที่ NewNode`
        });
        steps.push({
-         ...snap(result,`เชื่อมโหนดใหม่ที่ index ${index}`,index,index,-1,true),
-         trackLine:4
+         ...snap(result,`Insert Complete ที่ index ${index}`,index,index,-1,true),
+         trackLine:4,
+         headIndex:0,
+         caption:"Insert Complete"
        });
      }
    }
+ }else if(id==="dll" && ["delete_index","delete_item"].includes(op)){
+   const requested=s.requestedOp||op;
+   let target=op==="delete_item"?old.indexOf(item):index;
+   const deleteIndex=target;
+
+   if(target<0 || target>=old.length){
+     const message=op==="delete_item"?"item not found":"index error";
+     const selected=op==="delete_item"?"delete_item":"delete_index";
+     updateFunctionCode(id,selected);
+     setLinkedTrack(id,selected);
+     steps.push({
+       ...snap(old,message,-1,-1,-1,true),
+       trackLine:op==="delete_item"?2:1,
+       resultValue:`Output: ${message}`,
+       pointerDetail:`RETURN "${message}"`
+     });
+   }else{
+     const mode=requested==="delete_first"
+       ? "delete_first"
+       : requested==="delete_last"
+         ? "delete_last"
+         : requested==="delete_item"
+           ? "delete_item"
+           : "delete_index";
+
+     updateFunctionCode(id,mode);
+     setLinkedTrack(id,mode);
+
+     if(mode==="delete_item"){
+       for(let i=0;i<=target;i++){
+         steps.push({
+           ...snap(old,`เปรียบเทียบ node ${i}.data = ${old[i]} กับ item = ${item}`,i),
+           trackLine:1,
+           currentIndex:i,
+           compareValue:`${old[i]} == ${item} → ${old[i]===item}`,
+           pointerDetail:`current → node ${i}`
+         });
+       }
+       steps.push({
+         ...snap(old,`พบ item ที่ index = ${deleteIndex}`,target),
+         trackLine:3,
+         currentIndex:target,
+         compareValue:`index = ${deleteIndex}`,
+         pointerDetail:`เรียก delete_index(${deleteIndex})`
+       });
+     }else if(mode==="delete_index"){
+       steps.push({
+         ...snap(old,`ตรวจสอบ index = ${deleteIndex}`,-1),
+         trackLine:1,
+         compareValue:`index = ${deleteIndex} | valid: 1–${old.length}`,
+         pointerDetail:`index = ${deleteIndex}`
+       });
+     }else{
+       steps.push({
+         ...snap(old,"ตรวจสอบ isEmpty()",target),
+         trackLine:1,
+         pointerDetail:"isEmpty() = False"
+       });
+     }
+
+     const removedValue=old[target];
+
+     if(target===0){
+       steps.push({
+         ...snap(old,`delnode = start → node 1`,0,-1,0),
+         trackLine:mode==="delete_item"?3:2,
+         delIndex:0,
+         itemValue:removedValue,
+         pointerDetail:`delnode → node 1 | item = ${removedValue}`
+       });
+
+       if(old.length===1){
+         steps.push({
+           ...snap(old,"start = delnode.next → None",0,-1,0),
+           trackLine:mode==="delete_item"?4:3,
+           delIndex:0,
+           pointerNode:0,pointerField:"next",
+           pointerDetail:"start = None"
+         });
+         steps.push({
+           ...snap(old,"tail = None เพราะลบโหนดเดียว",-1,-1,0),
+           trackLine:mode==="delete_item"?5:5,
+           delIndex:0,
+           tailIndex:-1,
+           pointerDetail:"tail = None"
+         });
+       }else{
+         steps.push({
+           ...snap(old,"start = delnode.next → node 2",1,-1,0),
+           trackLine:mode==="delete_item"?4:3,
+           currentIndex:1,delIndex:0,
+           pointerDetail:`start → node 2 (data = ${old[1]})`
+         });
+         steps.push({
+           ...snap(old,"start.prev = None",1,-1,0,false,-1,-1,-1,-1,-1,0),
+           trackLine:mode==="delete_item"?5:4,
+           currentIndex:1,delIndex:0,
+           pointerNode:1,pointerField:"prev",
+           pointerDetail:"node 2.prev = None"
+         });
+       }
+
+       const finalData=old.slice(1);
+       steps.push({
+         ...snap(finalData,`size = ${finalData.length}`,finalData.length?0:-1,-1,-1),
+         trackLine:mode==="delete_item"?5:6,
+         itemValue:removedValue,
+         pointerDetail:`size = ${old.length} - 1 = ${finalData.length}`
+       });
+       steps.push({
+         ...snap(finalData,`ลบ delnode และคืนค่า ${removedValue}`,finalData.length?0:-1,-1,-1,true),
+         trackLine:mode==="delete_item"?6:7,
+         itemValue:removedValue,
+         resultValue:`Output: ${removedValue}`,
+         pointerDetail:`DELETE delnode | RETURN ${removedValue}`
+       });
+       result.splice(0,result.length,...finalData);
+     }else if(target===old.length-1){
+       const previous=target-1;
+       steps.push({
+         ...snap(old,`delnode = tail → node ${target+1}`,target,-1,target),
+         trackLine:mode==="delete_item"?3:2,
+         delIndex:target,
+         tailIndex:target,
+         itemValue:removedValue,
+         pointerDetail:`delnode → tail | item = ${removedValue}`
+       });
+       steps.push({
+         ...snap(old,`เลื่อน tail ไปทางซ้าย → node ${target}`,previous,-1,target),
+         trackLine:mode==="delete_item"?4:3,
+         delIndex:target,
+         tailIndex:previous,
+         pointerNode:target,pointerField:"prev",
+         pointerDetail:`tail = delnode.prev → node ${target} (data = ${old[previous]})`
+       });
+       steps.push({
+         ...snap(old,`tail.next = None`,previous,-1,target,false,-1,-1,-1,-1,previous,-1),
+         trackLine:mode==="delete_item"?4:4,
+         delIndex:target,
+         tailIndex:previous,
+         pointerNode:previous,pointerField:"next",
+         pointerDetail:`node ${target}.next = None`
+       });
+
+       const finalData=old.slice(0,-1);
+       steps.push({
+         ...snap(finalData,`size = ${finalData.length}`,finalData.length-1,-1,-1),
+         trackLine:mode==="delete_item"?5:6,
+         tailIndex:finalData.length-1,
+         itemValue:removedValue,
+         pointerDetail:`size = ${old.length} - 1 = ${finalData.length}`
+       });
+       steps.push({
+         ...snap(finalData,`ลบ delnode และคืนค่า ${removedValue}`,finalData.length-1,-1,-1,true),
+         trackLine:mode==="delete_item"?6:7,
+         tailIndex:finalData.length-1,
+         itemValue:removedValue,
+         resultValue:`Output: ${removedValue}`,
+         pointerDetail:`DELETE delnode | RETURN ${removedValue}`
+       });
+       result.splice(0,result.length,...finalData);
+     }else{
+       const previous=target-1;
+       const next=target+1;
+
+       for(let i=0;i<=target;i++){
+         steps.push({
+           ...snap(old,`current เดินไป node ${i}`,i),
+           trackLine:mode==="delete_item"?3:4,
+           currentIndex:i,
+           pointerDetail:`current → node ${i}`
+         });
+       }
+
+       steps.push({
+         ...snap(old,`delnode = node ${target+1}`,target,-1,target),
+         trackLine:mode==="delete_item"?3:4,
+         delIndex:target,
+         itemValue:removedValue,
+         pointerDetail:`delnode.data = ${removedValue}`
+       });
+       steps.push({
+         ...snap(old,`previousNode = delnode.prev → node ${previous}`,previous,-1,target),
+         trackLine:mode==="delete_item"?4:5,
+         delIndex:target,
+         previousNodeIndex:previous,
+         pointerNode:target,pointerField:"prev",
+         pointerDetail:`previousNode → node ${previous} (data = ${old[previous]})`
+       });
+       steps.push({
+         ...snap(old,`nextNode = delnode.next → node ${next}`,next,-1,target),
+         trackLine:mode==="delete_item"?4:6,
+         delIndex:target,
+         previousNodeIndex:previous,
+         nextNodeIndex:next,
+         pointerNode:target,pointerField:"next",
+         pointerDetail:`nextNode → node ${next} (data = ${old[next]})`
+       });
+       steps.push({
+         ...snap(old,`previousNode.next = nextNode`,previous,-1,target,false,-1,-1,previous,-1,-1,-1),
+         trackLine:mode==="delete_item"?4:7,
+         delIndex:target,
+         previousNodeIndex:previous,
+         nextNodeIndex:next,
+         pointerNode:previous,pointerField:"next",
+         bypassFrom:previous,bypassTo:next,
+         pointerDetail:`node ${previous}.next = node ${next}`
+       });
+       steps.push({
+         ...snap(old,`nextNode.prev = previousNode`,next,-1,target,false,-1,-1,-1,next,-1,-1),
+         trackLine:mode==="delete_item"?5:8,
+         delIndex:target,
+         previousNodeIndex:previous,
+         nextNodeIndex:next,
+         pointerNode:next,pointerField:"prev",
+         bypassFrom:previous,bypassTo:next,
+         pointerDetail:`node ${next}.prev = node ${previous}`
+       });
+
+       const finalData=[...old];
+       finalData.splice(target,1);
+       steps.push({
+         ...snap(finalData,`size = ${finalData.length}`,Math.min(previous,finalData.length-1),-1,-1),
+         trackLine:mode==="delete_item"?5:9,
+         itemValue:removedValue,
+         pointerDetail:`size = ${old.length} - 1 = ${finalData.length}`
+       });
+       steps.push({
+         ...snap(finalData,`ลบ delnode และคืนค่า ${removedValue}`,Math.min(previous,finalData.length-1),-1,-1,true),
+         trackLine:mode==="delete_item"?6:10,
+         itemValue:removedValue,
+         resultValue:`Output: ${removedValue}`,
+         pointerDetail:`DELETE delnode | RETURN ${removedValue}`
+       });
+       result.splice(0,result.length,...finalData);
+     }
+   }
+
+   s.steps=steps;
+   s.step=0;
+   s.pending=[...result];
+   s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,`เตรียม ${s.requestedOp||op} แล้ว กด Next Step`);
+   addLog(id,`prepare ${s.requestedOp||op} with detailed DLL links`);
+   render(id);
+   return;
  }else{
    let target=op==="delete"?old.length-1:op==="delete_index"?index:old.indexOf(item);
    if(target<0||target>=old.length)return setStatus(id,op==="delete_item"?"ไม่พบ item":"Index ไม่ถูกต้องหรือ List ว่าง");
-   for(let i=0;i<=target;i++)steps.push(snap(old,`pointer เดินผ่าน node ${i}`,i));
-   steps.push(snap(old,`เตรียมลบ node ${target} ค่า ${old[target]}`,target,-1,target));
-   if(target>0){
-     if(id==="dll"){
+
+   if(id==="sll"){
+     if(target===0){
+       steps.push({
+         ...snap(old,"กำหนด del = head",0,-1,0),
+         trackLine:2,
+         headIndex:0,
+         delIndex:0,
+         caption:"กรณีลบโหนดแรก: del = head"
+       });
+       steps.push({
+         ...snap(old,`อ่านค่า del.data = ${old[0]} เก็บใน item`,0,-1,0),
+         trackLine:3,
+         headIndex:0,
+         delIndex:0,
+         itemValue:old[0],
+         caption:`item = ${old[0]}`
+       });
+       result.splice(0,1);
+       steps.push({
+         ...snap(result,"head = del.next",result.length?0:-1,-1,-1,false),
+         trackLine:4,
+         headIndex:result.length?0:-1,
+         itemValue:old[0],
+         caption:"กำหนด head ให้ชี้ del.next"
+       });
+       steps.push({
+         ...snap(result,"ลบ delnode และ Delete Complete",result.length?0:-1,-1,-1,true),
+         trackLine:5,
+         headIndex:result.length?0:-1,
+         itemValue:old[0],
+         caption:"ลบ delnode เสร็จสิ้น"
+       });
+     }else{
+       const currentIndex=target-1;
+       for(let i=0;i<=currentIndex;i++){
+         steps.push({
+           ...snap(old,`current เดินไป node ${i}`,i),
+           trackLine:1,
+           headIndex:0,
+           currentIndex:i,
+           caption:`ค้นหาโหนดก่อนหน้า: current = node ${i}`
+         });
+       }
+
+       steps.push({
+         ...snap(old,`del = current.next → node ${target}`,currentIndex,-1,target),
+         trackLine:2,
+         headIndex:0,
+         currentIndex,
+         delIndex:target,
+         caption:`del ชี้ไป node ${target}`
+       });
+
+       steps.push({
+         ...snap(old,`อ่าน del.data = ${old[target]} เก็บใน item`,currentIndex,-1,target),
+         trackLine:3,
+         headIndex:0,
+         currentIndex,
+         delIndex:target,
+         itemValue:old[target],
+         caption:`item = del.data = ${old[target]}`
+       });
+
+       steps.push({
+         ...snap(old,`current.next ชี้ไป del.next`,currentIndex,-1,target,false,currentIndex,-1),
+         trackLine:4,
+         headIndex:0,
+         currentIndex,
+         delIndex:target,
+         itemValue:old[target],
+         bypassFrom:currentIndex,
+         bypassTo:Math.min(target+1,old.length-1),
+         linkRemoving:currentIndex,
+         caption:"เชื่อม current.next ให้ข้าม delnode"
+       });
+
+       result.splice(target,1);
+
+       steps.push({
+         ...snap(result,"ลบ delnode ออกจากหน่วยความจำ",Math.min(currentIndex,result.length-1),-1,-1,false,Math.min(currentIndex,result.length-1),-1),
+         trackLine:5,
+         headIndex:0,
+         currentIndex:Math.min(currentIndex,result.length-1),
+         itemValue:old[target],
+         caption:"delete del"
+       });
+
+       steps.push({
+         ...snap(result,"Delete Complete",Math.min(currentIndex,result.length-1),-1,-1,true),
+         trackLine:5,
+         headIndex:0,
+         currentIndex:Math.min(currentIndex,result.length-1),
+         itemValue:old[target],
+         caption:"Delete Complete"
+       });
+     }
+   }else{
+     for(let i=0;i<=target;i++)steps.push(snap(old,`pointer เดินผ่าน node ${i}`,i));
+     steps.push(snap(old,`เตรียมลบ node ${target} ค่า ${old[target]}`,target,-1,target));
+     if(target>0){
        steps.push(snap(old,`ยกเลิก next ของ node ${target-1} ที่ชี้ node ${target}`,target-1,-1,target,false,-1,-1,-1,-1,target-1,-1));
        steps.push(snap(old,`ยกเลิก previous ของ node ${target} ที่ชี้ node ${target-1}`,target,-1,target,false,-1,-1,-1,-1,-1,target-1));
+     }
+     if(target<old.length-1){
+       steps.push(snap(old,`ยกเลิก next ของ node ${target} ที่ชี้ node ${target+1}`,target,-1,target,false,-1,-1,-1,-1,target,-1));
+       steps.push(snap(old,`ยกเลิก previous ของ node ${target+1} ที่ชี้ node ${target}`,target+1,-1,target,false,-1,-1,-1,-1,-1,target));
+     }
+     result.splice(target,1);
+     if(target===0){
+       steps.push(snap(result,"เลื่อน head ไปยังโหนดถัดไป",result.length?0:-1,-1,-1,true));
      }else{
-       steps.push(snap(old,`ยกเลิกเส้นเชื่อมจาก node ${target-1} ไปยัง node ${target}`,target-1,-1,target,false,-1,target-1));
+       if(target<result.length){
+         steps.push(snap(result,`กำหนด next ของ node ${target-1} ให้ชี้ node ${target}`,Math.min(target-1,result.length-1),-1,-1,false,-1,-1,target-1,-1,-1,-1));
+         steps.push(snap(result,`กำหนด previous ของ node ${target} ให้ชี้ node ${target-1}`,Math.min(target,result.length-1),-1,-1,false,-1,-1,-1,target-1,-1,-1));
+       }
+       steps.push(snap(result,"ปรับ pointer ให้ข้ามโหนดที่ลบ",Math.min(target-1,result.length-1),-1,-1,true));
      }
-   }
-   if(id==="dll" && target<old.length-1){
-     steps.push(snap(old,`ยกเลิก next ของ node ${target} ที่ชี้ node ${target+1}`,target,-1,target,false,-1,-1,-1,-1,target,-1));
-     steps.push(snap(old,`ยกเลิก previous ของ node ${target+1} ที่ชี้ node ${target}`,target+1,-1,target,false,-1,-1,-1,-1,-1,target));
-   }
-   result.splice(target,1);
-   if(target===0){
-     steps.push(snap(result,"เลื่อน head ไปยังโหนดถัดไป",result.length?0:-1,-1,-1,true));
-   }else{
-     if(id==="dll" && target<result.length){
-       steps.push(snap(result,`กำหนด next ของ node ${target-1} ให้ชี้ node ${target}`,Math.min(target-1,result.length-1),-1,-1,false,-1,-1,target-1,-1,-1,-1));
-       steps.push(snap(result,`กำหนด previous ของ node ${target} ให้ชี้ node ${target-1}`,Math.min(target,result.length-1),-1,-1,false,-1,-1,-1,target-1,-1,-1));
-     }else if(id!=="dll"){
-       steps.push(snap(result,`สร้างเส้นเชื่อมใหม่ให้ข้ามโหนดที่ลบ`,Math.min(target-1,result.length-1),-1,-1,false,Math.min(target-1,result.length-1),-1));
-     }
-     steps.push(snap(result,"ปรับ pointer ให้ข้ามโหนดที่ลบ",Math.min(target-1,result.length-1),-1,-1,true));
    }
  }
  s.steps=steps;s.step=0;s.pending=result;s.view={};$(id+"Progress").style.width="0%";setStatus(id,`เตรียม ${op} แล้ว กด Next Step`);addLog(id,`prepare ${op}`);render(id);
 }
 function nextLinkedStep(id){
  const s=states[id];
- if(!s.steps.length)return setStatus(id,"กรุณาเลือก append / insert / delete ก่อน");
+ if(!s.steps.length)return setStatus(id,"กรุณาเลือกฟังก์ชันที่รองรับ Algorithm Track ก่อน");
  const st=s.steps[s.step];if(!st)return setStatus(id,"Animation เสร็จสิ้น");
  s.data=[...st.data];
  s.view={
@@ -2140,11 +6041,33 @@ function nextLinkedStep(id){
    nextCreating:st.nextCreating,
    prevCreating:st.prevCreating,
    nextRemoving:st.nextRemoving,
-   prevRemoving:st.prevRemoving
+   prevRemoving:st.prevRemoving,
+   headIndex:st.headIndex,
+   caption:st.caption,
+   linkPending:st.linkPending,
+   currentIndex:st.currentIndex,
+   delIndex:st.delIndex,
+   itemValue:st.itemValue,
+   compareValue:st.compareValue,
+   resultValue:st.resultValue,
+   bypassFrom:st.bypassFrom,
+   bypassTo:st.bypassTo,
+   newNodeIndex:st.newNodeIndex,
+   pointerNode:st.pointerNode,
+   pointerField:st.pointerField,
+   pointerDetail:st.pointerDetail,
+   tailIndex:st.tailIndex,
+   pIndex:st.pIndex,
+   previousNodeIndex:st.previousNodeIndex,
+   nextNodeIndex:st.nextNodeIndex,
+   floatingNewNode:st.floatingNewNode,
+   floatingNewNodeValue:st.floatingNewNodeValue
  };
  s.step++;
- setStatus(id,st.text);addLog(id,`Step ${s.step}: ${st.text}`);$(id+"Progress").style.width=(s.step/s.steps.length*100)+"%";render(id);
- if(st.final){s.data=[...s.pending];s.view={};s.steps=[];s.step=0;s.pending=null;setTimeout(()=>{render(id);setStatus(id,"ฟังก์ชันทำงานเสร็จสิ้น")},450)}
+ setStatus(id,st.text);
+ highlightLinkedTrack(id,st.trackLine||1);
+ addLog(id,`Step ${s.step}: ${st.text}`);$(id+"Progress").style.width=(s.step/s.steps.length*100)+"%";render(id);
+ if(st.final){s.data=[...s.pending];s.view={};s.steps=[];s.step=0;s.pending=null;s.requestedOp=null;setTimeout(()=>{render(id);setStatus(id,"ฟังก์ชันทำงานเสร็จสิ้น")},450)}
 }
 function resetLinkedAnimation(id){const s=states[id];s.steps=[];s.step=0;s.pending=null;s.view={};$(id+"Progress").style.width="0%";setStatus(id,"ยกเลิก Animation แล้ว");render(id)}
 
@@ -2744,13 +6667,22 @@ function renderAlgorithmModule(id,st={}){
 
    const arr=s.data||[];
    const floatingKey=id==="insertion" && st.keyValue!==undefined ? `<div class="insertion-key-floating"><span class="floating-key">${st.keyValue}</span></div>` : "";
-   $(id+"Visual").innerHTML=floatingKey+'<div class="sort-row">'+arr.map((v,i)=>{
+   const quickPointerLayer=id==="quick" && (st.leftPointer!==undefined || st.rightPointer!==undefined)
+     ? `<div class="quick-pointer-row"><div class="quick-pointer-track" style="width:100%">
+          ${st.leftPointer!==undefined?`<span class="quick-pointer-label left" style="left:calc(${st.leftPointer} * (100% / ${Math.max(arr.length,1)}) + (50% / ${Math.max(arr.length,1)}) - 14px)">L</span>`:""}
+          ${st.rightPointer!==undefined?`<span class="quick-pointer-label right" style="left:calc(${st.rightPointer} * (100% / ${Math.max(arr.length,1)}) + (50% / ${Math.max(arr.length,1)}) - 14px)">R</span>`:""}
+        </div></div>
+        ${st.compareNote?`<div class="quick-compare-note">${st.compareNote}</div>`:""}`
+     : "";
+   $(id+"Visual").innerHTML=quickPointerLayer+floatingKey+'<div class="sort-row">'+arr.map((v,i)=>{
      let cls="sort-cell";
      if(st.compare?.includes(i))cls+=" compare";
      if(st.active===i)cls+=" active";
      if(st.sorted?.includes(i))cls+=" sorted";
      if(st.pivot===i)cls+=" pivot";
      if(st.found===i)cls+=" search-cell found";
+     if(st.leftPointer===i)cls+=" quick-left";
+     if(st.rightPointer===i)cls+=" quick-right";
      return `<div class="${cls}" data-sort-index="${i}"><span class="sort-index">${i}</span>${v}</div>`;
    }).join("")+"</div>"
    + ((id==="merge"||id==="quick") ? renderRecursionTree(id,st.recursionTree||[],st) : "");
@@ -3157,6 +7089,13 @@ function showTraversal(id,type){
  setStatus(id,`เตรียม ${type} traversal แล้ว — กด Next Step`);
 }
 
+function renderSortingTabs(id){
+ const cfg=configs.find(x=>x.id===id);
+ if(!cfg)return;
+ const op=cfg.algorithm||id;
+ updateFunctionCode(id,op);
+}
+
 function sortingTrack(algo){
  const tracks={
   selection:["กำหนดตำแหน่งปัจจุบัน","ค้นหาค่าน้อยสุด","เปรียบเทียบ","Swap","ขยายส่วน Sorted"],
@@ -3169,7 +7108,6 @@ function sortingTrack(algo){
  };return tracks[algo];
 }
 function prepareSorting(id){
- if(["selection","insertion","bubble"].includes(id))renderSortingTabs(id);
  if(id==="insertion")resetInsertionKeyPanel();
  stopAlgorithmAuto(id);
 
@@ -3501,7 +7439,8 @@ function prepareSorting(id){
    function quickVisual(values,level=0,parentList=rootNodes){
      if(values.length===0)return [];
 
-     const pivot=values[values.length-1];
+     const pivotIndex=values.length-1;
+     const pivot=values[pivotIndex];
      const node={
        id:`quick-${nodeCounter++}`,
        values:[...values],
@@ -3513,15 +7452,18 @@ function prepareSorting(id){
      parentList.push(node);
 
      s.steps.push({
-       data:[...arr],
+       data:[...values],
        recursionTree:cloneRecursionTree(rootNodes),
        treeNodeId:node.id,
        level,
        subarray:[...values],
        pivotValue:pivot,
-       pivot:values.length-1,
+       pivot:pivotIndex,
+       leftPointer:0,
+       rightPointer:Math.max(0,pivotIndex-1),
+       compareNote:`กำหนด Pivot = ${pivot} และเริ่มตัวชี้ L / R`,
        line:1,
-       text:`ระดับ ${level}: แสดงชุดข้อมูล [${values.join(", ")}] และเลือก pivot = ${pivot}`,
+       text:`ระดับ ${level}: เลือก pivot = ${pivot}`,
        comparisons:c,
        swaps:w
      });
@@ -3531,44 +7473,156 @@ function prepareSorting(id){
        return [...values];
      }
 
-     const left=[],right=[];
-     for(let i=0;i<values.length-1;i++){
-       c++;
-       const goLeft=ascending ? values[i] < pivot : values[i] > pivot;
-       (goLeft?left:right).push(values[i]);
+     let left=0;
+     let right=pivotIndex-1;
+     const work=[...values];
+
+     while(left<=right){
+       while(left<=right){
+         c++;
+         s.steps.push({
+           data:[...work],
+           recursionTree:cloneRecursionTree(rootNodes),
+           treeNodeId:node.id,
+           level,
+           subarray:[...work],
+           pivotValue:pivot,
+           pivot:pivotIndex,
+           leftPointer:left,
+           rightPointer:right,
+           compare:[left,pivotIndex],
+           compareNote:`L เปรียบเทียบ ${work[left]} กับ Pivot ${pivot}`,
+           line:2,
+           text:`L: เปรียบเทียบ ${work[left]} กับ pivot ${pivot}`,
+           comparisons:c,
+           swaps:w
+         });
+
+         const stopLeft=ascending ? work[left]>=pivot : work[left]<=pivot;
+         if(stopLeft)break;
+         left++;
+       }
+
+       while(left<=right){
+         c++;
+         s.steps.push({
+           data:[...work],
+           recursionTree:cloneRecursionTree(rootNodes),
+           treeNodeId:node.id,
+           level,
+           subarray:[...work],
+           pivotValue:pivot,
+           pivot:pivotIndex,
+           leftPointer:left,
+           rightPointer:right,
+           compare:[right,pivotIndex],
+           compareNote:`R เปรียบเทียบ ${work[right]} กับ Pivot ${pivot}`,
+           line:2,
+           text:`R: เปรียบเทียบ ${work[right]} กับ pivot ${pivot}`,
+           comparisons:c,
+           swaps:w
+         });
+
+         const stopRight=ascending ? work[right]<=pivot : work[right]>=pivot;
+         if(stopRight)break;
+         right--;
+       }
+
+       if(left<right){
+         const a=left,b=right;
+         [work[a],work[b]]=[work[b],work[a]];
+         w++;
+
+         s.steps.push({
+           data:[...work],
+           recursionTree:cloneRecursionTree(rootNodes),
+           treeNodeId:node.id,
+           level,
+           subarray:[...work],
+           pivotValue:pivot,
+           pivot:pivotIndex,
+           leftPointer:left,
+           rightPointer:right,
+           swap:[a,b],
+           compare:[a,b],
+           compareNote:`สลับค่าที่ L และ R ก่อนแบ่งข้อมูล`,
+           line:3,
+           text:`Swap index ${a} ↔ ${b}`,
+           comparisons:c,
+           swaps:w
+         });
+
+         left++;
+         right--;
+       }else{
+         break;
+       }
      }
 
-     node.children=[];
+     const pivotTarget=left;
+     if(pivotTarget!==pivotIndex){
+       [work[pivotTarget],work[pivotIndex]]=[work[pivotIndex],work[pivotTarget]];
+       w++;
+
+       s.steps.push({
+         data:[...work],
+         recursionTree:cloneRecursionTree(rootNodes),
+         treeNodeId:node.id,
+         level,
+         subarray:[...work],
+         pivotValue:pivot,
+         pivot:pivotTarget,
+         leftPointer:pivotTarget,
+         rightPointer:right,
+         swap:[pivotTarget,pivotIndex],
+         compare:[pivotTarget,pivotIndex],
+         compareNote:`นำ Pivot ไปวางที่ตำแหน่งแบ่ง`,
+         line:4,
+         text:`วาง pivot ${pivot} ที่ index ${pivotTarget}`,
+         comparisons:c,
+         swaps:w
+       });
+     }
+
+     const leftValues=work.slice(0,pivotTarget);
+     const rightValues=work.slice(pivotTarget+1);
+
      s.steps.push({
-       data:[...arr],
+       data:[...work],
        recursionTree:cloneRecursionTree(rootNodes),
        treeNodeId:node.id,
        level,
-       subarray:[...values],
+       subarray:[...work],
        pivotValue:pivot,
-       treeAction:`Left [${left.join(", ")}] | Right [${right.join(", ")}]`,
-       line:3,
-       text:`Partition ด้วย pivot ${pivot}`,
+       pivot:pivotTarget,
+       leftPointer:pivotTarget,
+       rightPointer:pivotTarget,
+       treeAction:`Left [${leftValues.join(", ")}] | Pivot ${pivot} | Right [${rightValues.join(", ")}]`,
+       compareNote:`แบ่งข้อมูลเสร็จ: Left / Pivot / Right`,
+       line:4,
+       text:`Partition เสร็จสิ้น`,
        comparisons:c,
        swaps:w
      });
 
-     const sortedLeft=quickVisual(left,level+1,node.children);
-     const sortedRight=quickVisual(right,level+1,node.children);
+     node.children=[];
+     const sortedLeft=quickVisual(leftValues,level+1,node.children);
+     const sortedRight=quickVisual(rightValues,level+1,node.children);
      const result=[...sortedLeft,pivot,...sortedRight];
 
      node.values=[...result];
      node.done=true;
 
      s.steps.push({
-       data:[...arr],
+       data:[...result],
        recursionTree:cloneRecursionTree(rootNodes),
        treeNodeId:node.id,
        level,
        subarray:[...result],
        pivotValue:pivot,
        treeAction:"Combine",
-       line:4,
+       compareNote:`รวมผลลัพธ์ของ Left + Pivot + Right`,
+       line:5,
        text:`รวมผลเป็น [${result.join(", ")}]`,
        comparisons:c,
        swaps:w
@@ -3588,6 +7642,7 @@ function prepareSorting(id){
      subarray:[...arr],
      pivotValue:rootNodes[0]?.pivot,
      treeAction:"Complete",
+     compareNote:"Quick Sort Complete",
      sorted:[...Array(arr.length).keys()],
      line:5,
      text:"Quick Sort เสร็จสิ้น",
@@ -4027,7 +8082,6 @@ function arrangeHeapSortControls(){
 
 build();
 arrangeHeapSortControls();
-renderSortingTabs("selection");
 
 
 
