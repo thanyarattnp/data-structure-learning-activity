@@ -4061,8 +4061,8 @@ function panel(cfg){
           <option value="asc">น้อยไปมาก</option>
           <option value="desc">มากไปน้อย</option>
         </select></label>`}
+      <button class="action" type="button" onclick="randomizeSortingData('${cfg.id}')">🎲 สุ่มเลข</button>
       <button class="action green" onclick="prepareSorting('${cfg.id}')">Prepare</button>
-      <button class="action gray" type="button" onclick="randomizeSortingData('${cfg.id}')">สุ่มเลขใหม่</button>
     </div>
     ${cfg.id==="selection"?`<div class="selected-panel">
       <strong>ค่าที่เลือกในรอบปัจจุบัน:</strong>
