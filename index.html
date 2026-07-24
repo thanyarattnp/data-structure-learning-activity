@@ -1144,12 +1144,15 @@ aside .topic-popup-btn.active{
   top:calc(100% + 4px);
   left:50%;
   z-index:12;
-  display:flex;
+  display:none;
   gap:4px;
   align-items:flex-start;
   justify-content:center;
   transform:translateX(-50%);
   white-space:nowrap;
+}
+.panel.show-sorting-pointers .sort-pointer-stack{
+  display:flex;
 }
 .sort-pointer-label{
   display:inline-flex;
@@ -3753,6 +3756,12 @@ function switchCodeTab(btn,targetId){
  root.querySelectorAll(".code-tab-panel").forEach(x=>x.classList.remove("active"));
  btn.classList.add("active");
  $(targetId).classList.add("active");
+ const panel=btn.closest(".panel");
+ const cfg=configs.find(x=>x.id===panel?.id);
+ if(panel&&cfg?.kind==="sorting"){
+  const showPointers=targetId.endsWith("TabPseudocode")||targetId.endsWith("TabPython");
+  panel.classList.toggle("show-sorting-pointers",showPointers);
+ }
 }
 
 
