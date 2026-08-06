@@ -1973,7 +1973,7 @@ const configs=[
  {id:"recursion",title:"Recursion Algorithm",kind:"recursion",ops:[]},
  {id:"physicalq",title:"Physical Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
  {id:"linearq",title:"Linear Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
- {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
+ {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","delete_all","is_full","is_empty","size","front","rear","to_list"]},
  {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","add_item","add_index","delete","delete_index","delete_item","isFull","isEmpty","size","get_index","get_item","print_list"]},
  {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_last","insert_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_list"]},
  {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","add_first","add_last","add_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_dll","print_backward"]},
@@ -2002,7 +2002,7 @@ const states={};
 function makeState(id){
  const defaultData=(id==="sll"||id==="dll"||id==="arraylist")?[10,20,30,40]:[];
  const defaultCapacity=id==="arraylist"?5:6;
- return {id,data:[...defaultData],capacity:defaultCapacity,front:-1,rear:-1,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1};
+ return {id,data:[...defaultData],capacity:defaultCapacity,front:id==="circularq"?0:-1,rear:-1,count:0,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1};
 }
 function val(id){const raw=$(id+"Data").value.trim();const n=Number(raw);return Number.isNaN(n)?raw:n}
 function idx(id){return Number($(id+"Index").value)}
@@ -2010,12 +2010,13 @@ function addLog(id,t){const d=document.createElement("div");d.textContent=t;$(id
 function setStatus(id,t){$(id+"Status").textContent=t}
 function updateInfo(id){
  const s=states[id],cfg=configs.find(x=>x.id===id);
- let size=cfg.id==="linearq"||cfg.id==="circularq"?s.data.filter(v=>v!==null).length:s.data.length;
+ let size=cfg.id==="circularq"?s.count:cfg.id==="linearq"?s.data.filter(v=>v!==null).length:s.data.length;
  if($(id+"Size"))$(id+"Size").textContent=size;
  $(id+"State").textContent=size===0?"Empty":"Ready";
  if($(id+"Pointer")){
    if(id==="stack")$(id+"Pointer").textContent=`top = ${s.top}`;
-   else if(["physicalq","linearq","circularq"].includes(id))$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}`;
+   else if(id==="circularq")$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}, count = ${s.count}`;
+   else if(["physicalq","linearq"].includes(id))$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}`;
    else if(id==="dll")$(id+"Pointer").textContent=`start = ${size?"node 1":"None"}, tail = ${size?`node ${size}`:"None"}, size = ${size} | Engine V2`;
    else $(id+"Pointer").textContent="-";
  }
@@ -2231,7 +2232,7 @@ function render(id){
    else{display=Array(s.capacity).fill(null);s.data.forEach((v,i)=>{if(i<s.capacity)display[i]=v})}
    const capacityLabel=id==="arraylist"
      ? `maxlist = ${s.capacity} | size = ${s.data.length}`
-     : `Array Capacity = ${s.capacity} ช่อง`;
+     : id==="circularq"?`maxQ = ${s.capacity} | count = ${s.count}`:`Array Capacity = ${s.capacity} ช่อง`;
    const showArrayOutput=id==="arraylist" && s.view?.showOutputVariable===true;
    const outputPanel=showArrayOutput
      ? `<div class="array-output-panel">
@@ -2382,31 +2383,98 @@ const functionCodeLibrary={
     return item`}
  },
  circularq:{
-  create:{a:["กำหนด front = 0","กำหนด rear = -1","กำหนด size = 0"],p:`CREATE_CIRCULAR_QUEUE(maxSize)
+  create:{a:["สร้าง data จำนวน capacity ช่องและกำหนดค่าเป็น None","กำหนด maxQ = capacity","กำหนด front = 0 และ rear = -1","กำหนด count = 0"],p:`CREATE_CIRCULAR_QUEUE(capacity)
+  data ← array of capacity filled with None
+  maxQ ← capacity
   front ← 0
   rear ← -1
-  size ← 0`,c:`class CircularQueue:
-    def __init__(self, max_size):
-        self.data = [None] * max_size
+  count ← 0`,c:`class CircularQueue:
+    def __init__(self, capacity):
+        self.data = [None] * capacity
+        self.maxQ = capacity
         self.front = 0
         self.rear = -1
-        self.size = 0`},
-  enqueue:{a:["คำนวณ rear แบบวนรอบ","เก็บ item","เพิ่ม size"],p:`ENQUEUE(item)
-  rear ← (rear + 1) MOD maxSize
-  queue[rear] ← item
-  size ← size + 1`,c:`def enqueue(self, item):
-    self.rear = (self.rear + 1) % len(self.data)
+        self.count = 0`},
+  is_empty:{a:["เปรียบเทียบ count กับ 0","คืนค่า True เมื่อ Queue ว่าง มิฉะนั้นคืนค่า False"],p:`IS_EMPTY()
+  RETURN count = 0`,c:`def is_empty(self):
+    return self.count == 0`},
+  is_full:{a:["เปรียบเทียบ count กับ maxQ","คืนค่า True เมื่อ Queue เต็ม มิฉะนั้นคืนค่า False"],p:`IS_FULL()
+  RETURN count = maxQ`,c:`def is_full(self):
+    return self.count == self.maxQ`},
+  size:{a:["อ่านค่าตัวแปร count","คืนค่าจำนวนข้อมูลปัจจุบัน"],p:`SIZE()
+  RETURN count`,c:`def size(self):
+    return self.count`},
+  enqueue:{a:["ตรวจสอบ is_full()","เลื่อน rear แบบวนรอบด้วย MOD maxQ","เก็บ item ที่ data[rear]","เพิ่ม count แล้วคืนค่า True"],p:`ENQUEUE(item)
+  IF IS_FULL()
+    RETURN False
+  rear ← (rear + 1) MOD maxQ
+  data[rear] ← item
+  count ← count + 1
+  RETURN True`,c:`def enqueue(self, item):
+    if self.is_full():
+        return False
+    self.rear = (self.rear + 1) % self.maxQ
     self.data[self.rear] = item
-    self.size += 1`},
-  dequeue:{a:["อ่าน queue[front]","เลื่อน front แบบวนรอบ","ลด size"],p:`DEQUEUE()
-  item ← queue[front]
-  front ← (front + 1) MOD maxSize
-  size ← size - 1
+    self.count += 1
+    return True`},
+  dequeue:{a:["ตรวจสอบ is_empty()","เก็บ data[front] ไว้ใน item","กำหนดช่องเดิมเป็น None","เลื่อน front แบบวนรอบและลด count","คืนค่า item"],p:`DEQUEUE()
+  IF IS_EMPTY()
+    RETURN None
+  item ← data[front]
+  data[front] ← None
+  front ← (front + 1) MOD maxQ
+  count ← count - 1
   RETURN item`,c:`def dequeue(self):
+    if self.is_empty():
+        return None
     item = self.data[self.front]
-    self.front = (self.front + 1) % len(self.data)
-    self.size -= 1
-    return item`}
+    self.data[self.front] = None
+    self.front = (self.front + 1) % self.maxQ
+    self.count -= 1
+    return item`},
+  delete_all:{a:["ตรวจสอบ is_empty()","จำจำนวนข้อมูลจาก count","เรียก dequeue() ตามจำนวนข้อมูลและเก็บค่าที่ลบ","รีเซ็ต front, rear และ count","คืนค่า del_data"],p:`DELETE_ALL()
+  IF IS_EMPTY()
+    RETURN None
+  numberofdata ← count
+  del_data ← empty list
+  FOR i ← 0 TO numberofdata - 1
+    APPEND DEQUEUE() TO del_data
+  front ← 0
+  rear ← -1
+  count ← 0
+  RETURN del_data`,c:`def delete_all(self):
+    if self.is_empty():
+        return None
+    numberofdata = self.count
+    del_data = []
+    for i in range(numberofdata):
+        del_data.append(self.dequeue())
+    self.front = 0
+    self.rear = -1
+    self.count = 0
+    return del_data`},
+  front:{a:["ตรวจสอบว่า Queue ว่างหรือไม่","อ่านข้อมูลที่ data[front]"],p:`GET_FRONT()
+  IF IS_EMPTY()
+    RETURN None
+  RETURN data[front]`,c:`def get_front(self):
+    if self.is_empty():
+        return None
+    return self.data[self.front]`},
+  rear:{a:["ตรวจสอบว่า Queue ว่างหรือไม่","อ่านข้อมูลที่ data[rear]"],p:`GET_REAR()
+  IF IS_EMPTY()
+    RETURN None
+  RETURN data[rear]`,c:`def get_rear(self):
+    if self.is_empty():
+        return None
+    return self.data[self.rear]`},
+  to_list:{a:["สร้างรายการผลลัพธ์ตามจำนวน count","คำนวณ index = (front + i) MOD maxQ","อ่าน data[index] ตามลำดับ Queue","คืนค่ารายการผลลัพธ์"],p:`TO_LIST()
+  result ← empty list
+  FOR i ← 0 TO count - 1
+    index ← (front + i) MOD maxQ
+    APPEND data[index] TO result
+  RETURN result`,c:`def to_list(self):
+    return [self.data[(self.front + i) % self.maxQ]
+            for i in range(self.count)]`}
  },
  arraylist:{
   create:{a:[
@@ -3511,33 +3579,104 @@ DEQUEUE()
         item = self.data[self.front]
         self.front += 1
         return item`},
- circularq:{p:`ENQUEUE(item)
-  rear ← (rear + 1) MOD maxSize
-  queue[rear] ← item
-  size ← size + 1
+ circularq:{p:`CREATE_CIRCULAR_QUEUE(capacity)
+  data ← array of capacity filled with None
+  maxQ ← capacity
+  front ← 0
+  rear ← -1
+  count ← 0
+
+IS_EMPTY()
+  RETURN count = 0
+
+IS_FULL()
+  RETURN count = maxQ
+
+SIZE()
+  RETURN count
+
+ENQUEUE(item)
+  IF IS_FULL()
+    RETURN False
+  rear ← (rear + 1) MOD maxQ
+  data[rear] ← item
+  count ← count + 1
+  RETURN True
 
 DEQUEUE()
-  item ← queue[front]
-  front ← (front + 1) MOD maxSize
-  size ← size - 1
-  RETURN item`,c:`class CircularQueue:
-    def __init__(self, max_size):
-        self.data = [None] * max_size
-        self.max_size = max_size
+  IF IS_EMPTY()
+    RETURN None
+  item ← data[front]
+  data[front] ← None
+  front ← (front + 1) MOD maxQ
+  count ← count - 1
+  RETURN item
+
+DELETE_ALL()
+  IF IS_EMPTY()
+    RETURN None
+  numberofdata ← count
+  del_data ← empty list
+  FOR i ← 0 TO numberofdata - 1
+    APPEND DEQUEUE() TO del_data
+  front ← 0
+  rear ← -1
+  count ← 0
+  RETURN del_data
+
+TO_LIST()
+  result ← empty list
+  FOR i ← 0 TO count - 1
+    APPEND data[(front + i) MOD maxQ] TO result
+  RETURN result`,c:`class CircularQueue:
+    def __init__(self, capacity):
+        self.data = [None] * capacity
+        self.maxQ = capacity
         self.front = 0
         self.rear = -1
-        self.size = 0
+        self.count = 0
+
+    def is_empty(self):
+        return self.count == 0
+
+    def is_full(self):
+        return self.count == self.maxQ
+
+    def size(self):
+        return self.count
 
     def enqueue(self, item):
-        self.rear = (self.rear + 1) % self.max_size
+        if self.is_full():
+            return False
+        self.rear = (self.rear + 1) % self.maxQ
         self.data[self.rear] = item
-        self.size += 1
+        self.count += 1
+        return True
 
     def dequeue(self):
+        if self.is_empty():
+            return None
         item = self.data[self.front]
-        self.front = (self.front + 1) % self.max_size
-        self.size -= 1
-        return item`},
+        self.data[self.front] = None
+        self.front = (self.front + 1) % self.maxQ
+        self.count -= 1
+        return item
+
+    def delete_all(self):
+        if self.is_empty():
+            return None
+        numberofdata = self.count
+        del_data = []
+        for i in range(numberofdata):
+            del_data.append(self.dequeue())
+        self.front = 0
+        self.rear = -1
+        self.count = 0
+        return del_data
+
+    def to_list(self):
+        return [self.data[(self.front + i) % self.maxQ]
+                for i in range(self.count)]`},
  sll:{p:`ADD_FIRST(item)
   newNode ← Node(item)
   newNode.next ← head
@@ -4131,6 +4270,8 @@ function panel(cfg){
    add_item:"Add Item",
    add_index:"Add Index",
    get_item:"Get Item"
+   ,delete_all:"Delete All"
+   ,to_list:"To List"
  }[op]||op);
  const buttonHTML=op=>`<button class="action ${op==="create"?"green":op.includes("delete")||op==="pop"||op==="dequeue"?"blue":"gray"}" onclick="operate('${cfg.id}','${op}')">${opLabel(op)}</button>`;
  const listGroupOps={
@@ -4778,6 +4919,10 @@ function operate(id,op){
    else if(op==="setposition"){op="setposition"}
    else if(op==="print_dll"){op="print_dll"}
  }
+ if(id==="circularq"){
+   if(op==="is_full")op="isFull";
+   else if(op==="is_empty")op="isEmpty";
+ }
  if(op==="create"){
    states[id]=makeState(id);
    states[id].capacity=id==="arraylist"?5:cap;
@@ -4811,27 +4956,48 @@ function operate(id,op){
    if(op==="popAll"){const out=[];while(s.data.length)out.push(s.data.pop());s.top=-1;setStatus(id,`popAll: ${out.join(" → ")}`)}
  }
  if(["physicalq","linearq","circularq"].includes(id)){
-   const qsize=id==="physicalq"?s.data.length:s.data.filter(v=>v!==null).length;
+   const qsize=id==="circularq"?s.count:id==="physicalq"?s.data.length:s.data.filter(v=>v!==null).length;
    if(op==="enqueue"){
      if(qsize>=s.capacity)return setStatus(id,"Queue Overflow");
      if(id==="physicalq"){s.data.push(item);s.front=0;s.rear=s.data.length-1}
      if(id==="linearq"){if(s.rear===s.capacity-1)return setStatus(id,"Queue Overflow");if(s.front===-1)s.front=0;s.rear++;s.data[s.rear]=item}
-     if(id==="circularq"){if(s.front===-1)s.front=s.rear=0;else s.rear=(s.rear+1)%s.capacity;s.data[s.rear]=item}
+     if(id==="circularq"){s.rear=(s.rear+1)%s.capacity;s.data[s.rear]=item;s.count++}
      setStatus(id,`enqueue ${item} ลงใน array[${s.rear}]`);
    }
    if(op==="dequeue"){
-     if(s.front===-1)return setStatus(id,"Queue Underflow");
+     if(id==="circularq"?s.count===0:s.front===-1)return setStatus(id,"Queue Underflow");
      if(id==="physicalq"){const x=s.data.shift();s.front=s.data.length?0:-1;s.rear=s.data.length-1;setStatus(id,`dequeue ${x} และเลื่อนข้อมูล`)}
      if(id==="linearq"){const x=s.data[s.front];s.data[s.front]=null;if(s.front===s.rear)s.front=s.rear=-1;else s.front++;setStatus(id,`dequeue ${x}`)}
-     if(id==="circularq"){const x=s.data[s.front];s.data[s.front]=null;if(s.front===s.rear)s.front=s.rear=-1;else s.front=(s.front+1)%s.capacity;setStatus(id,`dequeue ${x}`)}
+     if(id==="circularq"){const x=s.data[s.front];s.data[s.front]=null;s.front=(s.front+1)%s.capacity;s.count--;setStatus(id,`dequeue ${x}`)}
    }
-   const sizeNow=id==="physicalq"?s.data.length:s.data.filter(v=>v!==null).length;
+   if(op==="delete_all"&&id==="circularq"){
+     if(s.count===0)setStatus(id,"delete_all = None (Queue ว่าง)");
+     else{
+       const removed=[];
+       const numberOfData=s.count;
+       for(let i=0;i<numberOfData;i++){
+         removed.push(s.data[s.front]);
+         s.data[s.front]=null;
+         s.front=(s.front+1)%s.capacity;
+         s.count--;
+       }
+       s.front=0;s.rear=-1;s.count=0;
+       setStatus(id,`delete_all = [${removed.join(", ")}]`);
+     }
+   }
+   const sizeNow=id==="circularq"?s.count:id==="physicalq"?s.data.length:s.data.filter(v=>v!==null).length;
    if(op==="isFull")setStatus(id,`isFull = ${sizeNow===s.capacity}`);
    if(op==="isEmpty")setStatus(id,`isEmpty = ${sizeNow===0}`);
    if(op==="size")setStatus(id,`size = ${sizeNow}`);
-   if(op==="front")setStatus(id,`front = ${s.front===-1?"ไม่มีข้อมูล":s.data[s.front]}`);
-   if(op==="rear")setStatus(id,`rear = ${s.rear===-1?"ไม่มีข้อมูล":s.data[s.rear]}`);
-   if(op==="print_queue"){let vals=[];if(id==="physicalq")vals=[...s.data];else if(s.front!==-1){let i=s.front;while(true){vals.push(s.data[i]);if(i===s.rear)break;i=id==="circularq"?(i+1)%s.capacity:i+1}}setStatus(id,`front → ${vals.join(" → ")} ← rear`)}
+   if(op==="front")setStatus(id,`front = ${sizeNow===0?"ไม่มีข้อมูล":s.data[s.front]}`);
+   if(op==="rear")setStatus(id,`rear = ${sizeNow===0?"ไม่มีข้อมูล":s.data[s.rear]}`);
+   if(op==="print_queue"||op==="to_list"){
+     let vals=[];
+     if(id==="physicalq")vals=[...s.data];
+     else if(id==="circularq")for(let i=0;i<s.count;i++)vals.push(s.data[(s.front+i)%s.capacity]);
+     else if(s.front!==-1)for(let i=s.front;i<=s.rear;i++)vals.push(s.data[i]);
+     setStatus(id,op==="to_list"?`to_list = [${vals.join(", ")}]`:`front → ${vals.join(" → ")} ← rear`);
+   }
  }
  if(id==="arraylist"){
    if(op!=="print_list"){
