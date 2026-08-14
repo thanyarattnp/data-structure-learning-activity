@@ -2583,8 +2583,8 @@ const functionCodeLibrary={
   ELSE IF index < 0 OR index > size - 1
     RETURN "index is error"
   item ← items[index]
-  FOR i ← index TO size - 2
-    items[i] ← items[i + 1]
+  FOR i ← index + 1 TO size - 1
+    items[i - 1] ← items[i]
   items[size - 1] ← NULL
   size ← size - 1
   RETURN item`,c:`def delete_index(self, index):
@@ -2594,8 +2594,8 @@ const functionCodeLibrary={
         return "index is error"
     else:
         item = self.items[index]
-        for i in range(index, self.size - 1):
-            self.items[i] = self.items[i + 1]
+        for i in range(index + 1, self.size):
+            self.items[i - 1] = self.items[i]
         self.items[self.size - 1] = None
         self.size = self.size - 1
         return item`},
@@ -3223,7 +3223,6 @@ functionCodeLibrary.arraylist.add_item={
     self.data.append(item)
     return "Add complete"`
 };
-functionCodeLibrary.arraylist.add_index=functionCodeLibrary.arraylist.insert;
 functionCodeLibrary.arraylist.delete_first={
  a:["ตรวจสอบ List ว่าง","อ่านข้อมูล index 0","เลื่อนข้อมูลไปทางซ้าย","ลด size"],
  p:`DELETE_FIRST()
@@ -4925,7 +4924,7 @@ function operate(id,op){
  }
  if(op==="create"){
    states[id]=makeState(id);
-   states[id].capacity=id==="arraylist"?5:cap;
+   states[id].capacity=cap;
    if(id==="arraylist")states[id].data=[];
    if(id==="linearq"||id==="circularq")states[id].data=Array(cap).fill(null);
    if(id==="sll"){
