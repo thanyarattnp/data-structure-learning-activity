@@ -75,6 +75,32 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 
 .return-badge{display:block;margin-top:6px;padding:4px 8px;border-radius:999px;background:#1565c0;color:#fff;font-size:12px}
 
+/* v121 Fibonacci recursion tree shown together with the call stack */
+.rec-call-tree{display:grid;grid-template-columns:minmax(190px,.75fr) minmax(420px,1.6fr);gap:12px;margin-top:10px;align-items:start}
+.rec-subview{min-width:0;border:1px solid #dfe7e2;border-radius:10px;background:#fbfdfc;padding:10px}
+.rec-subview-title{display:block;margin-bottom:9px;color:var(--g);font-size:13px;font-weight:900;text-align:center}
+.fib-tree-scroll{overflow:auto;padding:8px 4px 14px}
+.fib-tree{display:flex;justify-content:center;min-width:max-content}
+.fib-tree ul{position:relative;display:flex;justify-content:center;margin:0;padding-top:22px;padding-left:0}
+.fib-tree li{position:relative;list-style:none;text-align:center;padding:22px 6px 0}
+.fib-tree li::before,.fib-tree li::after{content:"";position:absolute;top:0;width:50%;height:22px;border-top:2px solid #b0bec5}
+.fib-tree li::before{right:50%}
+.fib-tree li::after{left:50%;border-left:2px solid #b0bec5}
+.fib-tree li:only-child::before,.fib-tree li:only-child::after{display:none}
+.fib-tree li:only-child{padding-top:0}
+.fib-tree li:first-child::before,.fib-tree li:last-child::after{border:0}
+.fib-tree li:last-child::before{border-right:2px solid #b0bec5;border-radius:0 7px 0 0}
+.fib-tree li:first-child::after{border-radius:7px 0 0 0}
+.fib-tree ul ul::before{content:"";position:absolute;top:0;left:50%;height:22px;border-left:2px solid #b0bec5}
+.fib-node{min-width:68px;padding:7px 8px;border:2px solid #cfd8dc;border-radius:9px;background:#fff;color:#607d8b;font-size:12px;font-weight:900;box-shadow:0 3px 8px rgba(0,0,0,.05)}
+.fib-node.visited{border-color:var(--g);color:var(--g);background:var(--g2)}
+.fib-node.active{border-color:var(--o);color:var(--o);background:var(--o2);box-shadow:0 0 0 4px rgba(239,108,0,.14)}
+.fib-node.done{border-color:var(--b);color:#1565c0;background:#e3f2fd}
+.fib-node-result{display:block;margin-top:3px;font-size:10px;font-weight:800}
+.fib-tree-legend{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:8px;color:#607d8b;font-size:11px;font-weight:700}
+.fib-tree-legend i{display:inline-block;width:10px;height:10px;margin-right:4px;border-radius:50%;vertical-align:-1px}
+@media(max-width:1150px){.rec-call-tree{grid-template-columns:1fr}.fib-tree{justify-content:flex-start}}
+
 .algo-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
 .algo-visual{min-height:260px;border:2px dashed #cfd8dc;border-radius:12px;padding:22px;background:#fafafa;overflow:auto}
 .tree-stage{display:flex;flex-direction:column;gap:18px;align-items:center}
@@ -1945,6 +1971,75 @@ aside .topic-popup-btn.active{
   display:block;
   line-height:1.55;
 }
+
+/* Interactive Pointer Lab: drag/click links for SLL and DLL */
+.pointer-lab-launch{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pointer-lab{margin-top:14px;padding:14px;border:2px solid #81c784;border-radius:14px;background:#f7fff8}
+.pointer-lab[hidden]{display:none!important}
+.pointer-lab-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pointer-lab-head h3{margin:0;color:#1b5e20}
+.pointer-lab-head p{margin:5px 0 0;color:#546e7a}
+.pointer-lab-actions{display:flex;gap:7px;flex-wrap:wrap}
+.pointer-lab-progress{margin:12px 0 8px;height:9px;border-radius:999px;background:#dfe9e2;overflow:hidden}
+.pointer-lab-progress span{display:block;height:100%;background:#2e7d32;transition:width .25s ease}
+.pointer-lab-instruction{padding:10px 12px;border-radius:9px;background:#fff3e0;color:#e65100;font-weight:900}
+.pointer-lab-instruction.ok{background:#e8f5e9;color:#1b5e20}
+.pointer-lab-stage{position:relative;display:flex;align-items:center;gap:24px;min-height:245px;margin-top:12px;padding:54px 28px 62px;overflow:auto;border:1px dashed #a5d6a7;border-radius:12px;background:#fff}
+.pointer-lab-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
+.pointer-lab-pointer,.pointer-lab-node,.pointer-lab-special{position:relative;z-index:2;flex:0 0 auto}
+.pointer-lab-pointer{align-self:flex-start;margin-top:-35px;padding:8px 11px;border:2px solid #2e7d32;border-radius:9px;background:#e8f5e9;color:#1b5e20;font-weight:900;cursor:grab}
+.pointer-lab-node{width:126px;border:3px solid #546e7a;border-radius:12px;background:#fff;box-shadow:0 5px 12px rgba(0,0,0,.08)}
+.pointer-lab-node.new{border-color:#7b1fa2;background:#faf3fc}
+.pointer-lab-node.delete{border-color:#c62828;background:#ffebee}
+.pointer-lab-node-title{padding:8px;text-align:center;font-weight:900;border-bottom:1px solid #cfd8dc}
+.pointer-lab-node-field{display:flex;align-items:center;justify-content:space-between;gap:5px;padding:7px 8px;font-size:12px;font-weight:800;border-top:1px solid #eceff1}
+.pointer-handle{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:5px 7px;border:2px solid #ef6c00;border-radius:999px;background:#fff3e0;color:#e65100;font-size:11px;font-weight:900;cursor:grab;user-select:none}
+.pointer-handle.prev{border-color:#1565c0;background:#e3f2fd;color:#0d47a1}
+.pointer-handle.selected{outline:4px solid rgba(239,108,0,.22);transform:scale(1.05)}
+.pointer-target{transition:.18s}
+.pointer-target.drag-over{outline:4px solid rgba(46,125,50,.25);transform:translateY(-3px)}
+.pointer-lab-special{padding:11px 14px;border:2px dashed #78909c;border-radius:10px;background:#f5f7f8;color:#455a64;font-weight:900}
+.pointer-lab-special.trash{border-color:#c62828;background:#ffebee;color:#b71c1c}
+.pointer-lab-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.pointer-lab-link-chip{padding:5px 8px;border-radius:999px;background:#e3f2fd;color:#0d47a1;font-size:12px;font-weight:800}
+.pointer-lab-message{min-height:24px;margin-top:9px;font-weight:800}
+.pointer-lab-message.error{color:#c62828}.pointer-lab-message.success{color:#2e7d32}
+.sll-choice-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.sll-choice{min-width:150px;padding:11px 14px;border:2px solid #90a4ae;border-radius:10px;background:#fff;color:#37474f;font-weight:900;cursor:pointer}
+.sll-choice:hover,.sll-choice.active{border-color:#1565c0;background:#e3f2fd;color:#0d47a1;transform:translateY(-1px)}
+.sll-activity-stage{display:block;min-height:330px;padding:28px 22px 34px;overflow:auto}
+.sll-existing-title,.sll-new-title{position:relative;z-index:2;margin:0 0 10px;color:#455a64;font-size:13px;font-weight:900}
+.sll-list-row{position:relative;z-index:2;display:flex;align-items:center;gap:10px;min-width:780px}
+.sll-activity-node{position:relative;z-index:2;width:130px;flex:0 0 130px;border:3px solid #546e7a;border-radius:12px;background:#fff;box-shadow:0 5px 12px rgba(0,0,0,.09)}
+.sll-activity-node.new{border-color:#7b1fa2;background:#faf3fc}
+.sll-activity-node.new.joining{animation:sllNewNodeJoin 1.8s cubic-bezier(.22,.75,.28,1) both}
+.sll-activity-node .node-name{padding:7px;text-align:center;font-weight:900;border-bottom:1px solid #cfd8dc}
+.sll-activity-node .node-body{display:grid;grid-template-columns:1fr 1fr;align-items:center;text-align:center}
+.sll-activity-node .node-data{padding:14px 6px;font-size:20px;font-weight:900}
+.sll-activity-node .node-next{padding:12px 4px;border-left:1px solid #cfd8dc}
+.sll-fixed-arrow{color:#607d8b;font-size:30px;font-weight:900}
+.sll-null{position:relative;z-index:2;padding:11px 14px;border:2px dashed #78909c;border-radius:10px;background:#f5f7f8;color:#455a64;font-weight:900}
+.sll-new-lane{position:relative;z-index:2;margin-top:34px;padding-top:14px;border-top:1px dashed #ce93d8}
+.sll-new-lane .sll-activity-node{margin-left:90px}
+.expected-source{outline:5px solid rgba(255,152,0,.3)!important;box-shadow:0 0 0 3px #ff9800!important;animation:pointerPulse 1s infinite alternate}
+.expected-target{outline:5px solid rgba(46,125,50,.24)!important;box-shadow:0 0 0 3px #2e7d32!important}
+.sll-legend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0;color:#546e7a;font-size:12px;font-weight:800}
+.sll-dot{display:inline-block;width:11px;height:11px;margin-right:5px;border-radius:50%}.sll-dot.source{background:#ff9800}.sll-dot.target{background:#2e7d32}
+.sll-result{margin-top:12px;padding:13px;border-radius:10px;background:#e8f5e9;color:#1b5e20;font-size:17px;font-weight:900;word-spacing:5px}
+.sll-state-strip{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.sll-state-badge{padding:7px 11px;border-radius:999px;background:#eceff1;color:#37474f;font-weight:900}
+.sll-step-action{padding:11px 18px;border:0;border-radius:9px;background:#1565c0;color:#fff;font-weight:900;cursor:pointer;box-shadow:0 3px 8px rgba(21,101,192,.25)}
+.sll-p-badge{position:absolute;top:-31px;left:50%;transform:translateX(-50%);padding:3px 9px;border-radius:999px;background:#fff3e0;color:#e65100;border:2px solid #ef6c00;font-weight:900}
+.sll-new-placeholder{margin-left:90px;padding:16px;border:2px dashed #b39ddb;border-radius:10px;color:#6a1b9a;font-weight:800;background:#faf3fc}
+.sll-del-badge{position:absolute;top:-31px;left:50%;transform:translateX(-50%);padding:3px 9px;border-radius:999px;background:#ffebee;color:#b71c1c;border:2px solid #c62828;font-weight:900}
+.sll-activity-node.to-delete{border-color:#c62828;background:#ffebee}
+@keyframes pointerPulse{to{transform:scale(1.06)}}
+@keyframes sllNewNodeJoin{
+  0%{opacity:.35;transform:translateY(145px) scale(.9)}
+  55%{opacity:1;transform:translateY(18px) scale(1.03)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:900px){.pointer-lab-stage{justify-content:flex-start}.pointer-lab-head{display:block}.pointer-lab-actions{margin-top:8px}}
 
 </style>
 </head>
@@ -4076,7 +4171,13 @@ function panel(cfg){
     <div class="progress"><div id="recProgress"></div></div>
     <div class="expr-grid">
       <div class="expr-box"><strong>Function</strong><div id="recCode" class="code-box"></div></div>
-      <div class="expr-box"><strong>Current Recursion Call Path</strong><div id="recVisual" class="visual"></div></div>
+      <div class="expr-box">
+        <strong>Current Recursion Call Path</strong>
+        <div class="rec-call-tree">
+          <div class="rec-subview"><span class="rec-subview-title">Call Stack</span><div id="recVisual" class="visual"></div></div>
+          <div id="recTreePanel" class="rec-subview" hidden><span class="rec-subview-title">Fibonacci Recursion Tree</span><div id="recTree" class="fib-tree-scroll"></div></div>
+        </div>
+      </div>
       <div class="expr-box">
         <strong>Algorithm Track</strong>
         <div id="recTrack" class="algorithm-track"></div>
@@ -4308,7 +4409,7 @@ function panel(cfg){
      </div>`
    : cfg.ops.map(buttonHTML).join("");
  const linkedTools=cfg.kind==="linked"
-   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>${codeTabs(cfg.id)}`
+   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div><div class="pointer-lab-launch"><button class="action green" onclick="startPointerLab('${cfg.id}','insert')">🖱️ ฝึกลากเพิ่มโหนด</button><button class="action blue" onclick="startPointerLab('${cfg.id}','delete')">🖱️ ฝึกลากลบโหนด</button></div><div id="${cfg.id}PointerLab" class="pointer-lab" hidden></div>${codeTabs(cfg.id)}`
    : cfg.id==="arraylist"
      ? `<div class="tools"><button class="action" onclick="nextArrayListStep()">Next Step</button><button class="action gray" onclick="resetArrayListAnimation()">Reset Animation</button><button class="action gray" onclick="resetArrayListDefault()">Reset Default</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div>${codeTabs(cfg.id)}`
      : `<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>${["stack","physicalq","linearq","circularq"].includes(cfg.id)?codeTabs(cfg.id):""}`;
@@ -6675,6 +6776,433 @@ function nextLinkedStep(id){
 function resetLinkedAnimation(id){const s=states[id];s.steps=[];s.step=0;s.pending=null;s.view={};$(id+"Progress").style.width="0%";setStatus(id,"ยกเลิก Animation แล้ว");render(id)}
 
 
+/* =========================================================
+   Interactive Pointer Lab — SLL / DLL insertion and deletion
+   Drag a pointer handle to a node, NULL, or Trash in order.
+   Click-source then click-target is the touch-device fallback.
+   ========================================================= */
+const pointerLabStates={sll:null,dll:null};
+
+function pointerLabStep(source,target,label){return {source,target,label}}
+function pointerLabSteps(id,mode,data,index){
+ const steps=[];
+ const last=data.length-1;
+ if(mode==="insert"){
+   if(id==="sll"){
+     if(index===0){
+       steps.push(pointerLabStep("new.next",data.length?"n0":"NULL",data.length?"newNode.next → node 0":"newNode.next → NULL"));
+       steps.push(pointerLabStep("head","new","head → newNode"));
+     }else{
+       steps.push(pointerLabStep("new.next",index<data.length?`n${index}`:"NULL",index<data.length?`newNode.next → node ${index}`:"newNode.next → NULL"));
+       steps.push(pointerLabStep(`n${index-1}.next`,"new",`node ${index-1}.next → newNode`));
+     }
+   }else if(!data.length){
+     steps.push(pointerLabStep("new.prev","NULL","newNode.prev → NULL"));
+     steps.push(pointerLabStep("new.next","NULL","newNode.next → NULL"));
+     steps.push(pointerLabStep("start","new","start → newNode"));
+     steps.push(pointerLabStep("tail","new","tail → newNode"));
+   }else if(index===0){
+     steps.push(pointerLabStep("new.next","n0","newNode.next → node 0"));
+     steps.push(pointerLabStep("new.prev","NULL","newNode.prev → NULL"));
+     steps.push(pointerLabStep("start","new","start → newNode"));
+     steps.push(pointerLabStep("n0.prev","new","node 0.prev → newNode"));
+   }else if(index===data.length){
+     steps.push(pointerLabStep("new.next","NULL","newNode.next → NULL"));
+     steps.push(pointerLabStep("new.prev",`n${last}`,`newNode.prev → node ${last}`));
+     steps.push(pointerLabStep(`n${last}.next`,"new",`node ${last}.next → newNode`));
+     steps.push(pointerLabStep("tail","new","tail → newNode"));
+   }else{
+     steps.push(pointerLabStep("new.next",`n${index}`,`newNode.next → node ${index}`));
+     steps.push(pointerLabStep("new.prev",`n${index-1}`,`newNode.prev → node ${index-1}`));
+     steps.push(pointerLabStep(`n${index-1}.next`,"new",`node ${index-1}.next → newNode`));
+     steps.push(pointerLabStep(`n${index}.prev`,"new",`node ${index}.prev → newNode`));
+   }
+  }else if(id==="sll"){
+    if(index===0)steps.push(pointerLabStep("head",data.length>1?"n1":"NULL",data.length>1?"head → node 1":"head → NULL"));
+    else steps.push(pointerLabStep(`n${index-1}.next`,index<last?`n${index+1}`:"NULL",index<last?`node ${index-1}.next → node ${index+1}`:`node ${index-1}.next → NULL`));
+    steps.push(pointerLabStep(`n${index}`,"TRASH",`ลบ node ${index}`));
+  }else if(data.length===1){
+    steps.push(pointerLabStep("start","NULL","start → NULL"));
+    steps.push(pointerLabStep("tail","NULL","tail → NULL"));
+    steps.push(pointerLabStep("n0","TRASH","ลบ node 0"));
+  }else if(index===0){
+    steps.push(pointerLabStep("start","n1","start → node 1"));
+    steps.push(pointerLabStep("n1.prev","NULL","node 1.prev → NULL"));
+    steps.push(pointerLabStep("n0","TRASH","ลบ node 0"));
+  }else if(index===last){
+    steps.push(pointerLabStep("tail",`n${last-1}`,`tail → node ${last-1}`));
+    steps.push(pointerLabStep(`n${last-1}.next`,"NULL",`node ${last-1}.next → NULL`));
+    steps.push(pointerLabStep(`n${last}`,"TRASH",`ลบ node ${last}`));
+  }else{
+    steps.push(pointerLabStep(`n${index-1}.next`,`n${index+1}`,`node ${index-1}.next → node ${index+1}`));
+    steps.push(pointerLabStep(`n${index+1}.prev`,`n${index-1}`,`node ${index+1}.prev → node ${index-1}`));
+    steps.push(pointerLabStep(`n${index}`,"TRASH",`ลบ node ${index}`));
+  }
+  return steps;
+}
+function startPointerLab(id,mode){
+ if(id==="sll"&&mode==="insert")return startSllInsertActivity();
+ if(id==="sll"&&mode==="delete")return startSllDeleteActivity();
+ if(id==="dll")return startDllPointerActivity(mode);
+ const data=[...states[id].data],item=val(id),index=idx(id);
+ if(mode==="insert" && (!Number.isInteger(index)||index<0||index>data.length))return setStatus(id,`Pointer Lab: index ต้องอยู่ระหว่าง 0–${data.length}`);
+ if(mode==="delete" && (!data.length||!Number.isInteger(index)||index<0||index>=data.length))return setStatus(id,data.length?`Pointer Lab: index ต้องอยู่ระหว่าง 0–${data.length-1}`:"Pointer Lab: List is empty");
+ pointerLabStates[id]={id,mode,data,item,index,steps:pointerLabSteps(id,mode,data,index),done:[],selected:null,message:"",messageType:"",hint:false,completed:false};
+ setSelectedFunction(id,mode==="insert"?"Pointer Lab: Insert Node":"Pointer Lab: Delete Node");
+ setStatus(id,mode==="insert"?`เริ่มฝึกลากเพิ่ม ${item} ที่ index ${index}`:`เริ่มฝึกลากลบ node ${index}`);
+ renderPointerLab(id);
+}
+function randomSllNewNodeValue(data){
+ let value;
+ do{value=Math.floor(Math.random()*90)+10}while(data.includes(value));
+ return value;
+}
+function sllActivityAction(action,label){return {type:"action",action,label}}
+function sllInsertActivitySteps(position,data){
+ if(position==="first")return [
+   sllActivityAction("create","create newNode"),
+   pointerLabStep("new.next","n0","newNode.next = head"),
+   pointerLabStep("head","new","head = newNode"),
+   sllActivityAction("count","count++")
+ ];
+ if(position==="second")return [
+   sllActivityAction("create","create newNode"),
+   sllActivityAction("find","ค้นหาโหนด index 1 และให้ pointer p ชี้โหนดนั้น"),
+   pointerLabStep("new.next","n2","newNode.next = p.next"),
+   pointerLabStep("p.next","new","p.next = newNode"),
+   sllActivityAction("count","count++")
+ ];
+ return [
+   sllActivityAction("find","ค้นหาโหนดสุดท้ายและให้ pointer p ชี้โหนดนั้น"),
+   pointerLabStep("new.next","NULL","newNode.next = p.next"),
+   pointerLabStep("p.next","new","p.next = newNode"),
+   sllActivityAction("count","count++")
+ ];
+}
+function sllDeleteActivitySteps(position){
+ if(position==="first")return [
+   sllActivityAction("check","ตรวจสอบว่า List ไม่ว่าง"),
+   sllActivityAction("setDel","del = head"),
+   pointerLabStep("head","n1","head = head.next"),
+   sllActivityAction("item","item = del.data"),
+   pointerLabStep("n0","TRASH","delete del"),
+   sllActivityAction("count","count--")
+ ];
+ if(position==="middle")return [
+   sllActivityAction("check","ตรวจสอบว่า index 2 อยู่ในช่วงข้อมูล"),
+   sllActivityAction("find","ค้นหาโหนด index 1 และให้ pointer p ชี้โหนดนั้น"),
+   sllActivityAction("setDel","del = p.next"),
+   pointerLabStep("p.next","n3","p.next = del.next"),
+   sllActivityAction("item","item = del.data"),
+   pointerLabStep("n2","TRASH","delete del"),
+   sllActivityAction("count","count--")
+ ];
+ return [
+   sllActivityAction("check","ตรวจสอบว่า List ไม่ว่าง"),
+   sllActivityAction("find","ค้นหาโหนดก่อนโหนดสุดท้ายและให้ pointer p ชี้"),
+   sllActivityAction("setDel","del = p.next"),
+   pointerLabStep("p.next","NULL","p.next = del.next"),
+   sllActivityAction("item","item = del.data"),
+   pointerLabStep("n3","TRASH","delete del"),
+   sllActivityAction("count","count--")
+ ];
+}
+function dllInsertActivitySteps(position){
+ if(position==="first")return [
+   sllActivityAction("create","create newNode"),
+   pointerLabStep("new.prev","NULL","newNode.previous = NULL"),
+   pointerLabStep("new.next","n0","newNode.next = start"),
+   pointerLabStep("n0.prev","new","start.previous = newNode"),
+   pointerLabStep("start","new","start = newNode"),
+   sllActivityAction("count","count++")
+ ];
+ if(position==="middle")return [
+   sllActivityAction("create","create newNode"),
+   sllActivityAction("find","ค้นหาโหนด index 1 และให้ pointer p ชี้โหนดนั้น"),
+   pointerLabStep("new.next","n2","newNode.next = p.next"),
+   pointerLabStep("new.prev","n1","newNode.previous = p"),
+   pointerLabStep("n2.prev","new","p.next.previous = newNode"),
+   pointerLabStep("p.next","new","p.next = newNode"),
+   sllActivityAction("count","count++")
+ ];
+ return [
+   sllActivityAction("create","create newNode"),
+   sllActivityAction("find","ให้ pointer p ชี้โหนดสุดท้าย"),
+   pointerLabStep("new.next","NULL","newNode.next = NULL"),
+   pointerLabStep("new.prev","n3","newNode.previous = p"),
+   pointerLabStep("p.next","new","p.next = newNode"),
+   pointerLabStep("tail","new","tail = newNode"),
+   sllActivityAction("count","count++")
+ ];
+}
+function dllDeleteActivitySteps(position){
+ if(position==="first")return [
+   sllActivityAction("check","ตรวจสอบว่า List ไม่ว่าง"),
+   sllActivityAction("setDel","del = start"),
+   pointerLabStep("start","n1","start = start.next"),
+   pointerLabStep("n1.prev","NULL","start.previous = NULL"),
+   sllActivityAction("item","item = del.data"),
+   pointerLabStep("n0","TRASH","delete del"),
+   sllActivityAction("count","count--")
+ ];
+ if(position==="middle")return [
+   sllActivityAction("check","ตรวจสอบว่า index 2 อยู่ในช่วงข้อมูล"),
+   sllActivityAction("find","ค้นหาโหนด index 1 และให้ pointer p ชี้โหนดนั้น"),
+   sllActivityAction("setDel","del = p.next"),
+   pointerLabStep("p.next","n3","p.next = del.next"),
+   pointerLabStep("n3.prev","n1","del.next.previous = p"),
+   sllActivityAction("item","item = del.data"),
+   pointerLabStep("n2","TRASH","delete del"),
+   sllActivityAction("count","count--")
+ ];
+ return [
+   sllActivityAction("check","ตรวจสอบว่า List ไม่ว่าง"),
+   sllActivityAction("setDel","del = tail"),
+   pointerLabStep("tail","n2","tail = tail.previous"),
+   pointerLabStep("n2.next","NULL","tail.next = NULL"),
+   sllActivityAction("item","item = del.data"),
+   pointerLabStep("n3","TRASH","delete del"),
+   sllActivityAction("count","count--")
+ ];
+}
+function startSllInsertActivity(){
+ const id="sll",data=[10,20,30,40],item=randomSllNewNodeValue(data);
+ states[id].data=[...data];states[id].view={};states[id].steps=[];states[id].step=0;render(id);
+ if($(id+"Data"))$(id+"Data").value=item;
+ pointerLabStates[id]={id,mode:"insert",activity:"sllInsert",data,item,position:null,index:null,steps:[],done:[],selected:null,message:"เลือกตำแหน่งที่จะเพิ่ม newNode ก่อน",messageType:"",hint:false,completed:false};
+ setSelectedFunction(id,"กิจกรรมเพิ่มโหนด: Singly Linked List");setStatus(id,"เลือกตำแหน่ง: index 0 / index 2 / index 4");renderPointerLab(id);
+}
+function startSllDeleteActivity(){
+ const id="sll",data=[10,20,30,40];
+ states[id].data=[...data];states[id].view={};states[id].steps=[];states[id].step=0;render(id);
+ pointerLabStates[id]={id,mode:"delete",activity:"sllDelete",data,item:null,position:null,index:null,pIndex:null,delIndex:null,steps:[],done:[],selected:null,message:"เลือกกรณีการลบก่อน",messageType:"",hint:false,completed:false};
+ setSelectedFunction(id,"กิจกรรมลบโหนด: Singly Linked List");setStatus(id,"เลือกกรณี: index 0 / index 2 / index 3");renderPointerLab(id);
+}
+function startDllPointerActivity(mode){
+ const id="dll",data=[10,20,30,40],item=mode==="insert"?randomSllNewNodeValue(data):null;
+ states[id].data=[...data];states[id].view={};states[id].steps=[];states[id].step=0;render(id);
+ if(mode==="insert"&&$(id+"Data"))$(id+"Data").value=item;
+ pointerLabStates[id]={id,mode,activity:mode==="insert"?"dllInsert":"dllDelete",data,item,position:null,index:null,pIndex:null,delIndex:null,steps:[],done:[],selected:null,message:"เลือกกรณีก่อน",messageType:"",hint:false,completed:false};
+ setSelectedFunction(id,`กิจกรรม${mode==="insert"?"เพิ่ม":"ลบ"}โหนด: Doubly Linked List`);setStatus(id,"เลือกกรณี: index 0 / index 2 / ท้ายรายการ");renderPointerLab(id);
+}
+function chooseSllInsertPosition(position){
+ const lab=pointerLabStates.sll;if(!lab||lab.activity!=="sllInsert")return;
+ const positions={first:0,second:2,last:lab.data.length};
+ lab.position=position;lab.index=positions[position];lab.pIndex=position==="second"?1:position==="last"?lab.data.length-1:null;lab.steps=sllInsertActivitySteps(position,lab.data);lab.done=[];lab.selected=null;lab.hint=false;lab.completed=false;lab.message="ดำเนินการตามคำสั่งทีละขั้น";lab.messageType="";renderPointerLab("sll");
+}
+function chooseSllDeletePosition(position){
+ const lab=pointerLabStates.sll;if(!lab||lab.activity!=="sllDelete")return;
+ const positions={first:0,middle:2,last:lab.data.length-1};
+ lab.position=position;lab.index=positions[position];lab.pIndex=position==="middle"?1:position==="last"?lab.data.length-2:null;lab.delIndex=lab.index;lab.steps=sllDeleteActivitySteps(position);lab.done=[];lab.selected=null;lab.hint=false;lab.completed=false;lab.message="ดำเนินการตามคำสั่งทีละขั้น";lab.messageType="";renderPointerLab("sll");
+}
+function chooseDllActivityPosition(position){
+ const lab=pointerLabStates.dll;if(!lab||!lab.activity?.startsWith("dll"))return;
+ const positions={first:0,middle:2,last:lab.mode==="insert"?lab.data.length:lab.data.length-1};
+ lab.position=position;lab.index=positions[position];lab.pIndex=position==="middle"?1:position==="last"&&lab.mode==="insert"?lab.data.length-1:null;lab.delIndex=lab.mode==="delete"?lab.index:null;
+ lab.steps=lab.mode==="insert"?dllInsertActivitySteps(position):dllDeleteActivitySteps(position);lab.done=[];lab.selected=null;lab.hint=false;lab.completed=false;lab.message="ดำเนินการตามคำสั่งทีละขั้น";lab.messageType="";renderPointerLab("dll");
+}
+function completeLinkedActivityAction(id){
+ const lab=pointerLabStates[id],expected=lab?.steps[lab.done.length];
+ if(!lab||lab.completed||expected?.type!=="action")return;
+ lab.done.push(expected);lab.selected=null;lab.hint=false;lab.message=`ดำเนินการแล้ว: ${expected.label}`;lab.messageType="success";
+ if(lab.done.length===lab.steps.length){
+   lab.completed=true;const updated=[...lab.data];
+   if(lab.mode==="insert")updated.splice(lab.index,0,lab.item);else updated.splice(lab.index,1);
+   states[id].data=updated;states[id].view={};states[id].steps=[];states[id].step=0;
+   setStatus(id,`${lab.mode==="insert"?"Insert":"Delete"} Pointer Lab Complete`);addLog(id,`${lab.mode} pointer lab complete`);render(id);
+ }
+ renderPointerLab(id);
+}
+function completeSllActivityAction(){completeLinkedActivityAction("sll")}
+function completeDllActivityAction(){completeLinkedActivityAction("dll")}
+function sllActivityNodeHTML(lab,key,value,label,isNew=false){
+ const current=lab.steps[lab.done.length];
+ const pVisible=lab.done.some(step=>step.action==="find");
+ const isPNode=pVisible&&key===`n${lab.pIndex}`;
+ const sourceKey=isPNode?"p.next":`${key}.next`;
+ const sourceClass=current?.source===sourceKey?" expected-source":"";
+ const targetClass=current?.target===key?" expected-target":"";
+ const joining=isNew&&lab.completed?" joining":"";
+ const title=isNew?`newNode · data = ${escapeHTML(value)}`:`data = ${escapeHTML(value)}`;
+ return `<div class="pointer-lab-node sll-activity-node pointer-target${isNew?" new":""}${joining}${targetClass}" data-target="${key}" onclick="pointerLabSelectTarget(event,'sll','${key}')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'sll','${key}')">${isPNode?'<span class="sll-p-badge">p ↓</span>':""}<div class="pointer-lab-node-title">${title}</div><div class="pointer-lab-node-field"><span class="pointer-handle${sourceClass}" draggable="true" data-source="${sourceKey}" onclick="pointerLabSelectSource(event,'sll','${sourceKey}')" ondragstart="pointerLabDragStart(event,'sll','${sourceKey}')">${isPNode?"p.next":"next"}</span></div></div>`;
+}
+function renderSllInsertActivity(){
+ const id="sll",lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box)return;
+ box.hidden=false;
+ const labels={first:"index 0",second:"index 2",last:"โหนดสุดท้าย (index 4)"};
+ const current=lab.steps[lab.done.length];
+ const headSource=pointerSourceHTML(id,"head","head",current?.source==="head"?"expected-source":"");
+ const nodes=lab.data.map((v,i)=>{
+   const node=sllActivityNodeHTML(lab,`n${i}`,v,"");
+   const replacesMiddleLink=lab.completed&&lab.position==="second"&&i===1;
+   const arrow=i<lab.data.length-1&&!replacesMiddleLink?'<span class="sll-fixed-arrow">→</span>':"";
+   return node+arrow;
+ }).join("");
+ const showHeadArrow=!(lab.completed&&lab.position==="first");
+ const showNullArrow=!(lab.completed&&lab.position==="last");
+ const nullClass=current?.target==="NULL"?" expected-target":"";
+ const newNode=sllActivityNodeHTML(lab,"new",lab.item,"newNode",true);
+ const newCreated=lab.position==="last"||lab.done.some(step=>step.action==="create");
+ const nullTarget=`<div data-target="NULL" onclick="pointerLabSelectTarget(event,'sll','NULL')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'sll','NULL')" class="sll-null pointer-target${nullClass}">NULL</div>`;
+ let listContent=`<div class="pointer-lab-pointer">${headSource}</div>${showHeadArrow?'<span class="sll-fixed-arrow">→</span>':""}${nodes}${showNullArrow?'<span class="sll-fixed-arrow">→</span>':""}${nullTarget}`;
+ let newLane=`<div class="sll-new-lane"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${newCreated?newNode:'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`;
+ if(lab.completed){
+   const finalEntries=lab.data.map((value,i)=>({key:`n${i}`,value,isNew:false}));
+   finalEntries.splice(lab.index,0,{key:"new",value:lab.item,isNew:true});
+   const finalNodes=finalEntries.map(entry=>sllActivityNodeHTML(lab,entry.key,entry.value,entry.isNew?"newNode":"",entry.isNew)).join('<span class="sll-fixed-arrow">→</span>');
+   listContent=`<div class="pointer-lab-pointer">${headSource}</div><span class="sll-fixed-arrow">→</span>${finalNodes}<span class="sll-fixed-arrow">→</span>${nullTarget}`;
+   newLane="";
+ }
+ const choiceButtons=["first","second","last"].map(p=>`<button class="sll-choice${lab.position===p?" active":""}" onclick="chooseSllInsertPosition('${p}')">เพิ่มที่ ${labels[p]}</button>`).join("");
+ const instruction=!lab.position?"เลือกตำแหน่งที่ต้องการเพิ่ม newNode":lab.completed?"สำเร็จ — เชื่อมโยง newNode และเพิ่ม count เรียบร้อยแล้ว":current.type==="action"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current.label}`:`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ลากเพื่อทำคำสั่ง ${current.label}`;
+ const chips=lab.done.map((x,i)=>`<span class="pointer-lab-link-chip">✓ ${i+1}. ${x.label}</span>`).join("");
+ const actionButton=lab.position&&!lab.completed&&current.type==="action"?`<button class="sll-step-action" onclick="completeSllActivityAction()">ดำเนินการ: ${current.label}</button>`:"";
+ const shownCount=lab.completed?lab.data.length+1:lab.data.length;
+ const result=lab.completed?(()=>{const a=[...lab.data];a.splice(lab.index,0,lab.item);return `<div class="sll-result">ผลลัพธ์: head → ${a.map(escapeHTML).join(" → ")} → NULL</div>`})():"";
+ box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรมเพิ่มโหนด · Singly Linked List</h3><p>โหนดเดิม 4 โหนดเชื่อมโยงกันแล้ว ทำคำสั่งและลาก Pointer ตามลำดับ</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('sll')">Undo</button><button class="action gray" onclick="showPointerLabHint('sll')">Hint</button>`:""}<button class="action gray" onclick="startSllInsertActivity()">Reset</button><button class="action gray" onclick="closePointerLab('sll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">count = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">p = node index ${lab.pIndex}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer ต้นทางที่ต้องลาก</span><span><i class="sll-dot target"></i>เป้าหมายที่ต้องวาง</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังเพิ่มโหนด":"รายการเดิม"}</p><div class="sll-list-row">${listContent}</div>${newLane}</div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
+ if(lab.selected){[...box.querySelectorAll("[data-source]")].find(x=>x.dataset.source===lab.selected)?.classList.add("selected")}
+ if(!lab.completed)requestAnimationFrame(()=>drawPointerLabConnections(id));
+}
+function sllDeleteActivityNodeHTML(lab,key,value,index){
+ const current=lab.steps[lab.done.length];
+ const pVisible=lab.done.some(step=>step.action==="find"),delVisible=lab.done.some(step=>step.action==="setDel");
+ const isPNode=pVisible&&index===lab.pIndex,isDelNode=delVisible&&index===lab.delIndex;
+ const nextSource=isPNode?"p.next":`${key}.next`;
+ const sourceClass=current?.source===nextSource?" expected-source":"",nodeSourceClass=current?.source===key?" expected-source":"";
+ const targetClass=current?.target===key?" expected-target":"";
+ return `<div class="pointer-lab-node sll-activity-node pointer-source pointer-target${isDelNode?" to-delete":""}${targetClass}${nodeSourceClass}" draggable="true" data-source="${key}" data-target="${key}" onclick="pointerLabNodeClick(event,'sll','${key}')" ondragstart="pointerLabDragStart(event,'sll','${key}')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'sll','${key}')">${isPNode?'<span class="sll-p-badge">p ↓</span>':""}${isDelNode?'<span class="sll-del-badge">del ↓</span>':""}<div class="pointer-lab-node-title">data = ${escapeHTML(value)}</div><div class="pointer-lab-node-field"><span class="pointer-handle${sourceClass}" draggable="true" data-source="${nextSource}" onclick="pointerLabSelectSource(event,'sll','${nextSource}')" ondragstart="pointerLabDragStart(event,'sll','${nextSource}')">${isPNode?"p.next":"next"}</span></div></div>`;
+}
+function renderSllDeleteActivity(){
+ const id="sll",lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box)return;
+ box.hidden=false;
+ const current=lab.steps[lab.done.length],labels={first:"index 0",middle:"index 2",last:"โหนดสุดท้าย (index 3)"};
+ const headSource=pointerSourceHTML(id,"head","head",current?.source==="head"?"expected-source":"");
+ const nullClass=current?.target==="NULL"?" expected-target":"";
+ const nullTarget=`<div data-target="NULL" onclick="pointerLabSelectTarget(event,'sll','NULL')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'sll','NULL')" class="sll-null pointer-target${nullClass}">NULL</div>`;
+ let entries=lab.data.map((value,i)=>({key:`n${i}`,value,index:i}));
+ if(lab.completed)entries=entries.filter(entry=>entry.index!==lab.index);
+ const nodes=entries.map(entry=>sllDeleteActivityNodeHTML(lab,entry.key,entry.value,entry.index)).join('<span class="sll-fixed-arrow">→</span>');
+ const listContent=`<div class="pointer-lab-pointer">${headSource}</div><span class="sll-fixed-arrow">→</span>${nodes}<span class="sll-fixed-arrow">→</span>${nullTarget}`;
+ const choiceButtons=["first","middle","last"].map(p=>`<button class="sll-choice${lab.position===p?" active":""}" onclick="chooseSllDeletePosition('${p}')">ลบ ${labels[p]}</button>`).join("");
+ const instruction=!lab.position?"เลือกกรณีการลบโหนด":lab.completed?"สำเร็จ — ปรับ Pointer ลบโหนด และลด count เรียบร้อยแล้ว":current.type==="action"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current.label}`:`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ลากเพื่อทำคำสั่ง ${current.label}`;
+ const chips=lab.done.map((step,i)=>`<span class="pointer-lab-link-chip">✓ ${i+1}. ${step.label}</span>`).join("");
+ const actionButton=lab.position&&!lab.completed&&current.type==="action"?`<button class="sll-step-action" onclick="completeSllActivityAction()">ดำเนินการ: ${current.label}</button>`:"";
+ const itemReady=lab.done.some(step=>step.action==="item"),shownCount=lab.completed?lab.data.length-1:lab.data.length;
+ const result=lab.completed?`<div class="sll-result">ลบ item = ${escapeHTML(lab.data[lab.index])} | ผลลัพธ์: head → ${lab.data.filter((_,i)=>i!==lab.index).map(escapeHTML).join(" → ")} → NULL</div>`:"";
+ box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรมลบโหนด · Singly Linked List</h3><p>เลือกเงื่อนไข แล้วตรวจสอบ กำหนด Pointer เก็บข้อมูล ลบโหนด และลด count ตามลำดับ</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('sll')">Undo</button><button class="action gray" onclick="showPointerLabHint('sll')">Hint</button>`:""}<button class="action gray" onclick="startSllDeleteActivity()">Reset</button><button class="action gray" onclick="closePointerLab('sll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">count = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">p = node index ${lab.pIndex}</span>`:""}${lab.done.some(step=>step.action==="setDel")?`<span class="sll-state-badge">del = node index ${lab.delIndex}</span>`:""}${itemReady?`<span class="sll-state-badge">item = ${escapeHTML(lab.data[lab.index])}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer/โหนดต้นทางที่ต้องลาก</span><span><i class="sll-dot target"></i>เป้าหมายที่ต้องวาง</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังลบโหนด":"รายการก่อนลบ"}</p><div class="sll-list-row">${listContent}</div><div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div></div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
+ if(lab.selected){[...box.querySelectorAll("[data-source]")].find(el=>el.dataset.source===lab.selected)?.classList.add("selected")}
+ if(!lab.completed)requestAnimationFrame(()=>drawPointerLabConnections(id));
+}
+function dllActivityNodeHTML(lab,key,value,index,isNew=false){
+ const current=lab.steps[lab.done.length],pVisible=lab.done.some(step=>step.action==="find"),delVisible=lab.done.some(step=>step.action==="setDel");
+ const isPNode=pVisible&&index===lab.pIndex,isDelNode=delVisible&&index===lab.delIndex;
+ const nextSource=isPNode?"p.next":`${key}.next`,prevSource=`${key}.prev`;
+ const nodeSourceClass=current?.source===key?" expected-source":"",targetClass=current?.target===key?" expected-target":"";
+ const joining=isNew&&lab.completed?" joining":"";
+ const nodeAttrs=lab.mode==="delete"?`draggable="true" data-source="${key}" ondragstart="pointerLabDragStart(event,'dll','${key}')"`:"";
+ return `<div class="pointer-lab-node sll-activity-node pointer-target${isNew?" new":""}${joining}${isDelNode?" to-delete":""}${targetClass}${nodeSourceClass}" ${nodeAttrs} data-target="${key}" onclick="${lab.mode==="delete"?`pointerLabNodeClick(event,'dll','${key}')`:`pointerLabSelectTarget(event,'dll','${key}')`}" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'dll','${key}')">${isPNode?'<span class="sll-p-badge">p ↓</span>':""}${isDelNode?'<span class="sll-del-badge">del ↓</span>':""}<div class="pointer-lab-node-title">${isNew?"newNode · ":""}data = ${escapeHTML(value)}</div><div class="pointer-lab-node-field"><span>previous</span>${pointerSourceHTML("dll",prevSource,"prev",current?.source===prevSource?"prev expected-source":"prev")}</div><div class="pointer-lab-node-field"><span>next</span>${pointerSourceHTML("dll",nextSource,isPNode?"p.next":"next",current?.source===nextSource?"expected-source":"")}</div></div>`;
+}
+function renderDllPointerActivity(){
+ const id="dll",lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box)return;
+ box.hidden=false;
+ const current=lab.steps[lab.done.length],labels={first:"index 0",middle:"index 2",last:lab.mode==="insert"?"โหนดสุดท้าย (index 4)":"โหนดสุดท้าย (index 3)"};
+ const pointerBox=`<div class="pointer-lab-pointer">${pointerSourceHTML(id,"start","start",current?.source==="start"?"expected-source":"")} ${pointerSourceHTML(id,"tail","tail",current?.source==="tail"?"expected-source":"")}</div>`;
+ const nullClass=current?.target==="NULL"?" expected-target":"";
+ const nullTarget=`<div ${pointerTargetAttrs(id,"NULL")} class="sll-null pointer-target${nullClass}">NULL</div>`;
+ let entries=lab.data.map((value,i)=>({key:`n${i}`,value,index:i,isNew:false}));
+ if(lab.completed){
+   if(lab.mode==="insert")entries.splice(lab.index,0,{key:"new",value:lab.item,index:lab.index,isNew:true});
+   else entries=entries.filter(entry=>entry.index!==lab.index);
+ }
+ const nodes=entries.map(entry=>dllActivityNodeHTML(lab,entry.key,entry.value,entry.index,entry.isNew)).join('<span class="sll-fixed-arrow">⇄</span>');
+ const listContent=`${pointerBox}<span class="sll-fixed-arrow">→</span>${nodes}<span class="sll-fixed-arrow">→</span>${nullTarget}`;
+ const createDone=lab.done.some(step=>step.action==="create");
+ const newLane=lab.mode==="insert"&&!lab.completed?`<div class="sll-new-lane"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${createDone?dllActivityNodeHTML(lab,"new",lab.item,lab.index,true):'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`:"";
+ const choiceButtons=["first","middle","last"].map(p=>`<button class="sll-choice${lab.position===p?" active":""}" onclick="chooseDllActivityPosition('${p}')">${lab.mode==="insert"?"เพิ่มที่":"ลบ "}${labels[p]}</button>`).join("");
+ const instruction=!lab.position?`เลือกกรณีการ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด`:lab.completed?`สำเร็จ — ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนดและปรับ previous/next ครบแล้ว`:current.type==="action"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current.label}`:`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ลากเพื่อทำคำสั่ง ${current.label}`;
+ const chips=lab.done.map((step,i)=>`<span class="pointer-lab-link-chip">✓ ${i+1}. ${step.label}</span>`).join("");
+ const actionButton=lab.position&&!lab.completed&&current.type==="action"?`<button class="sll-step-action" onclick="completeDllActivityAction()">ดำเนินการ: ${current.label}</button>`:"";
+ const shownCount=lab.completed?lab.data.length+(lab.mode==="insert"?1:-1):lab.data.length,itemReady=lab.done.some(step=>step.action==="item");
+ const finalValues=lab.completed?entries.map(entry=>entry.value):[];
+ const result=lab.completed?`<div class="sll-result">${lab.mode==="delete"?`ลบ item = ${escapeHTML(lab.data[lab.index])} | `:""}ผลลัพธ์: NULL ⇄ ${finalValues.map(escapeHTML).join(" ⇄ ")} ⇄ NULL</div>`:"";
+ box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรม${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด · Doubly Linked List</h3><p>ดำเนินการทีละขั้นและลาก previous/next ไปยังเป้าหมายตามคำสั่ง</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('dll')">Undo</button><button class="action gray" onclick="showPointerLabHint('dll')">Hint</button>`:""}<button class="action gray" onclick="startDllPointerActivity('${lab.mode}')">Reset</button><button class="action gray" onclick="closePointerLab('dll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">count = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">p = node index ${lab.pIndex}</span>`:""}${lab.done.some(step=>step.action==="setDel")?`<span class="sll-state-badge">del = node index ${lab.delIndex}</span>`:""}${itemReady?`<span class="sll-state-badge">item = ${escapeHTML(lab.data[lab.index])}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer ต้นทาง</span><span><i class="sll-dot target"></i>โหนด/NULL เป้าหมาย</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังดำเนินการ":"รายการเริ่มต้น"}</p><div class="sll-list-row">${listContent}</div>${newLane}${lab.mode==="delete"?`<div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div>`:""}</div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
+ if(lab.selected){[...box.querySelectorAll("[data-source]")].find(el=>el.dataset.source===lab.selected)?.classList.add("selected")}
+ if(!lab.completed)requestAnimationFrame(()=>drawPointerLabConnections(id));
+}
+function pointerSourceHTML(id,key,label,extra=""){
+ return `<span class="pointer-handle pointer-source ${extra}" draggable="true" data-source="${key}" onclick="pointerLabSelectSource(event,'${id}','${key}')" ondragstart="pointerLabDragStart(event,'${id}','${key}')">${label}</span>`;
+}
+function pointerTargetAttrs(id,key){return `data-target="${key}" onclick="pointerLabSelectTarget(event,'${id}','${key}')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'${id}','${key}')"`}
+function pointerLabNodeHTML(lab,key,value,isNew=false,isDelete=false){
+ const id=lab.id,double=id==="dll";
+ const classes=`pointer-lab-node pointer-source pointer-target${isNew?" new":""}${isDelete?" delete":""}`;
+ const sourceAttrs=`draggable="true" data-source="${key}" ondragstart="pointerLabDragStart(event,'${id}','${key}')"`;
+ const targetAttrs=`data-target="${key}" onclick="pointerLabNodeClick(event,'${id}','${key}')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'${id}','${key}')"`;
+ const prev=double?`<div class="pointer-lab-node-field"><span>previous</span>${pointerSourceHTML(id,`${key}.prev`,"prev","prev")}</div>`:"";
+ return `<div class="${classes}" ${sourceAttrs} ${targetAttrs}><div class="pointer-lab-node-title">${isNew?"newNode":key.replace("n","node ")} · data = ${escapeHTML(value)}</div>${prev}<div class="pointer-lab-node-field"><span>next</span>${pointerSourceHTML(id,`${key}.next`,"next")}</div></div>`;
+}
+function renderPointerLab(id){
+ const lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box)return;
+ if(lab.activity==="sllInsert")return renderSllInsertActivity();
+ if(lab.activity==="sllDelete")return renderSllDeleteActivity();
+ if(lab.activity==="dllInsert"||lab.activity==="dllDelete")return renderDllPointerActivity();
+ box.hidden=false;
+ const current=lab.steps[lab.done.length];
+ const pointerNames=id==="dll"
+   ? `${pointerSourceHTML(id,"start","start")} ${pointerSourceHTML(id,"tail","tail")}`
+   : pointerSourceHTML(id,"head","head");
+ const nodes=lab.data.map((v,i)=>pointerLabNodeHTML(lab,`n${i}`,v,false,lab.mode==="delete"&&i===lab.index)).join("");
+ const newNode=lab.mode==="insert"?pointerLabNodeHTML(lab,"new",lab.item,true,false):"";
+ const instruction=lab.completed?"ทำครบทุกขั้นตอนแล้ว — โครงสร้าง List ได้รับการอัปเดต":`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current?.label||""}`;
+ const chips=lab.done.map((x,i)=>`<span class="pointer-lab-link-chip">✓ ${i+1}. ${x.label}</span>`).join("");
+ box.innerHTML=`<div class="pointer-lab-head"><div><h3>${id==="sll"?"Singly":"Doubly"} Linked List · ${lab.mode==="insert"?"Insert":"Delete"} Pointer Lab</h3><p>ลาก Pointer ไปยังเป้าหมายตามลำดับ หรือแตะต้นทางแล้วแตะปลายทางบนจอสัมผัส</p></div><div class="pointer-lab-actions">${lab.completed?"":`<button class="action gray" onclick="undoPointerLab('${id}')">Undo</button><button class="action gray" onclick="showPointerLabHint('${id}')">Hint</button>`}<button class="action gray" onclick="startPointerLab('${id}','${lab.mode}')">Reset</button><button class="action gray" onclick="closePointerLab('${id}')">Close</button></div></div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div>${lab.hint&&!lab.completed?`<div class="pointer-lab-message success">คำใบ้: ลาก <b>${current.source}</b> ไปยัง <b>${current.target}</b></div>`:""}<div class="pointer-lab-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><div class="pointer-lab-pointer">${pointerNames}</div>${nodes}${newNode}<div ${pointerTargetAttrs(id,"NULL")} class="pointer-lab-special pointer-target">NULL</div><div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div></div><div class="pointer-lab-links">${chips}</div><div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
+ if(lab.selected){const el=[...box.querySelectorAll("[data-source]")].find(x=>x.dataset.source===lab.selected);el?.classList.add("selected")}
+ requestAnimationFrame(()=>drawPointerLabConnections(id));
+}
+function pointerLabDragStart(event,id,key){event.stopPropagation();event.dataTransfer.setData("text/plain",key);pointerLabStates[id].selected=key}
+function pointerLabDragOver(event){event.preventDefault();event.currentTarget.classList.add("drag-over")}
+function pointerLabDragLeave(event){event.currentTarget.classList.remove("drag-over")}
+function pointerLabDrop(event,id,target){event.preventDefault();event.stopPropagation();event.currentTarget.classList.remove("drag-over");const source=event.dataTransfer.getData("text/plain")||pointerLabStates[id]?.selected;attemptPointerLabLink(id,source,target)}
+function pointerLabSelectSource(event,id,key){event.stopPropagation();const lab=pointerLabStates[id];if(!lab||lab.completed)return;lab.selected=key;lab.message=`เลือกต้นทาง ${key} แล้ว — เลือกโหนดปลายทาง`;lab.messageType="";renderPointerLab(id)}
+function pointerLabSelectTarget(event,id,key){event.stopPropagation();const lab=pointerLabStates[id];if(lab?.selected)attemptPointerLabLink(id,lab.selected,key)}
+function pointerLabNodeClick(event,id,key){const source=event.target.closest("[data-source]");if(source&&source!==event.currentTarget)return;const lab=pointerLabStates[id];if(lab?.selected)attemptPointerLabLink(id,lab.selected,key);else pointerLabSelectSource(event,id,key)}
+function attemptPointerLabLink(id,source,target){
+ const lab=pointerLabStates[id];if(!lab||lab.completed||!source)return;
+ const expected=lab.steps[lab.done.length];
+ if(source===expected.source&&target===expected.target){
+   lab.done.push(expected);lab.selected=null;lab.hint=false;lab.message=`ถูกต้อง: ${expected.label}`;lab.messageType="success";
+   if(lab.done.length===lab.steps.length){
+     lab.completed=true;
+     const updated=[...lab.data];
+     if(lab.mode==="insert")updated.splice(lab.index,0,lab.item);else updated.splice(lab.index,1);
+     states[id].data=updated;states[id].view={};states[id].steps=[];states[id].step=0;
+     setStatus(id,`${lab.mode==="insert"?"Insert":"Delete"} Pointer Lab Complete`);addLog(id,`${lab.mode} pointer lab complete`);render(id);
+   }
+  }else{
+   lab.selected=null;lab.message=`ยังไม่ถูกต้อง: ขั้นนี้ต้องเชื่อม ${expected.source} ไปยัง ${expected.target}`;lab.messageType="error";
+  }
+  renderPointerLab(id);
+}
+function undoPointerLab(id){const lab=pointerLabStates[id];if(!lab||!lab.done.length||lab.completed)return;lab.done.pop();lab.selected=null;lab.message="ย้อนกลับ 1 ขั้นแล้ว";lab.messageType="";renderPointerLab(id)}
+function showPointerLabHint(id){const lab=pointerLabStates[id];if(!lab||lab.completed)return;lab.hint=true;renderPointerLab(id)}
+function closePointerLab(id){const box=$(id+"PointerLab");if(box)box.hidden=true;pointerLabStates[id]=null}
+function drawPointerLabConnections(id){
+ const lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box||box.hidden)return;
+ const stage=box.querySelector(".pointer-lab-stage"),svg=box.querySelector(".pointer-lab-svg");if(!stage||!svg)return;
+ const sr=stage.getBoundingClientRect();
+ const find=(attr,key)=>[...stage.querySelectorAll(`[${attr}]`)].find(el=>el.dataset[attr.replace("data-","")]===key);
+ const paths=lab.done.map((step,i)=>{
+   const from=find("data-source",step.source),to=find("data-target",step.target);if(!from||!to)return "";
+   const a=from.getBoundingClientRect(),b=to.getBoundingClientRect();
+   const x1=a.left+a.width/2-sr.left+stage.scrollLeft,y1=a.top+a.height/2-sr.top+stage.scrollTop;
+   const x2=b.left+b.width/2-sr.left+stage.scrollLeft,y2=b.top+b.height/2-sr.top+stage.scrollTop;
+   const bend=Math.max(36,Math.abs(x2-x1)*.38),color=step.target==="TRASH"?"#c62828":"#2e7d32";
+   return `<path d="M ${x1} ${y1} C ${x1+bend} ${y1-34}, ${x2-bend} ${y2-34}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="3" marker-end="url(#labArrow${id})"/><text x="${(x1+x2)/2}" y="${Math.min(y1,y2)-18}" fill="${color}" font-size="11" font-weight="800">${i+1}</text>`;
+  }).join("");
+  svg.innerHTML=`<defs><marker id="labArrow${id}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2e7d32"/></marker></defs>${paths}`;
+}
+
+
 const expressionState={
  steps:[],step:0,tokens:[],stack:[],output:[],mode:"postfix",
  phase:"ready",postfix:[],timer:null
@@ -6755,7 +7283,7 @@ function resetExpression(){
 
 
 
-const recursionState={steps:[],step:0,timer:null,mode:"factorial",n:5};
+const recursionState={steps:[],step:0,timer:null,mode:"factorial",n:5,tree:null};
 const factorialCode=`function factorial(n):
     if n == 0:
         return 1
@@ -6834,11 +7362,12 @@ function factorialSteps(n){
 }
 function fibonacciSteps(n){
  const steps=[];
- function call(x,depth,path){
+ function call(x,depth,path,nodeId="root"){
   const currentPath=[...path,`fib(${x})`];
 
   steps.push({
     label:`fib(${x})`,
+    nodeId,
     path:currentPath,
     state:"call",
     track:1,
@@ -6847,6 +7376,7 @@ function fibonacciSteps(n){
 
   steps.push({
     label:`fib(${x})`,
+    nodeId,
     path:currentPath,
     state:"check",
     track:2,
@@ -6856,6 +7386,7 @@ function fibonacciSteps(n){
   if(x<=1){
     steps.push({
       label:`fib(${x})`,
+      nodeId,
       path:currentPath,
       state:"base",
       track:5,
@@ -6867,25 +7398,28 @@ function fibonacciSteps(n){
 
   steps.push({
     label:`fib(${x})`,
+    nodeId,
     path:currentPath,
     state:"left",
     track:3,
     text:`Base Case เป็นเท็จ → เรียก fibonacci(${x-1})`
   });
-  const a=call(x-1,depth+1,currentPath);
+  const a=call(x-1,depth+1,currentPath,`${nodeId}-L`);
 
   steps.push({
     label:`fib(${x})`,
+    nodeId,
     path:currentPath,
     state:"right",
     track:4,
     text:`เรียก fibonacci(${x-2})`
   });
-  const b=call(x-2,depth+1,currentPath);
+  const b=call(x-2,depth+1,currentPath,`${nodeId}-R`);
 
   const result=a+b;
   steps.push({
     label:`fib(${x})`,
+    nodeId,
     path:currentPath,
     state:"done",
     track:5,
@@ -6897,6 +7431,53 @@ function fibonacciSteps(n){
  }
  call(n,0,[]);
  return steps;
+}
+function buildFibonacciTree(n,id="root"){
+ const node={id,n,result:n<=1?n:null,children:[]};
+ if(n>1){
+   node.children=[buildFibonacciTree(n-1,`${id}-L`),buildFibonacciTree(n-2,`${id}-R`)];
+   node.result=node.children[0].result+node.children[1].result;
+ }
+ return node;
+}
+function fibonacciNodeStates(){
+ const states=new Map();
+ recursionState.steps.slice(0,recursionState.step).forEach(st=>{
+   if(!st.nodeId)return;
+   const prior=states.get(st.nodeId)||{};
+   states.set(st.nodeId,{...prior,visited:true,done:["base","done"].includes(st.state),result:st.result||prior.result});
+ });
+ return states;
+}
+function fibonacciTreeNodeHTML(node,states,currentId){
+ const state=states.get(node.id)||{};
+ const status=state.done?"done":node.id===currentId?"active":state.visited?"visited":"";
+ const result=state.done?`<span class="fib-node-result">return ${node.result}</span>`:"";
+ // แสดงเฉพาะโหนดที่ถูกเรียกแล้ว และคงโหนดเดิมไว้หลัง return
+ const visibleChildren=node.children.filter(child=>states.get(child.id)?.visited);
+ const children=visibleChildren.length?`<ul>${visibleChildren.map(child=>`<li>${fibonacciTreeNodeHTML(child,states,currentId)}</li>`).join("")}</ul>`:"";
+ return `<div class="fib-node ${status}" data-node-id="${node.id}">fib(${node.n})${result}</div>${children}`;
+}
+function renderFibonacciTree(current){
+ const panel=$("recTreePanel"),target=$("recTree");
+ if(!panel||!target)return;
+ const visible=recursionState.mode==="fibonacci";
+ panel.hidden=!visible;
+ if(!visible){target.innerHTML="";return;}
+ const states=fibonacciNodeStates();
+ const currentId=current?.nodeId||"";
+ if(!states.size){
+   target.innerHTML='<div class="call-summary">กด Next Step เพื่อสร้าง Recursion Tree ตามลำดับการเรียก</div>';
+   return;
+ }
+ const finished=recursionState.step>=recursionState.steps.length;
+ const finalSummary=finished
+   ? `<div class="call-summary">ประมวลผลครบ ${states.size} calls · fibonacci(${recursionState.n}) = ${recursionState.tree.result}<br>โหนดและค่าที่คืนทั้งหมดถูกเก็บไว้ใน Tree</div>`
+   : "";
+ target.innerHTML=`<div class="fib-tree"><ul><li>${fibonacciTreeNodeHTML(recursionState.tree,states,currentId)}</li></ul></div>
+   <div class="fib-tree-legend"><span><i style="background:var(--g2);border:2px solid var(--g)"></i>ถูกเรียกแล้ว</span><span><i style="background:var(--o2);border:2px solid var(--o)"></i>กำลังประมวลผล</span><span><i style="background:#e3f2fd;border:2px solid var(--b)"></i>คืนค่าแล้วและคงไว้</span></div>${finalSummary}`;
+ const active=target.querySelector(".fib-node.active");
+ if(active)active.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
 }
 function recursionTrackHTML(mode){
  const lines=mode==="factorial"
@@ -6917,7 +7498,7 @@ function prepareRecursion(){
  stopRecursionAuto();
  const mode=$("recMode").value,n=Math.max(0,Math.min(mode==="fibonacci"?7:8,Number($("recN").value)||0));
  setSelectedFunction("recursion",mode);
- Object.assign(recursionState,{mode,n,steps:mode==="factorial"?factorialSteps(n):fibonacciSteps(n),step:0});
+ Object.assign(recursionState,{mode,n,steps:mode==="factorial"?factorialSteps(n):fibonacciSteps(n),step:0,tree:mode==="fibonacci"?buildFibonacciTree(n):null});
  $("recCode").textContent=mode==="factorial"?factorialCode:fibonacciCode;$("recTrack").innerHTML=recursionTrackHTML(mode);
  $("recProgress").style.width="0%";renderRecursion();$("recStatus").textContent="เตรียม Function และ Algorithm Track แล้ว — กด Next Step";
  $("recStepDetail").textContent="ยังไม่เริ่มประมวลผล";
@@ -6928,6 +7509,7 @@ function renderRecursion(){
 
  if(!current){
    $("recVisual").innerHTML='<div class="call-summary">ยังไม่เริ่มการเรียกฟังก์ชัน</div>';
+   renderFibonacciTree(null);
    return;
  }
 
@@ -6954,6 +7536,7 @@ function renderRecursion(){
    : `<div class="call-summary">Current depth = ${path.length}</div>`;
 
  $("recVisual").innerHTML=`<div class="call-path">${frames}${summary}</div>`;
+ renderFibonacciTree(current);
 }
 function nextRecursionStep(){
  const st=recursionState.steps[recursionState.step];
@@ -6977,8 +7560,9 @@ function toggleRecursionAuto(){
 }
 function stopRecursionAuto(){if(recursionState.timer)clearInterval(recursionState.timer);recursionState.timer=null;if($("recAuto"))$("recAuto").textContent="Auto Play"}
 function resetRecursion(){
- stopRecursionAuto();recursionState.steps=[];recursionState.step=0;
+ stopRecursionAuto();recursionState.steps=[];recursionState.step=0;recursionState.tree=null;
  if($("recVisual"))$("recVisual").innerHTML="";if($("recProgress"))$("recProgress").style.width="0%";
+ if($("recTree"))$("recTree").innerHTML="";if($("recTreePanel"))$("recTreePanel").hidden=true;
  if($("recStatus"))$("recStatus").textContent="พร้อมใช้งาน";
  if($("recStepDetail"))$("recStepDetail").textContent="ยังไม่เริ่มประมวลผล";
  if($("recLog"))$("recLog").innerHTML="";
