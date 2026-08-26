@@ -1973,7 +1973,14 @@ aside .topic-popup-btn.active{
 }
 
 /* Interactive Pointer Lab: drag/click links for SLL and DLL */
-.pointer-lab-launch{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.info.linked-info{grid-template-columns:repeat(3,minmax(110px,1fr)) minmax(260px,1.5fr);align-items:stretch}
+#dll .info.linked-info{grid-template-columns:repeat(2,minmax(110px,1fr)) minmax(260px,1.5fr)}
+.pointer-lab-launch{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:0;padding:7px 9px;border-radius:10px;background:#f1f8e9}
+.pointer-lab-launch .action{flex:1 1 125px;margin:0;white-space:nowrap}
+@media(max-width:900px){
+  .info.linked-info,#dll .info.linked-info{grid-template-columns:repeat(2,minmax(120px,1fr))}
+  .info.linked-info .pointer-lab-launch{grid-column:1/-1}
+}
 .pointer-lab{margin-top:14px;padding:14px;border:2px solid #81c784;border-radius:14px;background:#f7fff8}
 .pointer-lab[hidden]{display:none!important}
 .pointer-lab-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -2070,7 +2077,7 @@ const configs=[
  {id:"linearq",title:"Linear Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
  {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","delete_all","is_full","is_empty","size","front","rear","to_list"]},
  {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","add_item","add_index","delete","delete_index","delete_item","isFull","isEmpty","size","get_index","get_item","print_list"]},
- {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_last","insert_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_list"]},
+ {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_index","add_last","delete_first","delete_index","delete_last","delete_item","isEmpty","size","setposition","get_index","print_list"]},
  {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","add_first","add_last","add_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_dll","print_backward"]},
  {id:"bst",title:"BST",kind:"nonlinear",structure:"bst"},
  {id:"heap",title:"Heap Tree",kind:"nonlinear",structure:"heap"},
@@ -4381,8 +4388,8 @@ function panel(cfg){
      inspect:["isFull","isEmpty","size","get_index","get_item","print_list"]
    },
    sll:{
-     create:["create","add","insert_index"],
-     remove:["delete","delete_index","delete_item"],
+     create:["create","add_first","add_index","add_last"],
+     remove:["delete_first","delete_index","delete_last","delete_item"],
      inspect:["isEmpty","size","setposition","get_index","print_list"]
    },
    dll:{
@@ -4409,11 +4416,13 @@ function panel(cfg){
      </div>`
    : cfg.ops.map(buttonHTML).join("");
  const linkedTools=cfg.kind==="linked"
-   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div><div class="pointer-lab-launch"><button class="action green" onclick="startPointerLab('${cfg.id}','insert')">🖱️ ฝึกลากเพิ่มโหนด</button><button class="action blue" onclick="startPointerLab('${cfg.id}','delete')">🖱️ ฝึกลากลบโหนด</button></div><div id="${cfg.id}PointerLab" class="pointer-lab" hidden></div>${codeTabs(cfg.id)}`
+   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>${codeTabs(cfg.id)}`
    : cfg.id==="arraylist"
      ? `<div class="tools"><button class="action" onclick="nextArrayListStep()">Next Step</button><button class="action gray" onclick="resetArrayListAnimation()">Reset Animation</button><button class="action gray" onclick="resetArrayListDefault()">Reset Default</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div>${codeTabs(cfg.id)}`
      : `<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>${["stack","physicalq","linearq","circularq"].includes(cfg.id)?codeTabs(cfg.id):""}`;
- return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="${cfg.id==="arraylist"?5:6}" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${cfg.id==="sll"?`<button class="action green" onclick="resetSllDefault()">Reset Default</button><button class="action blue" onclick="clearSllList()">Clear List</button>`:""}${buttons}</div>${linkedTools}<div class="info">${cfg.id==="dll"?"":`<div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div>`}<div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div></div><div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
+ const pointerLabLaunch=cfg.kind==="linked"?`<div class="pointer-lab-launch"><button class="action green" onclick="startPointerLab('${cfg.id}','insert')">🖱️ ฝึกลากเพิ่มโหนด</button><button class="action blue" onclick="startPointerLab('${cfg.id}','delete')">🖱️ ฝึกลากลบโหนด</button></div>`:"";
+ const pointerLabPanel=cfg.kind==="linked"?`<div id="${cfg.id}PointerLab" class="pointer-lab" hidden></div>`:"";
+ return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="${cfg.id==="arraylist"?5:6}" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${cfg.id==="sll"?`<button class="action green" onclick="resetSllDefault()">Reset Default</button><button class="action blue" onclick="clearSllList()">Clear List</button>`:""}${buttons}</div>${linkedTools}<div class="info${cfg.kind==="linked"?" linked-info":""}">${cfg.id==="dll"?"":`<div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div>`}<div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div>${pointerLabLaunch}</div>${pointerLabPanel}<div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
 }
 
 const topicGroups=[
@@ -5002,6 +5011,7 @@ function operate(id,op){
    const map={add_item:"add_item",add_index:"add_index",delete:"delete",get_index:"get_index",get_item:"get_item",print_list:"print_list"};
    op=map[op]||op;
  }
+ if(id==="sll" && op==="add_index")op="insert_index";
  if(id==="dll"){
    if(op==="add_first"){op="insert";index=0}
    else if(op==="add_last"){op="append"}
