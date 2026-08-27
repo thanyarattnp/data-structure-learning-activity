@@ -2077,7 +2077,7 @@ const configs=[
  {id:"linearq",title:"Linear Queue",kind:"array",ops:["create","enqueue","dequeue","isFull","isEmpty","size","front","rear","print_queue"]},
  {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","delete_all","is_full","is_empty","size","front","rear","to_list"]},
  {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","add_item","add_index","delete","delete_index","delete_item","isFull","isEmpty","size","get_index","get_item","print_list"]},
- {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_index","add_last","delete_first","delete_index","delete_last","delete_item","isEmpty","size","setposition","get_index","print_list"]},
+ {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_index","add_last","delete_first","delete_index","delete_last","delete_item","isEmpty","size","setposition","search","get_index","print_list"]},
  {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","add_first","add_last","add_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_dll","print_backward"]},
  {id:"bst",title:"BST",kind:"nonlinear",structure:"bst"},
  {id:"heap",title:"Heap Tree",kind:"nonlinear",structure:"heap"},
@@ -3018,6 +3018,42 @@ const functionCodeLibrary={
         current = current.next
         index += 1
     return -1`},
+
+  search:{a:[
+    "ตรวจสอบว่า List ว่างหรือไม่ด้วย isEmpty()",
+    "ถ้า List ว่าง คืนค่า 'List is empty'",
+    "กำหนด current = head และ index = 0",
+    "ทำซ้ำขณะที่ current ไม่เป็น None",
+    "ถ้า item เท่ากับ current.data คืนค่า 'Found'",
+    "ถ้าไม่เท่ากัน เลื่อน current = current.next และเพิ่ม index",
+    "เมื่อสิ้นสุด List คืนค่า 'Not found'"
+  ],p:`SEARCH(item)
+  IF IS_EMPTY()
+    RETURN "List is empty"
+  ELSE
+    current ← head
+    index ← 0
+    WHILE current ≠ NULL
+      IF item = current.data
+        RETURN "Found"
+      ELSE
+        current ← current.next
+        index ← index + 1
+    RETURN "Not found"`,c:`def search(self, item):
+    if self.isEmpty():
+        return "List is empty"
+    else:
+        current = self.head
+        index = 0
+
+        while current is not None:
+            if item == current.data:
+                return "Found"
+            else:
+                current = current.next
+                index += 1
+
+        return "Not found"`},
 
   isEmpty:{a:["ตรวจสอบ head เป็น None","คืนค่า True หรือ False"],p:`IS_EMPTY()
   RETURN head = NULL`,c:`def isEmpty(self):
@@ -4377,6 +4413,7 @@ function panel(cfg){
    add_item:"Add Item",
    add_index:"Add Index",
    get_item:"Get Item"
+   ,search:"Search"
    ,delete_all:"Delete All"
    ,to_list:"To List"
  }[op]||op);
@@ -4390,7 +4427,7 @@ function panel(cfg){
    sll:{
      create:["create","add_first","add_index","add_last"],
      remove:["delete_first","delete_index","delete_last","delete_item"],
-     inspect:["isEmpty","size","setposition","get_index","print_list"]
+     inspect:["isEmpty","size","setposition","search","get_index","print_list"]
    },
    dll:{
      create:["create","add_first","add_last","add_index"],
@@ -5053,7 +5090,7 @@ function operate(id,op){
    render(id);
    return
  }
- if(cfg.kind==="linked"&&["add_first","add_last","add_index","append","insert","insert_index","delete_first","delete_last","delete_index","delete_item","setposition","print_list","print_dll","print_backward"].includes(op)){
+ if(cfg.kind==="linked"&&["add_first","add_last","add_index","append","insert","insert_index","delete_first","delete_last","delete_index","delete_item","setposition","search","print_list","print_dll","print_backward"].includes(op)){
    prepareLinked(id,op,item,index);
    return
  }
@@ -5861,6 +5898,124 @@ function prepareLinked(id,op,item,index){
    return;
  }
 
+
+ if(op==="search"){
+   if(id!=="sll")return setStatus(id,"search ใช้กับ Singly Linked List เท่านั้น");
+
+   steps.push({
+     ...snap(old,`ตรวจสอบ isEmpty() → ${old.length===0}`,-1),
+     trackLine:1,
+     headIndex:old.length?0:-1,
+     currentIndex:-1,
+     compareValue:`head == None → ${old.length===0}`,
+     caption:`isEmpty() = ${old.length===0}`
+   });
+
+   if(old.length===0){
+     steps.push({
+       ...snap(old,'คืนค่า "List is empty"',-1),
+       trackLine:2,
+       headIndex:-1,
+       currentIndex:-1,
+       compareValue:'RETURN "List is empty"',
+       resultValue:'Output: List is empty',
+       caption:'search(item) = "List is empty"',
+       final:true
+     });
+   }else{
+     let currentIndex=0;
+     let searchIndex=0;
+     let foundIndex=-1;
+
+     steps.push({
+       ...snap(old,"กำหนด current = head และ index = 0",currentIndex),
+       trackLine:3,
+       headIndex:0,
+       currentIndex,
+       compareValue:`current → node 0, data = ${old[0]} | index = 0`,
+       caption:"current = head, index = 0"
+     });
+
+     while(currentIndex!==-1){
+       steps.push({
+         ...snap(old,"ตรวจสอบ current != None",currentIndex),
+         trackLine:4,
+         headIndex:0,
+         currentIndex,
+         compareValue:`current != None → TRUE | index = ${searchIndex}`,
+         caption:`ตรวจสอบ node index ${searchIndex}`
+       });
+
+       const matched=old[currentIndex]===item;
+       steps.push({
+         ...snap(old,`เปรียบเทียบ item = ${item} กับ current.data = ${old[currentIndex]}`,currentIndex),
+         trackLine:5,
+         headIndex:0,
+         currentIndex,
+         compareValue:`${item} == ${old[currentIndex]} → ${matched}`,
+         caption:matched?`พบ ${item} ที่ index ${searchIndex}`:`${item} ไม่เท่ากับ ${old[currentIndex]}`
+       });
+
+       if(matched){
+         foundIndex=searchIndex;
+         steps.push({
+           ...snap(old,`คืนค่า index = ${foundIndex}`,currentIndex),
+           trackLine:5,
+           headIndex:0,
+           currentIndex,
+           compareValue:`พบข้อมูลที่ index ${foundIndex} | RETURN "Found"`,
+           resultValue:"Output: Found",
+           caption:`search(${item}) = Found (index ${foundIndex})`,
+           final:true
+         });
+         break;
+       }
+
+       const nextIndex=currentIndex+1<old.length?currentIndex+1:-1;
+       searchIndex++;
+       steps.push({
+         ...snap(old,nextIndex===-1?`current = current.next → None; index = ${searchIndex}`:`current = current.next → node ${nextIndex}; index = ${searchIndex}`,nextIndex),
+         trackLine:6,
+         headIndex:0,
+         currentIndex:nextIndex,
+         compareValue:nextIndex===-1?`current = None | index = ${searchIndex}`:`current → node ${nextIndex} | index = ${searchIndex}`,
+         caption:nextIndex===-1?"สิ้นสุด List":`เลื่อนไป node index ${nextIndex}`
+       });
+       currentIndex=nextIndex;
+     }
+
+     if(foundIndex===-1){
+       steps.push({
+         ...snap(old,"ตรวจสอบ current != None → FALSE",-1),
+         trackLine:4,
+         headIndex:0,
+         currentIndex:-1,
+         compareValue:"current = None",
+         caption:"ไม่พบข้อมูล"
+       });
+       steps.push({
+         ...snap(old,'คืนค่า "Not found"',-1),
+         trackLine:7,
+         headIndex:0,
+         currentIndex:-1,
+         compareValue:'RETURN "Not found"',
+         resultValue:"Output: Not found",
+         caption:`search(${item}) = Not found`,
+         final:true
+       });
+     }
+   }
+
+   s.steps=steps;
+   s.step=0;
+   s.pending=[...old];
+   s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,`เตรียม search(${item}) แล้ว กด Next Step`);
+   addLog(id,`prepare search(${item})`);
+   render(id);
+   return;
+ }
 
  if(op==="setposition"){
    if(id!=="sll")return setStatus(id,"setposition ใช้กับ Singly Linked List เท่านั้น");
