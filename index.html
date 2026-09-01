@@ -79,6 +79,21 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 .rec-call-tree{display:grid;grid-template-columns:minmax(190px,.75fr) minmax(420px,1.6fr);gap:12px;margin-top:10px;align-items:start}
 .rec-subview{min-width:0;border:1px solid #dfe7e2;border-radius:10px;background:#fbfdfc;padding:10px}
 .rec-subview-title{display:block;margin-bottom:9px;color:var(--g);font-size:13px;font-weight:900;text-align:center}
+.recursion-workspace{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(360px,1.45fr) minmax(230px,.9fr);gap:12px;margin-top:14px;align-items:start}
+.recursion-left-column{grid-column:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+.recursion-tree-column{grid-column:2;min-width:0}
+.recursion-stack-column{grid-column:3;min-width:0}
+.recursion-workspace .expr-box{margin:0}
+@media(max-width:1100px){
+  .recursion-workspace{grid-template-columns:minmax(240px,.9fr) minmax(300px,1.2fr)}
+  .recursion-left-column{grid-column:1;grid-row:1/3}
+  .recursion-stack-column{grid-column:2;grid-row:1}
+  .recursion-tree-column{grid-column:2;grid-row:2}
+}
+@media(max-width:760px){
+  .recursion-workspace{grid-template-columns:1fr}
+  .recursion-left-column,.recursion-tree-column,.recursion-stack-column{grid-column:1;grid-row:auto}
+}
 .fib-tree-scroll{overflow:auto;padding:8px 4px 14px}
 .fib-tree{display:flex;justify-content:center;min-width:max-content}
 .fib-tree ul{position:relative;display:flex;justify-content:center;margin:0;padding-top:22px;padding-left:0}
@@ -127,8 +142,13 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 .metric span{display:block;color:#607d8b;font-size:12px}.metric strong{font-size:20px}
 @media(max-width:900px){.algo-layout{grid-template-columns:1fr}.dashboard{grid-template-columns:repeat(2,1fr)}}
 
-.selected-panel{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0;padding:12px;background:#fff8e1;border-radius:10px}
+.selected-panel{display:flex;gap:14px;align-items:stretch;flex-wrap:wrap;margin:12px 0;padding:12px;background:#fff8e1;border-radius:10px}
+.selection-status-block{display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;font-weight:900}
+.selection-status-block .selection-status-label{color:#607d8b;font-size:13px}
+.selection-status-block .selection-status-data{color:#1b5e20;font-size:18px}
+.selection-status-divider{width:2px;min-height:48px;background:#d7caa5;border-radius:999px}
 .selected-value{display:inline-flex;align-items:center;justify-content:center;min-width:72px;height:48px;border:3px solid var(--p);background:#f3e5f5;border-radius:10px;font-size:20px;font-weight:800}
+@media(max-width:700px){.selection-status-divider{display:none}.selection-status-block{flex:1 1 180px}}
 .radix-wrap{display:flex;flex-direction:column;gap:14px}
 .radix-pass{font-weight:800;color:var(--g);text-align:center}
 .bucket-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
@@ -498,6 +518,12 @@ aside .topic-popup-btn.active{
 .code-tab-btn{flex:1 1 120px;padding:10px;border:0;background:transparent;font-weight:800;cursor:pointer;color:#455a64}
 .code-tab-btn.active{color:var(--o);background:var(--o2);box-shadow:inset 0 -3px 0 var(--o)}
 .code-tab-panel{display:none;padding:12px}.code-tab-panel.active{display:block}
+.linked-code-details{margin-top:10px;border:1px solid #cfd8dc;border-radius:12px;background:#fff;overflow:hidden}
+.linked-code-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;background:#f5f8f6;color:#1b5e20;font-weight:900;cursor:pointer;list-style:none}
+.linked-code-details>summary::-webkit-details-marker{display:none}
+.linked-code-details>summary::after{content:"▼ เปิดดู";color:#ef6c00;font-size:12px}
+.linked-code-details[open]>summary::after{content:"▲ ซ่อน"}
+.linked-code-details .code-tabs{margin-top:0;border:0;border-top:1px solid #d8e0dc;border-radius:0}
 .code-block{margin:0;min-height:150px;max-height:360px;overflow:auto;padding:14px;border-radius:9px;background:#17212b;color:#f5f7fa;font-family:Consolas,monospace;font-size:13px;line-height:1.55;white-space:pre-wrap}
 
 #selection.selection-desc .selected-panel{
@@ -1037,7 +1063,7 @@ aside .topic-popup-btn.active{
 .sll-operation-groups{
   width:100%;
   display:grid;
-  grid-template-columns:repeat(3,minmax(220px,1fr));
+  grid-template-columns:repeat(2,minmax(280px,1fr));
   gap:12px;
   margin-top:8px;
 }
@@ -1056,6 +1082,13 @@ aside .topic-popup-btn.active{
 .sll-operation-group .action{
   margin:3px;
 }
+.list-operation-row{display:flex;align-items:center;flex-wrap:wrap;gap:2px;width:100%}
+.list-operation-row.delete-row{margin-top:7px;padding-top:7px;border-top:1px dashed #d7e2dc}
+/* Array List keeps every operation group on one horizontal row. */
+#arraylist .sll-operation-group{overflow-x:auto;white-space:nowrap}
+#arraylist .sll-operation-group .list-operation-row{display:inline-flex;width:auto;flex-wrap:nowrap}
+#arraylist .sll-operation-group .list-operation-row.delete-row{margin-top:0;padding-top:0;border-top:0}
+#arraylist .sll-operation-group .action{display:inline-flex;white-space:nowrap}
 #sllVisual .sll-pointer.newnode{
   top:68px;
   color:#7b1fa2;
@@ -1600,7 +1633,7 @@ aside .topic-popup-btn.active{
   gap:12px;
   flex-wrap:wrap;
   min-height:180px;
-  padding:78px 12px 24px 12px;
+  padding:102px 12px 24px 12px;
 }
 .dll-stage .node-block{
   align-items:center;
@@ -1713,6 +1746,55 @@ aside .topic-popup-btn.active{
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   white-space:pre-wrap;
 }
+.dll-floating-newnode-lane{
+  flex:0 0 100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  margin-top:18px;
+  padding:14px;
+  border:2px dashed #ab47bc;
+  border-radius:12px;
+  background:#fcf7ff;
+  color:#6a1b9a;
+  font-weight:900;
+}
+.dll-floating-newnode-lane .dll-vertical-node{background:#f3e5f5}
+.dll-floating-links{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:35;
+  pointer-events:none;
+  overflow:visible;
+}
+.dll-floating-link{
+  fill:none;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-dasharray:10 7;
+  animation:dllLinkDraw .8s linear infinite;
+}
+.dll-floating-link.prev{stroke:#ef6c00}
+.dll-floating-link.next{stroke:#2e7d32}
+@keyframes dllLinkDraw{to{stroke-dashoffset:-34}}
+.dll-interactive-wrap{position:relative}
+.dll-currentpos-card{
+  position:absolute;
+  top:10px;
+  right:12px;
+  z-index:70;
+  padding:8px 12px;
+  border:2px solid #90caf9;
+  border-radius:12px;
+  background:#e3f2fd;
+  color:#0d47a1;
+  text-align:center;
+  font-weight:800;
+}
+.dll-currentpos-card strong{font-size:1.15rem;margin-left:8px}
 .dll-node-row.pointer.highlight-pointer{
   background:#fff3e0;
   color:#e65100;
@@ -1737,7 +1819,7 @@ aside .topic-popup-btn.active{
 }
 .dll-tail-pointer{
   position:absolute;
-  top:8px;
+  top:50px;
   transform:translateX(-50%);
   display:flex;
   flex-direction:column;
@@ -1774,6 +1856,7 @@ aside .topic-popup-btn.active{
   pointer-events:none;
 }
 .dll-current-pointer{color:#1565c0}
+.dll-current-pointer{top:8px}
 .dll-del-pointer{color:#c62828}
 .dll-current-pointer .pointer-arrow,
 .dll-del-pointer .pointer-arrow{
@@ -1795,8 +1878,9 @@ aside .topic-popup-btn.active{
   pointer-events:none;
 }
 .dll-p-pointer{
-  top:8px;
+  top:38px;
   color:#6a1b9a;
+  margin-left:-25px;
 }
 .dll-previous-node-pointer{
   top:8px;
@@ -1819,8 +1903,14 @@ aside .topic-popup-btn.active{
 .dll-previous-node-pointer,
 .dll-newnode-pointer,
 .dll-next-node-pointer{
-  top:8px !important;
+  top:38px !important;
 }
+
+/* Head/Tail sit directly above the node frame; current and p use separate lanes. */
+.dll-start-pointer,
+.dll-tail-pointer{top:58px!important}
+.dll-current-pointer{top:8px!important}
+.dll-p-pointer{top:58px!important}
 
 
 /* v100_heap_search_detail: compact DLL variable labels */
@@ -1954,6 +2044,33 @@ aside .topic-popup-btn.active{
   padding:8px 0 2px;
 }
 
+/* Shared round-by-round history for every Sorting algorithm. */
+.sorting-round-tracking{margin-top:14px;padding:13px;border:2px solid #a5d6a7;border-radius:12px;background:#f7fff8;overflow-x:auto}
+.sorting-round-details .sorting-round-tracking{margin-top:0;border:0;border-radius:0}
+.sorting-round-tracking-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;color:#1b5e20;font-weight:900}
+.sorting-round-tracking-list{display:grid;gap:9px}
+.sorting-round-card{display:grid;grid-template-columns:minmax(260px,320px) minmax(260px,1fr) minmax(390px,auto);gap:12px;align-items:center;min-width:980px;padding:9px 10px;border:1px solid #c8e6c9;border-radius:10px;background:#fff}
+.sorting-round-label{color:#2e7d32;font-weight:900}
+.sorting-round-note{display:block;max-width:100%;margin-top:3px;overflow:hidden;color:#607d8b;font-size:12px;font-weight:700;white-space:nowrap;text-overflow:ellipsis}
+.sorting-round-metrics{display:flex;flex-direction:row;align-items:center;gap:8px;min-width:390px;padding-left:12px;border-left:2px solid #dce8df;white-space:nowrap}
+.sorting-round-metric{padding:4px 7px;border-radius:999px;background:#e3f2fd;color:#0d47a1;font-size:11px;font-weight:900}
+.sorting-round-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding:8px 10px;border-radius:9px;background:#fff}
+.sorting-round-summary strong{color:#1b5e20}
+.sorting-round-legend{display:flex;gap:12px;flex-wrap:wrap;color:#546e7a;font-size:12px;font-weight:800}
+.sorting-round-legend i{display:inline-block;width:12px;height:12px;margin-right:5px;border-radius:3px;vertical-align:-1px}
+.sorting-round-legend .done{background:#c8e6c9;border:2px solid #2e7d32}
+.sorting-round-legend .pending{background:#fff3e0;border:2px solid #ef6c00}
+.sorting-round-values{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;text-align:center}
+.sorting-round-value{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:7px 9px;border:2px solid #ef6c00;border-radius:8px;background:#fff3e0;font-weight:900}
+.sorting-round-value.sorted{border-color:#2e7d32;background:#c8e6c9;color:#1b5e20}
+.sorting-round-value.pending{border-color:#ef6c00;background:#fff3e0;color:#e65100}
+.search-round-value.current{border-color:#ef6c00;background:#fff3e0;color:#e65100;box-shadow:0 0 0 3px rgba(239,108,0,.16)}
+.search-round-value.found{border-color:#2e7d32;background:#c8e6c9;color:#1b5e20;box-shadow:0 0 0 3px rgba(46,125,50,.16)}
+.search-round-value.candidate{border-color:#1565c0;background:#e3f2fd;color:#0d47a1}
+.search-round-value.excluded{border-color:#b0bec5;background:#eceff1;color:#78909c;opacity:.72}
+.search-round-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;color:#455a64;font-size:11px;font-weight:900}
+.sorting-round-empty{padding:10px;border-radius:8px;background:#fff;color:#607d8b;text-align:center;font-weight:700}
+
 
 .heap-search-guide{
   margin:12px 0;
@@ -1973,13 +2090,23 @@ aside .topic-popup-btn.active{
 }
 
 /* Interactive Pointer Lab: drag/click links for SLL and DLL */
-.info.linked-info{grid-template-columns:repeat(3,minmax(110px,1fr)) minmax(260px,1.5fr);align-items:stretch}
-#dll .info.linked-info{grid-template-columns:repeat(2,minmax(110px,1fr)) minmax(260px,1.5fr)}
+.info.linked-info{grid-template-columns:minmax(110px,140px) minmax(360px,1fr);align-items:stretch}
+#dll .info.linked-info{grid-template-columns:minmax(105px,140px) minmax(105px,140px) minmax(360px,1fr)}
+#dll .info.linked-info.has-dll-index{grid-template-columns:minmax(95px,125px) minmax(95px,125px) minmax(95px,125px) minmax(330px,1fr)}
 .pointer-lab-launch{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:0;padding:7px 9px;border-radius:10px;background:#f1f8e9}
 .pointer-lab-launch .action{flex:1 1 125px;margin:0;white-space:nowrap}
+#dll .pointer-lab-launch{flex-wrap:nowrap}
 @media(max-width:900px){
-  .info.linked-info,#dll .info.linked-info{grid-template-columns:repeat(2,minmax(120px,1fr))}
+  .info.linked-info{grid-template-columns:repeat(2,minmax(120px,1fr))}
+  #dll .info.linked-info{grid-template-columns:minmax(95px,120px) minmax(95px,120px) minmax(310px,1fr)}
+  #dll .info.linked-info.has-dll-index{grid-template-columns:repeat(3,minmax(85px,105px)) minmax(285px,1fr)}
   .info.linked-info .pointer-lab-launch{grid-column:1/-1}
+  #dll .info.linked-info .pointer-lab-launch{grid-column:auto}
+}
+@media(max-width:650px){
+  #dll .info.linked-info{grid-template-columns:repeat(2,minmax(120px,1fr))}
+  #dll .info.linked-info.has-dll-index{grid-template-columns:repeat(3,minmax(95px,1fr))}
+  #dll .info.linked-info .pointer-lab-launch{grid-column:1/-1;flex-wrap:wrap}
 }
 .pointer-lab{margin-top:14px;padding:14px;border:2px solid #81c784;border-radius:14px;background:#f7fff8}
 .pointer-lab[hidden]{display:none!important}
@@ -2026,8 +2153,33 @@ aside .topic-popup-btn.active{
 .sll-activity-node .node-next{padding:12px 4px;border-left:1px solid #cfd8dc}
 .sll-fixed-arrow{color:#607d8b;font-size:30px;font-weight:900}
 .sll-null{position:relative;z-index:2;padding:11px 14px;border:2px dashed #78909c;border-radius:10px;background:#f5f7f8;color:#455a64;font-weight:900}
-.sll-new-lane{position:relative;z-index:2;margin-top:34px;padding-top:14px;border-top:1px dashed #ce93d8}
-.sll-new-lane .sll-activity-node{margin-left:90px}
+.sll-new-lane{position:relative;z-index:2;min-width:780px;margin-top:34px;padding-top:14px;border-top:1px dashed #ce93d8}
+.sll-new-lane .sll-activity-node,.sll-new-lane .sll-new-placeholder{transition:margin-left .45s ease}
+.sll-new-lane.new-position-first .sll-activity-node,.sll-new-lane.new-position-first .sll-new-placeholder{margin-left:90px}
+.sll-new-lane.new-position-second .sll-activity-node,.sll-new-lane.new-position-second .sll-new-placeholder,
+.sll-new-lane.new-position-middle .sll-activity-node,.sll-new-lane.new-position-middle .sll-new-placeholder{margin-left:350px}
+.sll-new-lane.new-position-last .sll-activity-node,.sll-new-lane.new-position-last .sll-new-placeholder{margin-left:640px}
+/* SLL insert lab: align newNode with the actual insertion gap. */
+#sllPointerLab .sll-new-lane.new-position-second .sll-activity-node,
+#sllPointerLab .sll-new-lane.new-position-second .sll-new-placeholder,
+#sllPointerLab .sll-new-lane.new-position-middle .sll-activity-node,
+#sllPointerLab .sll-new-lane.new-position-middle .sll-new-placeholder{margin-left:410px}
+#sllPointerLab .sll-new-lane.new-position-last .sll-activity-node,
+#sllPointerLab .sll-new-lane.new-position-last .sll-new-placeholder{margin-left:700px}
+#sllPointerLab .sll-new-lane{min-width:860px}
+/* DLL insert lab: align newNode with the actual insertion gap. */
+#dllPointerLab .sll-new-lane.new-position-middle .sll-activity-node,
+#dllPointerLab .sll-new-lane.new-position-middle .sll-new-placeholder{margin-left:410px}
+#dllPointerLab .sll-new-lane.new-position-last .sll-activity-node,
+#dllPointerLab .sll-new-lane.new-position-last .sll-new-placeholder{margin-left:700px}
+#dllPointerLab .sll-new-lane{min-width:860px}
+@media(max-width:900px){
+  .sll-new-lane.new-position-last .sll-activity-node,.sll-new-lane.new-position-last .sll-new-placeholder{margin-left:610px}
+  #sllPointerLab .sll-new-lane.new-position-last .sll-activity-node,
+  #sllPointerLab .sll-new-lane.new-position-last .sll-new-placeholder{margin-left:680px}
+  #dllPointerLab .sll-new-lane.new-position-last .sll-activity-node,
+  #dllPointerLab .sll-new-lane.new-position-last .sll-new-placeholder{margin-left:680px}
+}
 .expected-source{outline:5px solid rgba(255,152,0,.3)!important;box-shadow:0 0 0 3px #ff9800!important;animation:pointerPulse 1s infinite alternate}
 .expected-target{outline:5px solid rgba(46,125,50,.24)!important;box-shadow:0 0 0 3px #2e7d32!important}
 .sll-legend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0;color:#546e7a;font-size:12px;font-weight:800}
@@ -2078,7 +2230,7 @@ const configs=[
  {id:"circularq",title:"Circular Queue",kind:"array",ops:["create","enqueue","dequeue","delete_all","is_full","is_empty","size","front","rear","to_list"]},
  {id:"arraylist",title:"Array List",kind:"arraylist",ops:["create","add_item","add_index","delete","delete_index","delete_item","isFull","isEmpty","size","get_index","get_item","print_list"]},
  {id:"sll",title:"Singly Linked List",kind:"linked",double:false,ops:["create","add_first","add_index","add_last","delete_first","delete_index","delete_last","delete_item","isEmpty","size","setposition","search","get_index","print_list"]},
- {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","add_first","add_last","add_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","get_index","print_dll","print_backward"]},
+ {id:"dll",title:"Doubly Linked List",kind:"linked",double:true,ops:["create","add_first","add_last","add_index","delete_first","delete_last","delete_index","delete_item","isEmpty","size","setposition","move_next","move_prev","search","get_index","get_item","print_dll","print_backward","clear"]},
  {id:"bst",title:"BST",kind:"nonlinear",structure:"bst"},
  {id:"heap",title:"Heap Tree",kind:"nonlinear",structure:"heap"},
  {id:"hash",title:"Hash Table",kind:"nonlinear",structure:"hash"},
@@ -2104,7 +2256,7 @@ const states={};
 function makeState(id){
  const defaultData=(id==="sll"||id==="dll"||id==="arraylist")?[10,20,30,40]:[];
  const defaultCapacity=id==="arraylist"?5:6;
- return {id,data:[...defaultData],capacity:defaultCapacity,front:id==="circularq"?0:-1,rear:-1,count:0,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1};
+ return {id,data:[...defaultData],capacity:defaultCapacity,front:id==="circularq"?0:-1,rear:-1,count:0,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1,dllCurrentPos:id==="dll"&&defaultData.length?defaultData.length-1:-1};
 }
 function val(id){const raw=$(id+"Data").value.trim();const n=Number(raw);return Number.isNaN(n)?raw:n}
 function idx(id){return Number($(id+"Index").value)}
@@ -2114,12 +2266,12 @@ function updateInfo(id){
  const s=states[id],cfg=configs.find(x=>x.id===id);
  let size=cfg.id==="circularq"?s.count:cfg.id==="linearq"?s.data.filter(v=>v!==null).length:s.data.length;
  if($(id+"Size"))$(id+"Size").textContent=size;
- $(id+"State").textContent=size===0?"Empty":"Ready";
+ if($(id+"State"))$(id+"State").textContent=size===0?"Empty":"Ready";
  if($(id+"Pointer")){
    if(id==="stack")$(id+"Pointer").textContent=`top = ${s.top}`;
    else if(id==="circularq")$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}, count = ${s.count}`;
    else if(["physicalq","linearq"].includes(id))$(id+"Pointer").textContent=`front = ${s.front}, rear = ${s.rear}`;
-   else if(id==="dll")$(id+"Pointer").textContent=`start = ${size?"node 1":"None"}, tail = ${size?`node ${size}`:"None"}, size = ${size} | Engine V2`;
+   else if(id==="dll")$(id+"Pointer").textContent=`head = ${size?"node 1":"None"}, tail = ${size?`node ${size}`:"None"}, size = ${size}`;
    else $(id+"Pointer").textContent="-";
  }
 }
@@ -2240,8 +2392,8 @@ function linkedHTML(a,double=false,o={}){
  }
 
  const dllStart=a.length
-   ? `<div class="dll-start-pointer"><span>start</span><span class="start-arrow">↓</span></div>`
-   : `<div class="head-pointer sll-head-empty dll-empty-pointers"><span>start → NULL</span><span>tail → NULL</span></div>`;
+   ? `<div class="dll-start-pointer"><span>head</span><span class="start-arrow">↓</span></div>`
+   : `<div class="head-pointer sll-head-empty dll-empty-pointers"><span>head → NULL</span><span>tail → NULL</span><span>current → NULL</span></div>`;
  const dllTailIndex=Number.isInteger(o.tailIndex) && o.tailIndex>=0
    ? o.tailIndex
    : a.length-1;
@@ -2272,24 +2424,37 @@ function linkedHTML(a,double=false,o={}){
    : "";
  const dllPreviousNodePointer=Number.isInteger(o.previousNodeIndex) && o.previousNodeIndex>=0
    ? `<div class="dll-previous-node-pointer" style="left:calc(${o.previousNodeIndex} * 182px + 63px)">
-        <span>previousNode</span><span class="pointer-arrow">↓</span>
+        <span>before</span><span class="pointer-arrow">↓</span>
       </div>`
    : "";
  const dllNextNodePointer=Number.isInteger(o.nextNodeIndex) && o.nextNodeIndex>=0
    ? `<div class="dll-next-node-pointer" style="left:calc(${o.nextNodeIndex} * 182px + 63px)">
-        <span>nextNode</span><span class="pointer-arrow">↓</span>
+        <span>after</span><span class="pointer-arrow">↓</span>
       </div>`
    : "";
+ const hasFloatingLinks=[o.floatingPrevTarget,o.floatingNextTarget,o.floatingPrevFromTarget,o.floatingNextFromTarget].some(Number.isInteger);
+ const floatingPrevValue=Number.isInteger(o.floatingPrevTarget)?`node ${o.floatingPrevTarget}`:"NULL";
+ const floatingNextValue=Number.isInteger(o.floatingNextTarget)?`node ${o.floatingNextTarget}`:"NULL";
  const dllFloatingNewNode=o.floatingNewNode
-   ? `<div class="dll-pointer-detail" style="border-style:dashed">
-        newNode(data=${escapeHTML(o.floatingNewNodeValue)})
+   ? `<div class="dll-floating-newnode-lane">
+        <span>${hasFloatingLinks?"กำลังสร้างการเชื่อมโยงเข้าสู่ DLL":"ขั้นที่ 1 · สร้าง newNode"}</span>
+        <div class="node dll-vertical-node new-node dll-floating-node">
+          <div class="dll-node-row data">${escapeHTML(o.floatingNewNodeValue)}</div>
+          <div class="dll-node-row pointer"><span>${floatingPrevValue}</span><span class="dll-pointer-dot"></span></div>
+          <div class="dll-node-row pointer"><span>${floatingNextValue}</span><span class="dll-pointer-dot"></span></div>
+        </div>
+        <small>prev = ${floatingPrevValue} · next = ${floatingNextValue}</small>
       </div>`
    : "";
  const dllPointerDetail=o.pointerDetail
    ? `<div class="dll-pointer-detail">${escapeHTML(o.pointerDetail)}</div>`
    : "";
 
- return `<div class="dll-stage">${dllStart}${dllTail}${dllNewNodePointer}${dllCurrentPointer}${dllDelPointer}${dllPPointer}${dllPreviousNodePointer}${dllNextNodePointer}`+a.map((v,i)=>{
+ const floatingLinkSvg=o.floatingNewNode?`<svg class="dll-floating-links" aria-hidden="true"></svg>`:"";
+ const floatingData=o.floatingNewNode
+   ? ` data-prev-to="${Number.isInteger(o.floatingPrevTarget)?o.floatingPrevTarget:""}" data-next-to="${Number.isInteger(o.floatingNextTarget)?o.floatingNextTarget:""}" data-prev-from="${Number.isInteger(o.floatingPrevFromTarget)?o.floatingPrevFromTarget:""}" data-next-from="${Number.isInteger(o.floatingNextFromTarget)?o.floatingNextFromTarget:""}"`
+   : "";
+ return `<div class="dll-stage"${floatingData}>${floatingLinkSvg}${dllStart}${dllTail}${dllCurrentPointer}${dllPPointer}${dllPreviousNodePointer}${dllNextNodePointer}`+a.map((v,i)=>{
    let cls="node";
    if(o.active===i)cls+=" active-node";
    if(o.newIndex===i)cls+=" new-node";
@@ -2318,16 +2483,53 @@ function linkedHTML(a,double=false,o={}){
 
    return `<div class="node-block">
      <div class="node-col">
-       <div class="${cls} dll-vertical-node">${body}</div>
+       <div class="${cls} dll-vertical-node" data-dll-index="${i}">${body}</div>
        <div class="node-label dll-node-label-bottom">node ${i}</div>
      </div>
      ${connector}
    </div>`;
  }).join("")+dllFloatingNewNode+dllPointerDetail+"</div>";
 }
+function drawDllFloatingLinks(){
+ const stage=document.querySelector("#dllVisual .dll-stage"),svg=stage?.querySelector(".dll-floating-links"),floating=stage?.querySelector(".dll-floating-node");
+ if(!stage||!svg||!floating)return;
+ const stageRect=stage.getBoundingClientRect(),floatRect=floating.getBoundingClientRect();
+ const point=(rect,top=true)=>({x:rect.left-stageRect.left+rect.width/2,y:(top?rect.top:rect.bottom)-stageRect.top});
+ const floatTop=point(floatRect,true);
+ const links=[
+   ["prev",stage.dataset.prevTo,"to"],["next",stage.dataset.nextTo,"to"],
+   ["prev",stage.dataset.prevFrom,"from"],["next",stage.dataset.nextFrom,"from"]
+ ];
+ const marker=`<defs><marker id="dllPrevArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ef6c00"/></marker><marker id="dllNextArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2e7d32"/></marker></defs>`;
+ const paths=links.filter(([,value])=>value!=="").map(([kind,value,direction])=>{
+   const target=stage.querySelector(`[data-dll-index="${value}"]`);if(!target)return "";
+   const targetBottom=point(target.getBoundingClientRect(),false);
+   const from=direction==="to"?floatTop:targetBottom,to=direction==="to"?targetBottom:floatTop;
+   const bend=Math.max(28,Math.abs(to.y-from.y)*.45);
+   return `<path class="dll-floating-link ${kind}" d="M ${from.x} ${from.y} C ${from.x} ${from.y-bend}, ${to.x} ${to.y+bend}, ${to.x} ${to.y}" marker-end="url(#dll${kind==="prev"?"Prev":"Next"}Arrow)"/>`;
+ }).join("");
+ svg.setAttribute("viewBox",`0 0 ${stage.clientWidth} ${stage.clientHeight}`);svg.innerHTML=marker+paths;
+}
 function render(id){
  const s=states[id],cfg=configs.find(x=>x.id===id);
- if(cfg.kind==="linked")$(id+"Visual").innerHTML=linkedHTML(s.data,cfg.double,s.view);
+ if(cfg.kind==="linked"){
+   const linkedView=id==="dll"
+     ? {headIndex:s.data.length?0:-1,tailIndex:s.data.length?s.data.length-1:-1,currentIndex:Number.isInteger(s.dllCurrentPos)?s.dllCurrentPos:-1,...s.view}
+     : s.view;
+   $(id+"Visual").innerHTML=linkedHTML(s.data,cfg.double,linkedView);
+   if(id==="dll" && $("dllCurrentPos")){
+     const shownPos=Number.isInteger(linkedView.currentIndex)?linkedView.currentIndex:-1;
+     $("dllCurrentPos").textContent=shownPos;
+   }
+   if(id==="dll"){
+     const activeOp=s.dllActiveOp||$("dllSelectedFunction")?.textContent||"create";
+     const walkingIndex=["search","get_index","delete_item"].includes(activeOp)
+       ? (Number.isInteger(linkedView.pIndex)?linkedView.pIndex:s.dllIndexValue)
+       : undefined;
+     updateDllIndexCard(activeOp,walkingIndex);
+     requestAnimationFrame(drawDllFloatingLinks);
+   }
+ }
  else{
    let display=[];
    if(id==="linearq"||id==="circularq")display=s.data.length?[...s.data]:Array(s.capacity).fill(null);
@@ -3636,6 +3838,340 @@ functionCodeLibrary.dll.print_backward={
     return dll_data`
 };
 
+/* DLL V3: one consistent model — head, tail, size, current, currentpos. */
+Object.assign(functionCodeLibrary.dll,{
+ create:{a:["กำหนด head และ tail เป็น None","กำหนด size = 0","กำหนด current = None และ currentpos = -1"],p:`CREATE()
+  head ← NULL
+  tail ← NULL
+  size ← 0
+  current ← NULL
+  currentpos ← -1`,c:`class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.size = 0
+        self.current = None
+        self.currentpos = -1`},
+ isEmpty:{a:["ตรวจสอบ size เท่ากับ 0","คืนค่า True หรือ False"],p:`IS_EMPTY()
+  RETURN size = 0`,c:`def isEmpty(self):
+    return self.size == 0`},
+ size:{a:["คืนค่า size"],p:`GET_SIZE()
+  RETURN size`,c:`def get_size(self):
+    return self.size`},
+ add_first:{a:["สร้าง newNode","ถ้า List ว่าง กำหนด head และ tail","ถ้าไม่ว่าง เชื่อม newNode.next กับ head","กำหนด head.prev และเลื่อน head","เพิ่ม size","กำหนด current เป็น newNode และ currentpos = 0"],p:`ADD_FIRST(item)
+  newNode ← Node(item)
+  IF size = 0
+    head ← newNode
+    tail ← newNode
+  ELSE
+    newNode.next ← head
+    head.prev ← newNode
+    head ← newNode
+  size ← size + 1
+  current ← newNode
+  currentpos ← 0`,c:`def add_first(self, item):
+    new_node = Node(item)
+    if self.size == 0:
+        self.head = self.tail = new_node
+    else:
+        new_node.next = self.head
+        self.head.prev = new_node
+        self.head = new_node
+    self.size += 1
+    self.current = new_node
+    self.currentpos = 0`},
+ add_last:{a:["สร้าง newNode","ถ้า List ว่าง กำหนด head และ tail","เชื่อม newNode.prev กับ tail","เชื่อม tail.next กับ newNode","เลื่อน tail ไป newNode","เพิ่ม size และกำหนด currentpos"],p:`ADD_LAST(item)
+  newNode ← Node(item)
+  IF size = 0
+    head ← newNode
+    tail ← newNode
+  ELSE
+    newNode.prev ← tail
+    tail.next ← newNode
+    tail ← newNode
+  size ← size + 1
+  current ← newNode
+  currentpos ← size - 1`,c:`def add_last(self, item):
+    new_node = Node(item)
+    if self.size == 0:
+        self.head = self.tail = new_node
+    else:
+        new_node.prev = self.tail
+        self.tail.next = new_node
+        self.tail = new_node
+    self.size += 1
+    self.current = new_node
+    self.currentpos = self.size - 1`},
+ add_index:{a:["ตรวจสอบ index ระหว่าง 0 ถึง size","จัดการกรณี index 0 หรือ size","เรียก setposition(index) ให้ current เป็นโหนดถัดไป","กำหนด before = current.prev","เชื่อม newNode ระหว่าง before และ current","เพิ่ม size และกำหนด currentpos"],p:`ADD_INDEX(index, item)
+  IF index < 0 OR index > size
+    RETURN "Index out of range"
+  IF index = 0
+    RETURN ADD_FIRST(item)
+  IF index = size
+    RETURN ADD_LAST(item)
+  SETPOSITION(index)
+  after ← current
+  before ← after.prev
+  newNode ← Node(item)
+  newNode.prev ← before
+  newNode.next ← after
+  before.next ← newNode
+  after.prev ← newNode
+  size ← size + 1
+  current ← newNode
+  currentpos ← index`,c:`def add_index(self, index, item):
+    if index < 0 or index > self.size:
+        return "Index out of range"
+    if index == 0:
+        return self.add_first(item)
+    if index == self.size:
+        return self.add_last(item)
+    self.setposition(index)
+    after = self.current
+    before = after.prev
+    new_node = Node(item)
+    new_node.prev, new_node.next = before, after
+    before.next = after.prev = new_node
+    self.size += 1
+    self.current, self.currentpos = new_node, index`},
+ delete_first:{a:["ตรวจสอบ List ว่าง","เก็บโหนด head และ item","ถ้ามีโหนดเดียว ล้าง Pointer ทั้งหมด","มิฉะนั้นเลื่อน head และกำหนด head.prev = None","ลด size","กำหนด current และ currentpos"],p:`DELETE_FIRST()
+  IF size = 0 RETURN "List is empty"
+  deleteNode ← head
+  item ← deleteNode.data
+  IF size = 1
+    head ← tail ← current ← NULL
+    currentpos ← -1
+    size ← 0
+  ELSE
+    head ← head.next
+    head.prev ← NULL
+    size ← size - 1
+    current ← head
+    currentpos ← 0
+  RETURN item`,c:`def delete_first(self):
+    if self.size == 0: return "List is empty"
+    node, item = self.head, self.head.data
+    if self.size == 1:
+        self.head = self.tail = self.current = None
+        self.currentpos, self.size = -1, 0
+    else:
+        self.head = self.head.next
+        self.head.prev = None
+        self.size -= 1
+        self.current, self.currentpos = self.head, 0
+    node.next = node.prev = None
+    return item`},
+ delete_last:{a:["ตรวจสอบ List ว่าง","ถ้ามีโหนดเดียว เรียก delete_first","กำหนด deleteNode = tail","เลื่อน tail = tail.prev","กำหนด tail.next = None","ลด size และกำหนด current ที่ tail"],p:`DELETE_LAST()
+  IF size = 0 RETURN "List is empty"
+  IF size = 1 RETURN DELETE_FIRST()
+  deleteNode ← tail
+  item ← deleteNode.data
+  tail ← tail.prev
+  tail.next ← NULL
+  size ← size - 1
+  current ← tail
+  currentpos ← size - 1
+  RETURN item`,c:`def delete_last(self):
+    if self.size == 0: return "List is empty"
+    if self.size == 1: return self.delete_first()
+    node, item = self.tail, self.tail.data
+    self.tail = self.tail.prev
+    self.tail.next = None
+    self.size -= 1
+    self.current, self.currentpos = self.tail, self.size - 1
+    node.prev = None
+    return item`},
+ delete_index:{a:["ตรวจสอบ index","จัดการโหนดแรกและโหนดสุดท้าย","เรียก setposition(index)","เก็บ before และ after","เชื่อม before.next กับ after และ after.prev กับ before","ลด size และให้ current ชี้ after"],p:`DELETE_INDEX(index)
+  IF index < 0 OR index >= size RETURN "Index out of range"
+  IF index = 0 RETURN DELETE_FIRST()
+  IF index = size-1 RETURN DELETE_LAST()
+  SETPOSITION(index)
+  deleteNode ← current
+  before ← deleteNode.prev
+  after ← deleteNode.next
+  before.next ← after
+  after.prev ← before
+  size ← size - 1
+  current ← after
+  currentpos ← index
+  RETURN deleteNode.data`,c:`def delete_index(self, index):
+    if index < 0 or index >= self.size: return "Index out of range"
+    if index == 0: return self.delete_first()
+    if index == self.size-1: return self.delete_last()
+    self.setposition(index)
+    node = self.current
+    before, after = node.prev, node.next
+    before.next, after.prev = after, before
+    self.size -= 1
+    self.current, self.currentpos = after, index
+    node.next = node.prev = None
+    return node.data`},
+ delete_item:{a:["ค้นหา index ของ item","ถ้าไม่พบคืน Not found","เรียก delete_index(index)"],p:`DELETE_ITEM(item)
+  index ← GET_INDEX(item)
+  IF index = -1 RETURN "Not found"
+  RETURN DELETE_INDEX(index)`,c:`def delete_item(self, item):
+    index = self.get_index(item)
+    if index == -1: return "Not found"
+    return self.delete_index(index)`},
+ setposition:{a:["ตรวจสอบ index","คำนวณระยะจาก head, tail และ current","เลือก Pointer ที่ใกล้ที่สุด","เลื่อนด้วย next หรือ prev","กำหนด current และ currentpos","คืนค่า current.data"],p:`SETPOSITION(index)
+  IF index < 0 OR index >= size RETURN "Index out of range"
+  dHead ← index
+  dTail ← size-1-index
+  dCurrent ← ∞
+  IF current ≠ NULL
+    dCurrent ← |index-currentpos|
+  IF dHead ≤ dTail AND dHead ≤ dCurrent
+    p ← head
+    pos ← 0
+  ELSE IF dTail ≤ dCurrent
+    p ← tail
+    pos ← size-1
+  ELSE
+    p ← current
+    pos ← currentpos
+  WHILE pos < index
+    p ← p.next
+    pos ← pos+1
+  WHILE pos > index
+    p ← p.prev
+    pos ← pos-1
+  current ← p
+  currentpos ← pos
+  RETURN current.data`,c:`def setposition(self, index):
+    if index < 0 or index >= self.size:
+        return "Index out of range"
+
+    d_head = index
+    d_tail = self.size - 1 - index
+    d_current = float("inf")
+    if self.current is not None:
+        d_current = abs(index - self.currentpos)
+
+    if d_head <= d_tail and d_head <= d_current:
+        p = self.head
+        pos = 0
+    elif d_tail <= d_current:
+        p = self.tail
+        pos = self.size - 1
+    else:
+        p = self.current
+        pos = self.currentpos
+
+    while pos < index:
+        p = p.next
+        pos += 1
+    while pos > index:
+        p = p.prev
+        pos -= 1
+
+    self.current = p
+    self.currentpos = pos
+    return self.current.data`},
+ move_next:{a:["ตรวจสอบ current","ตรวจสอบ current ไม่ใช่ tail","เลื่อน current = current.next","เพิ่ม currentpos","คืนค่า current.data"],p:`MOVE_NEXT()
+  IF current = NULL RETURN "List is empty"
+  IF current = tail RETURN "Current is at last node"
+  current ← current.next
+  currentpos ← currentpos + 1
+  RETURN current.data`,c:`def move_next(self):
+    if self.current is None: return "List is empty"
+    if self.current is self.tail: return "Current is at last node"
+    self.current = self.current.next
+    self.currentpos += 1
+    return self.current.data`},
+ move_prev:{a:["ตรวจสอบ current","ตรวจสอบ current ไม่ใช่ head","เลื่อน current = current.prev","ลด currentpos","คืนค่า current.data"],p:`MOVE_PREV()
+  IF current = NULL RETURN "List is empty"
+  IF current = head RETURN "Current is at first node"
+  current ← current.prev
+  currentpos ← currentpos - 1
+  RETURN current.data`,c:`def move_prev(self):
+    if self.current is None: return "List is empty"
+    if self.current is self.head: return "Current is at first node"
+    self.current = self.current.prev
+    self.currentpos -= 1
+    return self.current.data`},
+ search:{a:["เริ่ม p ที่ head และ index = 0","เปรียบเทียบ item กับ p.data","เมื่อพบกำหนด current และ currentpos","ถ้าไม่พบคืน Not found"],p:`SEARCH(item)
+  p ← head; index ← 0
+  WHILE p ≠ NULL
+    IF p.data = item
+      current ← p; currentpos ← index
+      RETURN "Found"
+    p ← p.next; index ← index+1
+  RETURN "Not found"`,c:`def search(self, item):
+    p, index = self.head, 0
+    while p is not None:
+        if p.data == item:
+            self.current, self.currentpos = p, index
+            return "Found"
+        p, index = p.next, index+1
+    return "Not found"`},
+ get_index:{a:["เริ่มค้นหาจาก head","เปรียบเทียบข้อมูลทีละโหนด","เมื่อพบกำหนด current/currentpos และคืน index","ถ้าไม่พบคืน -1"],p:`GET_INDEX(item)
+  p ← head; index ← 0
+  WHILE p ≠ NULL
+    IF p.data = item
+      current ← p; currentpos ← index
+      RETURN index
+    p ← p.next; index ← index+1
+  RETURN -1`,c:`def get_index(self, item):
+    p, index = self.head, 0
+    while p is not None:
+        if p.data == item:
+            self.current, self.currentpos = p, index
+            return index
+        p, index = p.next, index+1
+    return -1`},
+ get_item:{a:["เรียก setposition(index)","ถ้า index ไม่ถูกต้องคืน error","คืนค่า current.data"],p:`GET_ITEM(index)
+  result ← SETPOSITION(index)
+  IF result = "Index out of range" RETURN result
+  RETURN current.data`,c:`def get_item(self, index):
+    result = self.setposition(index)
+    if result == "Index out of range": return result
+    return self.current.data`},
+ print_dll:{a:["กำหนด p = head","อ่านข้อมูลจากหน้าไปหลังด้วย next","คืนค่ารายการข้อมูล"],p:`PRINT_FORWARD()
+  p ← head; output ← []
+  WHILE p ≠ NULL
+    APPEND p.data TO output
+    p ← p.next
+  RETURN output`,c:`def print_forward(self):
+    p, output = self.head, []
+    while p is not None:
+        output.append(p.data)
+        p = p.next
+    return output`},
+ print_backward:{a:["กำหนด p = tail","อ่านข้อมูลจากหลังไปหน้าด้วย prev","คืนค่ารายการข้อมูล"],p:`PRINT_BACKWARD()
+  p ← tail; output ← []
+  WHILE p ≠ NULL
+    APPEND p.data TO output
+    p ← p.prev
+  RETURN output`,c:`def print_backward(self):
+    p, output = self.tail, []
+    while p is not None:
+        output.append(p.data)
+        p = p.prev
+    return output`},
+ clear:{a:["เริ่ม p ที่ head","ตัด next และ prev ของทุกโหนด","กำหนด head, tail, current เป็น None","กำหนด size = 0 และ currentpos = -1"],p:`CLEAR()
+  p ← head
+  WHILE p ≠ NULL
+    nextNode ← p.next
+    p.next ← NULL; p.prev ← NULL
+    p ← nextNode
+  head ← tail ← current ← NULL
+  size ← 0
+  currentpos ← -1`,c:`def clear(self):
+    p = self.head
+    while p is not None:
+        next_node = p.next
+        p.next = p.prev = None
+        p = next_node
+    self.head = self.tail = self.current = None
+    self.size, self.currentpos = 0, -1`}
+});
+
 const codeLibrary={
  stack:{p:`CREATE stack
 top ← -1
@@ -4006,10 +4542,24 @@ function updateFunctionCode(id,op){
  if(track)track.innerHTML=(x.a||[]).map((t,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${t}</span>`).join("");
  const title=$(id+"SelectedFunction");
  if(title)title.textContent=op;
+ if(id==="dll")updateDllIndexCard(op);
+}
+function updateDllIndexCard(op,value){
+ const card=$("dllIndexCard"),info=document.querySelector("#dll .info.linked-info");
+ if(!card||!info)return;
+ const indexOps=["add_index","delete_index","setposition","get_item","search","get_index","delete_item"];
+ const show=indexOps.includes(op);
+ card.hidden=!show;
+ info.classList.toggle("has-dll-index",show);
+ if(show){
+   const inputValue=Number($("dllIndex")?.value);
+   $("dllIndexValue").textContent=Number.isInteger(value)?value:(Number.isInteger(inputValue)?inputValue:0);
+ }
 }
 function setSelectedFunction(id,name){
  const title=$(id+"SelectedFunction");
  if(title)title.textContent=name;
+ if(id==="dll")updateDllIndexCard(name);
 }
 
 function codeTabs(id){
@@ -4212,19 +4762,22 @@ function panel(cfg){
       <button class="action gray" onclick="resetRecursion()">Reset</button>
     </div>
     <div class="progress"><div id="recProgress"></div></div>
-    <div class="expr-grid">
-      <div class="expr-box"><strong>Function</strong><div id="recCode" class="code-box"></div></div>
-      <div class="expr-box">
-        <strong>Current Recursion Call Path</strong>
-        <div class="rec-call-tree">
-          <div class="rec-subview"><span class="rec-subview-title">Call Stack</span><div id="recVisual" class="visual"></div></div>
-          <div id="recTreePanel" class="rec-subview" hidden><span class="rec-subview-title">Fibonacci Recursion Tree</span><div id="recTree" class="fib-tree-scroll"></div></div>
+    <div class="recursion-workspace">
+      <div class="recursion-left-column">
+        <div class="expr-box"><strong>Function</strong><div id="recCode" class="code-box"></div></div>
+        <div class="expr-box">
+          <strong>Algorithm Track</strong>
+          <div id="recTrack" class="algorithm-track"></div>
+          <div id="recStepDetail" class="status" style="margin-top:12px">ยังไม่เริ่มประมวลผล</div>
         </div>
       </div>
-      <div class="expr-box">
-        <strong>Algorithm Track</strong>
-        <div id="recTrack" class="algorithm-track"></div>
-        <div id="recStepDetail" class="status" style="margin-top:12px">ยังไม่เริ่มประมวลผล</div>
+      <div id="recTreePanel" class="expr-box recursion-tree-column" hidden>
+        <span class="rec-subview-title">Fibonacci Recursion Tree</span>
+        <div id="recTree" class="fib-tree-scroll"></div>
+      </div>
+      <div class="expr-box recursion-stack-column">
+        <span class="rec-subview-title">Call Stack</span>
+        <div id="recVisual" class="visual"></div>
       </div>
     </div>
     <div id="recStatus" class="status">พร้อมใช้งาน</div>
@@ -4356,10 +4909,11 @@ function panel(cfg){
       <button class="action green" onclick="prepareSorting('${cfg.id}')">Prepare</button>
     </div>
     ${cfg.id==="selection"?`<div class="selected-panel">
-      <strong>ค่าที่เลือกในรอบปัจจุบัน:</strong>
-      <span id="selectionSelectedValue" class="selected-value">-</span>
-      <span id="selectionSelectedIndex">index -</span>
-      <span id="selectionPassInfo">pass -</span>
+      <div class="selection-status-block"><span class="selection-status-label">รอบที่</span><strong id="selectionPassInfo" class="selection-status-data">-</strong></div>
+      <span class="selection-status-divider" aria-hidden="true"></span>
+      <div class="selection-status-block"><span class="selection-status-label">ค่าที่เลือกในรอบปัจจุบัน</span><span id="selectionSelectedValue" class="selected-value">-</span></div>
+      <span class="selection-status-divider" aria-hidden="true"></span>
+      <div class="selection-status-block"><span class="selection-status-label">Min_index</span><strong id="selectionSelectedIndex" class="selection-status-data">-</strong></div>
     </div>`:""}
     ${cfg.id==="insertion"?insertionKeyPanel():""}
     ${algorithmControls(cfg.id)}
@@ -4368,9 +4922,13 @@ function panel(cfg){
       <div id="${cfg.id}Visual" class="algo-visual"></div>
       <div>
         ${codeTabs(cfg.id)}
-        <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
       </div>
     </div>
+    <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
+    <details class="linked-code-details sorting-round-details">
+      <summary>Round Tracking</summary>
+      <div id="${cfg.id}RoundTracking" class="sorting-round-tracking"></div>
+    </details>
    </section>`;
  }
  if(cfg.kind==="searching"){
@@ -4390,6 +4948,10 @@ function panel(cfg){
         <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
       </div>
     </div>
+    <details class="linked-code-details searching-round-details">
+      <summary>Round Tracking</summary>
+      <div id="${cfg.id}RoundTracking" class="sorting-round-tracking"></div>
+    </details>
    </section>`;
  }
 
@@ -4409,10 +4971,13 @@ function panel(cfg){
    get_index:"Get Index",
    print_list:"Print List",
    print_backward:"Print Backward",
-   print_dll:"Print DLL",
+   print_dll:"Print Forward",
    add_item:"Add Item",
    add_index:"Add Index",
    get_item:"Get Item"
+   ,move_next:"Move Next"
+   ,move_prev:"Move Prev"
+   ,clear:"Clear"
    ,search:"Search"
    ,delete_all:"Delete All"
    ,to_list:"To List"
@@ -4432,19 +4997,16 @@ function panel(cfg){
    dll:{
      create:["create","add_first","add_last","add_index"],
      remove:["delete_first","delete_last","delete_index","delete_item"],
-     inspect:["isEmpty","size","setposition","get_index","print_dll","print_backward"]
+     inspect:["isEmpty","size","setposition","move_next","move_prev","search","get_index","get_item","print_dll","print_backward","clear"]
    }
  };
  const grouped=listGroupOps[cfg.id];
  const buttons=grouped
    ? `<div class="sll-operation-groups">
        <div class="sll-operation-group">
-         <span class="sll-operation-group-title">การสร้างและเพิ่มข้อมูล</span>
-         ${grouped.create.map(buttonHTML).join("")}
-       </div>
-       <div class="sll-operation-group">
-         <span class="sll-operation-group-title">การลบข้อมูล</span>
-         ${grouped.remove.map(buttonHTML).join("")}
+         <span class="sll-operation-group-title">การจัดการข้อมูล</span>
+         <div class="list-operation-row add-row">${grouped.create.map(buttonHTML).join("")}</div>
+         <div class="list-operation-row delete-row">${grouped.remove.map(buttonHTML).join("")}</div>
        </div>
        <div class="sll-operation-group">
          <span class="sll-operation-group-title">การตรวจสอบและแสดงผล</span>
@@ -4453,13 +5015,22 @@ function panel(cfg){
      </div>`
    : cfg.ops.map(buttonHTML).join("");
  const linkedTools=cfg.kind==="linked"
-   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>${codeTabs(cfg.id)}`
+   ? `<div class="tools"><button class="action" onclick="nextLinkedStep('${cfg.id}')">Next Step</button><button class="action gray" onclick="resetLinkedAnimation('${cfg.id}')">Reset Animation</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div><div class="legend"><span><i class="dot" style="background:#fff3e0;border:2px solid #ef6c00"></i> pointer</span><span><i class="dot" style="background:#f3e5f5;border:2px solid #7b1fa2"></i> โหนดใหม่</span><span><i class="dot" style="background:#ffebee;border:2px solid #c62828"></i> โหนดที่ลบ</span></div>`
    : cfg.id==="arraylist"
-     ? `<div class="tools"><button class="action" onclick="nextArrayListStep()">Next Step</button><button class="action gray" onclick="resetArrayListAnimation()">Reset Animation</button><button class="action gray" onclick="resetArrayListDefault()">Reset Default</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div>${codeTabs(cfg.id)}`
-     : `<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>${["stack","physicalq","linearq","circularq"].includes(cfg.id)?codeTabs(cfg.id):""}`;
+     ? `<div class="tools"><button class="action" onclick="nextArrayListStep()">Next Step</button><button class="action gray" onclick="resetArrayListAnimation()">Reset Animation</button><button class="action gray" onclick="resetArrayListDefault()">Reset Default</button><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div><div class="progress"><div id="${cfg.id}Progress"></div></div>`
+     : `<div class="tools"><button class="action gray" onclick="clearLog('${cfg.id}')">Clear Log</button></div>`;
  const pointerLabLaunch=cfg.kind==="linked"?`<div class="pointer-lab-launch"><button class="action green" onclick="startPointerLab('${cfg.id}','insert')">🖱️ ฝึกลากเพิ่มโหนด</button><button class="action blue" onclick="startPointerLab('${cfg.id}','delete')">🖱️ ฝึกลากลบโหนด</button></div>`:"";
  const pointerLabPanel=cfg.kind==="linked"?`<div id="${cfg.id}PointerLab" class="pointer-lab" hidden></div>`:"";
- return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="${cfg.id==="arraylist"?5:6}" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${cfg.id==="sll"?`<button class="action green" onclick="resetSllDefault()">Reset Default</button><button class="action blue" onclick="clearSllList()">Clear List</button>`:""}${buttons}</div>${linkedTools}<div class="info${cfg.kind==="linked"?" linked-info":""}">${cfg.id==="dll"?"":`<div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div>`}<div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div>${pointerLabLaunch}</div>${pointerLabPanel}<div id="${cfg.id}Visual" class="visual"></div><div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
+ const linkedCodePanel=cfg.kind==="linked"?`<details class="linked-code-details"><summary>Algorithm Track / Pseudocode / Python Code</summary>${codeTabs(cfg.id)}</details>`:"";
+ const arrayListCodePanel=cfg.id==="arraylist"?`<details class="linked-code-details arraylist-code-details"><summary>Algorithm / Pseudocode / Python Code</summary>${codeTabs(cfg.id)}</details>`:"";
+ const stackQueueCodePanel=["stack","physicalq","linearq","circularq"].includes(cfg.id)
+   ? `<details class="linked-code-details stack-queue-code-details"><summary>Algorithm Track / Pseudocode / Python Code</summary>${codeTabs(cfg.id)}</details>`
+   : "";
+ const infoCards=cfg.kind==="linked"
+   ? `<div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div>${cfg.id==="dll"?`<div class="card"><span>currentpos</span><strong id="dllCurrentPos">-1</strong></div><div id="dllIndexCard" class="card" hidden><span>index</span><strong id="dllIndexValue">0</strong></div>`:""}`
+   : `<div class="card"><span>Size</span><strong id="${cfg.id}Size">0</strong></div><div class="card"><span>Status</span><strong id="${cfg.id}State">Empty</strong></div><div class="card"><span>Pointer</span><strong id="${cfg.id}Pointer">-</strong></div>`;
+ const interactiveVisual=`<div id="${cfg.id}Visual" class="visual"></div>`;
+ return `<section id="${cfg.id}" class="panel"><h2>${cfg.title}</h2><div class="controls"><label>Data / Item<input id="${cfg.id}Data" value="10"></label>${needsIndex?`<label>Index<input id="${cfg.id}Index" type="number" value="0"></label>`:`<input id="${cfg.id}Index" type="hidden" value="0">`}${needsCapacity?`<label>Capacity<input id="${cfg.id}Capacity" type="number" value="${cfg.id==="arraylist"?5:6}" min="1" max="20"></label>`:`<input id="${cfg.id}Capacity" type="hidden" value="100">`}${cfg.id==="sll"?`<button class="action green" onclick="resetSllDefault()">Reset Default</button><button class="action blue" onclick="clearSllList()">Clear List</button>`:""}${buttons}</div>${linkedTools}<div class="info${cfg.kind==="linked"?" linked-info":""}">${infoCards}${pointerLabLaunch}</div>${pointerLabPanel}${interactiveVisual}${linkedCodePanel}${arrayListCodePanel}${stackQueueCodePanel}<div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div><div id="${cfg.id}Log" class="log"></div></section>`;
 }
 
 const topicGroups=[
@@ -5042,6 +5613,10 @@ function operate(id,op){
  const cap=Math.max(1,Number($(id+"Capacity").value)||6);
  const requestedOp=op;
  s.requestedOp=requestedOp;
+ if(id==="dll"){
+   s.dllActiveOp=requestedOp;
+   s.dllIndexValue=["search","get_index","delete_item"].includes(requestedOp)?0:index;
+ }
  updateFunctionCode(id,requestedOp);
 
  if(id==="arraylist"){
@@ -5050,9 +5625,7 @@ function operate(id,op){
  }
  if(id==="sll" && op==="add_index")op="insert_index";
  if(id==="dll"){
-   if(op==="add_first"){op="insert";index=0}
-   else if(op==="add_last"){op="append"}
-   else if(op==="add_index"){
+   if(op==="add_index"){
      if(index<0||index>s.data.length){
        setStatus(id,"index error");
        addLog(id,requestedOp);
@@ -5061,10 +5634,6 @@ function operate(id,op){
      }
      op="add_index";
    }
-   else if(op==="delete_first"){op="delete_index";index=0}
-   else if(op==="delete_last"){op="delete_index";index=Math.max(0,s.data.length-1)}
-   else if(op==="setposition"){op="setposition"}
-   else if(op==="print_dll"){op="print_dll"}
  }
  if(id==="circularq"){
    if(op==="is_full")op="isFull";
@@ -5081,8 +5650,9 @@ function operate(id,op){
      setStatus(id,"create: 10 → 20 → 30 → 40");
    }else if(id==="dll"){
      states[id].data=[10,20,30,40];
-     states[id].view={startIndex:0,tailIndex:3};
-     setStatus(id,"create: start → 10 ↔ 20 ↔ 30 ↔ 40 ← tail | size = 4");
+     states[id].dllCurrentPos=3;
+     states[id].view={headIndex:0,tailIndex:3,currentIndex:3};
+     setStatus(id,"create: head → 10 ↔ 20 ↔ 30 ↔ 40 ← tail | size = 4 | currentpos = 3");
    }else{
      setStatus(id,cfg.kind==="linked"?"create: head → NULL":`สร้างอาร์เรย์ขนาด ${cap} ช่องแล้ว`);
    }
@@ -5090,7 +5660,7 @@ function operate(id,op){
    render(id);
    return
  }
- if(cfg.kind==="linked"&&["add_first","add_last","add_index","append","insert","insert_index","delete_first","delete_last","delete_index","delete_item","setposition","search","print_list","print_dll","print_backward"].includes(op)){
+ if(cfg.kind==="linked"&&["add_first","add_last","add_index","append","insert","insert_index","delete_first","delete_last","delete_index","delete_item","setposition","move_next","move_prev","search","get_index","get_item","print_list","print_dll","print_backward","clear"].includes(op)){
    prepareLinked(id,op,item,index);
    return
  }
@@ -5643,8 +6213,236 @@ function highlightLinkedTrack(id,line){
  document.querySelector(`#${id}Track [data-line="${line}"]`)?.classList.add("active");
 }
 
+function dllV3Step(data,text,trackLine,options={}){
+ return {
+   ...snap(data,text,options.active??-1,options.newIndex??-1,options.deleteIndex??-1,options.final===true),
+   trackLine,
+   headIndex:data.length?0:-1,
+   tailIndex:data.length?data.length-1:-1,
+   currentIndex:options.currentIndex,
+   pIndex:options.pIndex,
+   delIndex:options.delIndex,
+   previousNodeIndex:options.previousNodeIndex,
+   nextNodeIndex:options.nextNodeIndex,
+   pointerNode:options.pointerNode,
+   pointerField:options.pointerField,
+   pointerDetail:options.pointerDetail,
+   resultValue:options.resultValue,
+   itemValue:options.itemValue,
+   finalCurrentPos:options.finalCurrentPos,
+   caption:text
+ };
+}
+
+function dllV3ShortestPath(size,currentpos,target){
+ const choices=[{name:"head",pos:0,distance:target},{name:"tail",pos:size-1,distance:size-1-target}];
+ if(Number.isInteger(currentpos)&&currentpos>=0&&currentpos<size)choices.push({name:"current",pos:currentpos,distance:Math.abs(target-currentpos)});
+ choices.sort((a,b)=>a.distance-b.distance);
+ const start=choices[0],positions=[start.pos];
+ let pos=start.pos;
+ while(pos<target){pos++;positions.push(pos)}
+ while(pos>target){pos--;positions.push(pos)}
+ return {start,positions,choices};
+}
+
+function prepareDLLV3(op,item,index){
+ const id="dll",s=states.dll,old=[...s.data],steps=[];
+ const size=old.length;
+ const oldCurrent=Number.isInteger(s.dllCurrentPos)&&s.dllCurrentPos>=0&&s.dllCurrentPos<size?s.dllCurrentPos:(size?0:-1);
+ let result=[...old],finalPos=oldCurrent;
+ const push=(data,text,line,options={})=>steps.push(dllV3Step(data,text,line,{currentIndex:options.currentIndex??oldCurrent,...options}));
+ const finish=(pending=result,pos=finalPos)=>{
+   if(steps.length){steps[steps.length-1].final=true;steps[steps.length-1].finalCurrentPos=pos}
+   s.steps=steps;s.step=0;s.pending=[...pending];s.view={};
+   $(id+"Progress").style.width="0%";
+   setStatus(id,`เตรียม ${op} แล้ว กด Next Step`);
+   addLog(id,`prepare ${op} · DLL V3`);render(id);
+   return true;
+ };
+ const addPath=(target,line=3,distanceLine=2)=>{
+   const path=dllV3ShortestPath(size,oldCurrent,target);
+   push(old,`ระยะจาก head=${target}, tail=${size-1-target}, current=${oldCurrent<0?"∞":Math.abs(target-oldCurrent)}`,distanceLine,{pointerDetail:`เลือก ${path.start.name} เพราะใกล้ index ${target} ที่สุด`});
+   path.positions.forEach((pos,k)=>push(old,k===0?`กำหนด p = ${path.start.name} ที่ index ${pos}`:`เลื่อน p = p.${pos>path.positions[k-1]?"next":"prev"} ไป index ${pos}`,line,{active:pos,currentIndex:oldCurrent,pIndex:pos,pointerDetail:`p อยู่ที่ index ${pos}; current ยังอยู่ที่ currentpos ${oldCurrent}`}));
+   return path;
+ };
+
+ updateFunctionCode(id,op);setLinkedTrack(id,op);
+
+ if(op==="add_first"){
+   result=[item,...old];finalPos=0;
+   push(old,`สร้าง newNode(data=${item}) ด้านล่าง`,1,{floatingNewNode:true,floatingNewNodeValue:item,pointerDetail:`newNode.data = ${item}`});
+   if(!size)push(result,"List ว่าง: ย้าย newNode ขึ้นมา แล้วให้ head และ tail ชี้ newNode",2,{active:0,newIndex:0,currentIndex:0,pointerDetail:"head = tail = newNode"});
+   else{
+     push(old,"newNode.next = head เดิม",3,{floatingNewNode:true,floatingNewNodeValue:item,floatingNextTarget:0,currentIndex:oldCurrent,pointerNode:0,pointerField:"next",pointerDetail:"ลูกศรสีเขียว: newNode.next → head"});
+     push(old,"head เดิม.prev = newNode",3,{floatingNewNode:true,floatingNewNodeValue:item,floatingNextTarget:0,floatingPrevFromTarget:0,currentIndex:oldCurrent,pointerNode:0,pointerField:"prev",pointerDetail:"ลูกศรสีส้ม: head.prev → newNode"});
+     push(result,"head = newNode",4,{active:0,newIndex:0,currentIndex:0});
+   }
+   push(result,`size = ${size+1}; currentpos = 0`,5,{active:0,currentIndex:0,resultValue:`size = ${size+1}`});
+   return finish();
+ }
+
+ if(op==="add_last"){
+   result=[...old,item];finalPos=result.length-1;
+   push(old,`สร้าง newNode(data=${item}) ด้านล่าง`,1,{floatingNewNode:true,floatingNewNodeValue:item});
+   if(!size)push(result,"List ว่าง: ย้าย newNode ขึ้นมา แล้วให้ head และ tail ชี้ newNode",2,{active:0,newIndex:0,currentIndex:0});
+   else{
+     push(old,"newNode.prev = tail",3,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:size-1,currentIndex:oldCurrent,pointerNode:size-1,pointerField:"prev",pointerDetail:"ลูกศรสีส้ม: newNode.prev → tail"});
+     push(old,"tail.next = newNode",4,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:size-1,floatingNextFromTarget:size-1,currentIndex:oldCurrent,pointerNode:size-1,pointerField:"next",pointerDetail:"ลูกศรสีเขียว: tail.next → newNode"});
+     push(result,"tail = newNode",5,{active:finalPos,newIndex:finalPos,currentIndex:finalPos});
+   }
+   push(result,`size = ${size+1}; currentpos = ${finalPos}`,6,{active:finalPos,currentIndex:finalPos,resultValue:`size = ${size+1}`});
+   return finish();
+ }
+
+ if(op==="add_index"){
+   push(old,`ตรวจสอบ index = ${index}`,1,{pointerDetail:`valid: 0 ถึง ${size}`});
+   if(index<0||index>size){push(old,"Index out of range",1,{resultValue:"Output: Index out of range"});return finish(old,oldCurrent)}
+   if(index===0){
+     result=[item,...old];finalPos=0;
+     push(old,`สร้าง newNode(data=${item}) ด้านล่างสำหรับ index 0`,2,{floatingNewNode:true,floatingNewNodeValue:item});
+     if(size){
+       push(old,"newNode.next = head เดิม",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingNextTarget:0,pointerNode:0,pointerField:"next"});
+       push(old,"head เดิม.prev = newNode",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingNextTarget:0,floatingPrevFromTarget:0,pointerNode:0,pointerField:"prev"});
+     }
+     push(result,`head = current = newNode; size = ${size+1}`,6,{active:0,currentIndex:0});
+     return finish();
+   }
+   if(index===size){
+     result=[...old,item];finalPos=index;
+     push(old,`สร้าง newNode(data=${item}) ด้านล่างสำหรับตำแหน่งท้าย`,2,{floatingNewNode:true,floatingNewNodeValue:item});
+     if(size){
+       push(old,"newNode.prev = tail",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:size-1,pointerNode:size-1,pointerField:"prev"});
+       push(old,"tail.next = newNode",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:size-1,floatingNextFromTarget:size-1,pointerNode:size-1,pointerField:"next"});
+     }
+     push(result,`tail = current = newNode; size = ${size+1}`,6,{active:index,currentIndex:index});
+     return finish();
+   }
+   addPath(index,3);
+   result.splice(index,0,item);finalPos=index;
+   push(old,"กำหนด after = current และ before = current.prev",4,{currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index});
+   push(old,`สร้าง newNode(data=${item}) ด้านล่าง`,5,{floatingNewNode:true,floatingNewNodeValue:item,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerDetail:"เตรียมแทรกระหว่าง before และ after"});
+   push(old,"newNode.prev = before",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index-1,pointerField:"prev"});
+   push(old,"newNode.next = after",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,floatingNextTarget:index,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index,pointerField:"next"});
+   push(old,"before.next = newNode",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,floatingNextTarget:index,floatingNextFromTarget:index-1,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index-1,pointerField:"next"});
+   push(old,"after.prev = newNode",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,floatingNextTarget:index,floatingNextFromTarget:index-1,floatingPrevFromTarget:index,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index,pointerField:"prev"});
+   push(result,`size = ${size+1}; currentpos = ${index}`,6,{active:index,currentIndex:index,resultValue:`size = ${size+1}`});
+   return finish();
+ }
+
+ if(op==="delete_first"){
+   if(!size){push(old,"List is empty",1,{resultValue:"Output: List is empty"});return finish(old,-1)}
+   const removed=old[0];result=old.slice(1);finalPos=result.length?0:-1;
+   push(old,"deleteNode = head",2,{active:0,delIndex:0,itemValue:removed});
+   push(result,result.length?"head = head.next; head.prev = None":"ล้าง head, tail และ current",3,{currentIndex:finalPos,itemValue:removed});
+   push(result,`size = ${result.length}; currentpos = ${finalPos}`,5,{currentIndex:finalPos,itemValue:removed,resultValue:`return ${removed}`});
+   return finish();
+ }
+
+ if(op==="delete_last"){
+   if(!size){push(old,"List is empty",1,{resultValue:"Output: List is empty"});return finish(old,-1)}
+   if(size===1){result=[];finalPos=-1;push(old,"มีโหนดเดียว: deleteNode = tail = head",2,{active:0,delIndex:0,itemValue:old[0]});push(result,"ล้าง head, tail, current; size = 0",5,{resultValue:`return ${old[0]}`});return finish()}
+   const removed=old.at(-1);result=old.slice(0,-1);finalPos=result.length-1;
+   push(old,"deleteNode = tail",3,{active:size-1,delIndex:size-1,itemValue:removed});
+   push(result,"tail = tail.prev; tail.next = None",4,{active:finalPos,currentIndex:finalPos,pointerNode:finalPos,pointerField:"next",itemValue:removed});
+   push(result,`size = ${result.length}; currentpos = ${finalPos}`,6,{currentIndex:finalPos,itemValue:removed,resultValue:`return ${removed}`});
+   return finish();
+ }
+
+ const deleteAt=(target,mode)=>{
+   if(target===0){op=mode;return null}
+   if(target===size-1){op=mode;return null}
+   const pathLine=3,detailLine=mode==="delete_item"?3:4,linkLine=mode==="delete_item"?3:5,finishLine=mode==="delete_item"?3:6;
+   addPath(target,pathLine,mode==="delete_item"?3:2);
+   const removed=old[target];result=[...old];result.splice(target,1);finalPos=target;
+   push(old,"เก็บ before = current.prev และ after = current.next",detailLine,{active:target,currentIndex:target,delIndex:target,previousNodeIndex:target-1,nextNodeIndex:target+1,itemValue:removed});
+   push(result,"before.next = after และ after.prev = before",linkLine,{active:target,currentIndex:target,previousNodeIndex:target-1,nextNodeIndex:target,itemValue:removed});
+   push(result,`size = ${result.length}; current ชี้ after ที่ index ${target}`,finishLine,{currentIndex:target,itemValue:removed,resultValue:`return ${removed}`});
+   return finish();
+ };
+
+ if(op==="delete_index"){
+   push(old,`ตรวจสอบ index = ${index}`,1,{pointerDetail:`valid: 0 ถึง ${Math.max(0,size-1)}`});
+   if(index<0||index>=size){push(old,"Index out of range",1,{resultValue:"Output: Index out of range"});return finish(old,oldCurrent)}
+   if(index===0){
+     const removed=old[0];result=old.slice(1);finalPos=result.length?0:-1;
+     push(old,"index = 0: deleteNode = head",2,{active:0,delIndex:0,itemValue:removed});
+     push(result,result.length?"เลื่อน head และกำหนด head.prev = None":"ล้าง head และ tail",5,{currentIndex:finalPos,itemValue:removed});
+     push(result,`size = ${result.length}; currentpos = ${finalPos}`,6,{currentIndex:finalPos,resultValue:`return ${removed}`});return finish();
+   }
+   if(index===size-1){
+     const removed=old.at(-1);result=old.slice(0,-1);finalPos=result.length-1;
+     push(old,"index = size-1: deleteNode = tail",2,{active:index,delIndex:index,itemValue:removed});
+     push(result,result.length?"เลื่อน tail และกำหนด tail.next = None":"ล้าง head และ tail",5,{currentIndex:finalPos,itemValue:removed});
+     push(result,`size = ${result.length}; currentpos = ${finalPos}`,6,{currentIndex:finalPos,resultValue:`return ${removed}`});return finish();
+   }
+   return deleteAt(index,"delete_index");
+ }
+
+ if(op==="delete_item"){
+   let target=-1;
+   for(let i=0;i<size;i++){
+     push(old,`เปรียบเทียบ item ${item} กับ node ${i} = ${old[i]}`,1,{active:i,pIndex:i,pointerDetail:`${item} == ${old[i]} → ${item===old[i]}`});
+     if(old[i]===item){target=i;break}
+   }
+   if(target<0){push(old,"Not found",2,{indexValue:size,resultValue:"Output: Not found"});return finish(old,oldCurrent)}
+   if(target===0){result=old.slice(1);finalPos=result.length?0:-1;push(old,"พบที่ head",3,{delIndex:0,itemValue:item});push(result,"ลบ head และปรับ current",3,{currentIndex:finalPos,resultValue:`return ${item}`});return finish()}
+   if(target===size-1){result=old.slice(0,-1);finalPos=result.length-1;push(old,"พบที่ tail",3,{delIndex:target,itemValue:item});push(result,"ลบ tail และปรับ current",3,{currentIndex:finalPos,resultValue:`return ${item}`});return finish()}
+   return deleteAt(target,"delete_item");
+ }
+
+ if(op==="setposition"||op==="get_item"){
+   push(old,`ตรวจสอบ index = ${index}`,1,{pointerDetail:`valid: 0 ถึง ${Math.max(0,size-1)}`});
+   if(index<0||index>=size){push(old,"Index out of range",1,{resultValue:"Output: Index out of range"});return finish(old,oldCurrent)}
+   addPath(index,op==="get_item"?1:4,op==="get_item"?1:2);finalPos=index;
+   push(old,op==="get_item"?`คืนค่า current.data = ${old[index]}`:`กำหนด currentpos = ${index} และคืนค่า ${old[index]}`,op==="get_item"?3:6,{active:index,currentIndex:index,resultValue:`Output: ${old[index]}`});
+   return finish(old,finalPos);
+ }
+
+ if(op==="move_next"||op==="move_prev"){
+   const direction=op==="move_next"?1:-1;
+   push(old,"ตรวจสอบ current",1,{currentIndex:oldCurrent});
+   if(oldCurrent<0){push(old,"List is empty",1,{resultValue:"Output: List is empty"});return finish(old,-1)}
+   const target=oldCurrent+direction;
+   if(target<0||target>=size){push(old,direction>0?"Current is at last node":"Current is at first node",2,{currentIndex:oldCurrent,resultValue:"ไม่สามารถเลื่อนต่อได้"});return finish(old,oldCurrent)}
+   finalPos=target;
+   push(old,`current = current.${direction>0?"next":"prev"}`,3,{active:target,currentIndex:target,pointerDetail:`currentpos = ${target}`});
+   push(old,`คืนค่า current.data = ${old[target]}`,5,{active:target,currentIndex:target,resultValue:`Output: ${old[target]}`});
+   return finish(old,finalPos);
+ }
+
+ if(op==="search"||op==="get_index"){
+   let found=-1;
+   for(let i=0;i<size;i++){
+     push(old,`เปรียบเทียบ item ${item} กับ node ${i} = ${old[i]}`,2,{active:i,pIndex:i,pointerDetail:`${item} == ${old[i]} → ${item===old[i]}`});
+     if(old[i]===item){found=i;break}
+   }
+   if(found>=0){finalPos=found;push(old,op==="search"?`Found ที่ index ${found}`:`คืนค่า index = ${found}`,3,{active:found,currentIndex:found,resultValue:op==="search"?"Output: Found":`Output: ${found}`});return finish(old,found)}
+   push(old,op==="search"?"Not found":"คืนค่า -1",4,{currentIndex:oldCurrent,indexValue:size,resultValue:op==="search"?"Output: Not found":"Output: -1"});return finish(old,oldCurrent);
+ }
+
+ if(op==="print_dll"||op==="print_backward"){
+   const forward=op==="print_dll",indices=forward?[...old.keys()]:[...old.keys()].reverse(),output=[];
+   push(old,forward?"กำหนด p = head":"กำหนด p = tail",1,{pIndex:indices[0],pointerDetail:forward?"p = head":"p = tail"});
+   indices.forEach(i=>{output.push(old[i]);push(old,`อ่าน p.data = ${old[i]}`,2,{active:i,pIndex:i,resultValue:`Output: [${output.join(", ")}]`})});
+   push(old,`คืนค่า [${output.join(", ")}]`,3,{currentIndex:oldCurrent,resultValue:`Output: [${output.join(", ")}]`});
+   return finish(old,oldCurrent);
+ }
+
+ if(op==="clear"){
+   if(!size){push(old,"List ว่างอยู่แล้ว",1,{resultValue:"size = 0"});return finish([], -1)}
+   let working=[...old];
+   push(working,"กำหนด p = head",1,{pIndex:0,pointerDetail:"p = head"});
+   while(working.length){push(working,`ตัด next/prev ของ node 0 (data=${working[0]})`,2,{active:0,pIndex:0,delIndex:0});working=working.slice(1)}
+   result=[];finalPos=-1;push(result,"head = tail = current = None; size = 0; currentpos = -1",4,{resultValue:"Clear complete"});
+   return finish();
+ }
+
+ return false;
+}
+
 function prepareLinked(id,op,item,index){
  const s=states[id],old=[...s.data],steps=[],result=[...old];
+ if(id==="dll" && prepareDLLV3(op,item,index))return;
  updateFunctionCode(id,op);
  setLinkedTrack(id,op);
 
@@ -6901,6 +7699,10 @@ function nextLinkedStep(id){
  if(!s.steps.length)return setStatus(id,"กรุณาเลือกฟังก์ชันที่รองรับ Algorithm Track ก่อน");
  const st=s.steps[s.step];if(!st)return setStatus(id,"Animation เสร็จสิ้น");
  s.data=[...st.data];
+ if(id==="dll"){
+   if(Number.isInteger(st.indexValue))s.dllIndexValue=st.indexValue;
+   else if(Number.isInteger(st.pIndex)&&["search","get_index","delete_item"].includes(s.dllActiveOp))s.dllIndexValue=st.pIndex;
+ }
  s.view={
    active:st.active,
    newIndex:st.newIndex,
@@ -6930,13 +7732,22 @@ function nextLinkedStep(id){
    previousNodeIndex:st.previousNodeIndex,
    nextNodeIndex:st.nextNodeIndex,
    floatingNewNode:st.floatingNewNode,
-   floatingNewNodeValue:st.floatingNewNodeValue
+   floatingNewNodeValue:st.floatingNewNodeValue,
+   floatingPrevTarget:st.floatingPrevTarget,
+   floatingNextTarget:st.floatingNextTarget,
+   floatingPrevFromTarget:st.floatingPrevFromTarget,
+   floatingNextFromTarget:st.floatingNextFromTarget
  };
  s.step++;
  setStatus(id,st.text);
  highlightLinkedTrack(id,st.trackLine||1);
  addLog(id,`Step ${s.step}: ${st.text}`);$(id+"Progress").style.width=(s.step/s.steps.length*100)+"%";render(id);
- if(st.final){s.data=[...s.pending];s.view={};s.steps=[];s.step=0;s.pending=null;s.requestedOp=null;setTimeout(()=>{render(id);setStatus(id,"ฟังก์ชันทำงานเสร็จสิ้น")},450)}
+ if(st.final){
+   s.data=[...s.pending];
+   if(id==="dll")s.dllCurrentPos=Number.isInteger(st.finalCurrentPos)?st.finalCurrentPos:(s.data.length?Math.min(s.dllCurrentPos,s.data.length-1):-1);
+   s.view={};s.steps=[];s.step=0;s.pending=null;s.requestedOp=null;
+   setTimeout(()=>{render(id);setStatus(id,id==="dll"?`ฟังก์ชันทำงานเสร็จสิ้น | size = ${s.data.length} | currentpos = ${s.dllCurrentPos}`:"ฟังก์ชันทำงานเสร็จสิ้น")},450)
+ }
 }
 function resetLinkedAnimation(id){const s=states[id];s.steps=[];s.step=0;s.pending=null;s.view={};$(id+"Progress").style.width="0%";setStatus(id,"ยกเลิก Animation แล้ว");render(id)}
 
@@ -6964,12 +7775,12 @@ function pointerLabSteps(id,mode,data,index){
    }else if(!data.length){
      steps.push(pointerLabStep("new.prev","NULL","newNode.prev → NULL"));
      steps.push(pointerLabStep("new.next","NULL","newNode.next → NULL"));
-     steps.push(pointerLabStep("start","new","start → newNode"));
+     steps.push(pointerLabStep("head","new","head → newNode"));
      steps.push(pointerLabStep("tail","new","tail → newNode"));
    }else if(index===0){
      steps.push(pointerLabStep("new.next","n0","newNode.next → node 0"));
      steps.push(pointerLabStep("new.prev","NULL","newNode.prev → NULL"));
-     steps.push(pointerLabStep("start","new","start → newNode"));
+     steps.push(pointerLabStep("head","new","head → newNode"));
      steps.push(pointerLabStep("n0.prev","new","node 0.prev → newNode"));
    }else if(index===data.length){
      steps.push(pointerLabStep("new.next","NULL","newNode.next → NULL"));
@@ -6987,11 +7798,11 @@ function pointerLabSteps(id,mode,data,index){
     else steps.push(pointerLabStep(`n${index-1}.next`,index<last?`n${index+1}`:"NULL",index<last?`node ${index-1}.next → node ${index+1}`:`node ${index-1}.next → NULL`));
     steps.push(pointerLabStep(`n${index}`,"TRASH",`ลบ node ${index}`));
   }else if(data.length===1){
-    steps.push(pointerLabStep("start","NULL","start → NULL"));
+    steps.push(pointerLabStep("head","NULL","head → NULL"));
     steps.push(pointerLabStep("tail","NULL","tail → NULL"));
     steps.push(pointerLabStep("n0","TRASH","ลบ node 0"));
   }else if(index===0){
-    steps.push(pointerLabStep("start","n1","start → node 1"));
+    steps.push(pointerLabStep("head","n1","head → node 1"));
     steps.push(pointerLabStep("n1.prev","NULL","node 1.prev → NULL"));
     steps.push(pointerLabStep("n0","TRASH","ลบ node 0"));
   }else if(index===last){
@@ -7051,7 +7862,7 @@ function sllDeleteActivitySteps(position){
    pointerLabStep("head","n1","head = head.next"),
    sllActivityAction("item","item = del.data"),
    pointerLabStep("n0","TRASH","delete del"),
-   sllActivityAction("count","count--")
+   sllActivityAction("count","size-- และ current = tail")
  ];
  if(position==="middle")return [
    sllActivityAction("check","ตรวจสอบว่า index 2 อยู่ในช่วงข้อมูล"),
@@ -7076,10 +7887,10 @@ function dllInsertActivitySteps(position){
  if(position==="first")return [
    sllActivityAction("create","create newNode"),
    pointerLabStep("new.prev","NULL","newNode.previous = NULL"),
-   pointerLabStep("new.next","n0","newNode.next = start"),
-   pointerLabStep("n0.prev","new","start.previous = newNode"),
-   pointerLabStep("start","new","start = newNode"),
-   sllActivityAction("count","count++")
+   pointerLabStep("new.next","n0","newNode.next = head"),
+   pointerLabStep("n0.prev","new","head.previous = newNode"),
+   pointerLabStep("head","new","head = newNode"),
+   sllActivityAction("count","size++ และ current = newNode")
  ];
  if(position==="middle")return [
    sllActivityAction("create","create newNode"),
@@ -7088,27 +7899,27 @@ function dllInsertActivitySteps(position){
    pointerLabStep("new.prev","n1","newNode.previous = p"),
    pointerLabStep("n2.prev","new","p.next.previous = newNode"),
    pointerLabStep("p.next","new","p.next = newNode"),
-   sllActivityAction("count","count++")
+   sllActivityAction("count","size++ และ current = newNode")
  ];
  return [
    sllActivityAction("create","create newNode"),
-   sllActivityAction("find","ให้ pointer p ชี้โหนดสุดท้าย"),
+   sllActivityAction("tail","ใช้ tail ชี้โหนดสุดท้ายโดยตรง"),
    pointerLabStep("new.next","NULL","newNode.next = NULL"),
-   pointerLabStep("new.prev","n3","newNode.previous = p"),
-   pointerLabStep("p.next","new","p.next = newNode"),
+   pointerLabStep("new.prev","n3","newNode.previous = tail"),
+   pointerLabStep("n3.next","new","tail.next = newNode"),
    pointerLabStep("tail","new","tail = newNode"),
-   sllActivityAction("count","count++")
+   sllActivityAction("count","size++ และ current = newNode")
  ];
 }
 function dllDeleteActivitySteps(position){
  if(position==="first")return [
    sllActivityAction("check","ตรวจสอบว่า List ไม่ว่าง"),
-   sllActivityAction("setDel","del = start"),
-   pointerLabStep("start","n1","start = start.next"),
-   pointerLabStep("n1.prev","NULL","start.previous = NULL"),
+   sllActivityAction("setDel","del = head"),
+   pointerLabStep("head","n1","head = head.next"),
+   pointerLabStep("n1.prev","NULL","head.previous = NULL"),
    sllActivityAction("item","item = del.data"),
    pointerLabStep("n0","TRASH","delete del"),
-   sllActivityAction("count","count--")
+   sllActivityAction("count","size-- และ current = head")
  ];
  if(position==="middle")return [
    sllActivityAction("check","ตรวจสอบว่า index 2 อยู่ในช่วงข้อมูล"),
@@ -7118,7 +7929,7 @@ function dllDeleteActivitySteps(position){
    pointerLabStep("n3.prev","n1","del.next.previous = p"),
    sllActivityAction("item","item = del.data"),
    pointerLabStep("n2","TRASH","delete del"),
-   sllActivityAction("count","count--")
+   sllActivityAction("count","size-- และ current = โหนดถัดไป")
  ];
  return [
    sllActivityAction("check","ตรวจสอบว่า List ไม่ว่าง"),
@@ -7174,6 +7985,7 @@ function completeLinkedActivityAction(id){
    lab.completed=true;const updated=[...lab.data];
    if(lab.mode==="insert")updated.splice(lab.index,0,lab.item);else updated.splice(lab.index,1);
    states[id].data=updated;states[id].view={};states[id].steps=[];states[id].step=0;
+   if(id==="dll")states[id].dllCurrentPos=updated.length?(lab.mode==="insert"?lab.index:Math.min(lab.index,updated.length-1)):-1;
    setStatus(id,`${lab.mode==="insert"?"Insert":"Delete"} Pointer Lab Complete`);addLog(id,`${lab.mode} pointer lab complete`);render(id);
  }
  renderPointerLab(id);
@@ -7210,7 +8022,8 @@ function renderSllInsertActivity(){
  const newCreated=lab.position==="last"||lab.done.some(step=>step.action==="create");
  const nullTarget=`<div data-target="NULL" onclick="pointerLabSelectTarget(event,'sll','NULL')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'sll','NULL')" class="sll-null pointer-target${nullClass}">NULL</div>`;
  let listContent=`<div class="pointer-lab-pointer">${headSource}</div>${showHeadArrow?'<span class="sll-fixed-arrow">→</span>':""}${nodes}${showNullArrow?'<span class="sll-fixed-arrow">→</span>':""}${nullTarget}`;
- let newLane=`<div class="sll-new-lane"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${newCreated?newNode:'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`;
+ const newLanePosition=lab.position||"first";
+ let newLane=`<div class="sll-new-lane new-position-${newLanePosition}"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${newCreated?newNode:'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`;
  if(lab.completed){
    const finalEntries=lab.data.map((value,i)=>({key:`n${i}`,value,isNew:false}));
    finalEntries.splice(lab.index,0,{key:"new",value:lab.item,isNew:true});
@@ -7265,13 +8078,13 @@ function dllActivityNodeHTML(lab,key,value,index,isNew=false){
  const nodeSourceClass=current?.source===key?" expected-source":"",targetClass=current?.target===key?" expected-target":"";
  const joining=isNew&&lab.completed?" joining":"";
  const nodeAttrs=lab.mode==="delete"?`draggable="true" data-source="${key}" ondragstart="pointerLabDragStart(event,'dll','${key}')"`:"";
- return `<div class="pointer-lab-node sll-activity-node pointer-target${isNew?" new":""}${joining}${isDelNode?" to-delete":""}${targetClass}${nodeSourceClass}" ${nodeAttrs} data-target="${key}" onclick="${lab.mode==="delete"?`pointerLabNodeClick(event,'dll','${key}')`:`pointerLabSelectTarget(event,'dll','${key}')`}" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'dll','${key}')">${isPNode?'<span class="sll-p-badge">p ↓</span>':""}${isDelNode?'<span class="sll-del-badge">del ↓</span>':""}<div class="pointer-lab-node-title">${isNew?"newNode · ":""}data = ${escapeHTML(value)}</div><div class="pointer-lab-node-field"><span>previous</span>${pointerSourceHTML("dll",prevSource,"prev",current?.source===prevSource?"prev expected-source":"prev")}</div><div class="pointer-lab-node-field"><span>next</span>${pointerSourceHTML("dll",nextSource,isPNode?"p.next":"next",current?.source===nextSource?"expected-source":"")}</div></div>`;
+ return `<div class="pointer-lab-node sll-activity-node pointer-target${isNew?" new":""}${joining}${isDelNode?" to-delete":""}${targetClass}${nodeSourceClass}" ${nodeAttrs} data-target="${key}" onclick="${lab.mode==="delete"?`pointerLabNodeClick(event,'dll','${key}')`:`pointerLabSelectTarget(event,'dll','${key}')`}" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'dll','${key}')">${isPNode?'<span class="sll-p-badge">p ↓</span>':""}${isDelNode?'<span class="sll-del-badge">del ↓</span>':""}<div class="pointer-lab-node-title">${isNew?"newNode · ":""}data = ${escapeHTML(value)}</div><div class="pointer-lab-node-field"><span>prev</span>${pointerSourceHTML("dll",prevSource,"prev",current?.source===prevSource?"prev expected-source":"prev")}</div><div class="pointer-lab-node-field"><span>next</span>${pointerSourceHTML("dll",nextSource,isPNode?"p.next":"next",current?.source===nextSource?"expected-source":"")}</div></div>`;
 }
 function renderDllPointerActivity(){
  const id="dll",lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box)return;
  box.hidden=false;
  const current=lab.steps[lab.done.length],labels={first:"index 0",middle:"index 2",last:lab.mode==="insert"?"โหนดสุดท้าย (index 4)":"โหนดสุดท้าย (index 3)"};
- const pointerBox=`<div class="pointer-lab-pointer">${pointerSourceHTML(id,"start","start",current?.source==="start"?"expected-source":"")} ${pointerSourceHTML(id,"tail","tail",current?.source==="tail"?"expected-source":"")}</div>`;
+ const pointerBox=`<div class="pointer-lab-pointer">${pointerSourceHTML(id,"head","head",current?.source==="head"?"expected-source":"")} ${pointerSourceHTML(id,"tail","tail",current?.source==="tail"?"expected-source":"")}</div>`;
  const nullClass=current?.target==="NULL"?" expected-target":"";
  const nullTarget=`<div ${pointerTargetAttrs(id,"NULL")} class="sll-null pointer-target${nullClass}">NULL</div>`;
  let entries=lab.data.map((value,i)=>({key:`n${i}`,value,index:i,isNew:false}));
@@ -7282,7 +8095,8 @@ function renderDllPointerActivity(){
  const nodes=entries.map(entry=>dllActivityNodeHTML(lab,entry.key,entry.value,entry.index,entry.isNew)).join('<span class="sll-fixed-arrow">⇄</span>');
  const listContent=`${pointerBox}<span class="sll-fixed-arrow">→</span>${nodes}<span class="sll-fixed-arrow">→</span>${nullTarget}`;
  const createDone=lab.done.some(step=>step.action==="create");
- const newLane=lab.mode==="insert"&&!lab.completed?`<div class="sll-new-lane"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${createDone?dllActivityNodeHTML(lab,"new",lab.item,lab.index,true):'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`:"";
+ const newLanePosition=lab.position||"first";
+ const newLane=lab.mode==="insert"&&!lab.completed?`<div class="sll-new-lane new-position-${newLanePosition}"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${createDone?dllActivityNodeHTML(lab,"new",lab.item,lab.index,true):'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`:"";
  const choiceButtons=["first","middle","last"].map(p=>`<button class="sll-choice${lab.position===p?" active":""}" onclick="chooseDllActivityPosition('${p}')">${lab.mode==="insert"?"เพิ่มที่":"ลบ "}${labels[p]}</button>`).join("");
  const instruction=!lab.position?`เลือกกรณีการ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด`:lab.completed?`สำเร็จ — ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนดและปรับ previous/next ครบแล้ว`:current.type==="action"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current.label}`:`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ลากเพื่อทำคำสั่ง ${current.label}`;
  const chips=lab.done.map((step,i)=>`<span class="pointer-lab-link-chip">✓ ${i+1}. ${step.label}</span>`).join("");
@@ -7290,7 +8104,7 @@ function renderDllPointerActivity(){
  const shownCount=lab.completed?lab.data.length+(lab.mode==="insert"?1:-1):lab.data.length,itemReady=lab.done.some(step=>step.action==="item");
  const finalValues=lab.completed?entries.map(entry=>entry.value):[];
  const result=lab.completed?`<div class="sll-result">${lab.mode==="delete"?`ลบ item = ${escapeHTML(lab.data[lab.index])} | `:""}ผลลัพธ์: NULL ⇄ ${finalValues.map(escapeHTML).join(" ⇄ ")} ⇄ NULL</div>`:"";
- box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรม${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด · Doubly Linked List</h3><p>ดำเนินการทีละขั้นและลาก previous/next ไปยังเป้าหมายตามคำสั่ง</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('dll')">Undo</button><button class="action gray" onclick="showPointerLabHint('dll')">Hint</button>`:""}<button class="action gray" onclick="startDllPointerActivity('${lab.mode}')">Reset</button><button class="action gray" onclick="closePointerLab('dll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">count = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">p = node index ${lab.pIndex}</span>`:""}${lab.done.some(step=>step.action==="setDel")?`<span class="sll-state-badge">del = node index ${lab.delIndex}</span>`:""}${itemReady?`<span class="sll-state-badge">item = ${escapeHTML(lab.data[lab.index])}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer ต้นทาง</span><span><i class="sll-dot target"></i>โหนด/NULL เป้าหมาย</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังดำเนินการ":"รายการเริ่มต้น"}</p><div class="sll-list-row">${listContent}</div>${newLane}${lab.mode==="delete"?`<div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div>`:""}</div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
+ box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรม${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด · Doubly Linked List</h3><p>ดำเนินการทีละขั้นและลาก prev/next ไปยังเป้าหมายตามคำสั่ง</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('dll')">Undo</button><button class="action gray" onclick="showPointerLabHint('dll')">Hint</button>`:""}<button class="action gray" onclick="startDllPointerActivity('${lab.mode}')">Reset</button><button class="action gray" onclick="closePointerLab('dll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">size = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">currentpos = ${lab.pIndex}</span>`:""}${lab.done.some(step=>step.action==="setDel")?`<span class="sll-state-badge">del = node index ${lab.delIndex}</span>`:""}${itemReady?`<span class="sll-state-badge">item = ${escapeHTML(lab.data[lab.index])}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer ต้นทาง</span><span><i class="sll-dot target"></i>โหนด/NULL เป้าหมาย</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังดำเนินการ":"รายการเริ่มต้น"}</p><div class="sll-list-row">${listContent}</div>${newLane}${lab.mode==="delete"?`<div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div>`:""}</div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
  if(lab.selected){[...box.querySelectorAll("[data-source]")].find(el=>el.dataset.source===lab.selected)?.classList.add("selected")}
  if(!lab.completed)requestAnimationFrame(()=>drawPointerLabConnections(id));
 }
@@ -7314,7 +8128,7 @@ function renderPointerLab(id){
  box.hidden=false;
  const current=lab.steps[lab.done.length];
  const pointerNames=id==="dll"
-   ? `${pointerSourceHTML(id,"start","start")} ${pointerSourceHTML(id,"tail","tail")}`
+   ? `${pointerSourceHTML(id,"head","head")} ${pointerSourceHTML(id,"tail","tail")}`
    : pointerSourceHTML(id,"head","head");
  const nodes=lab.data.map((v,i)=>pointerLabNodeHTML(lab,`n${i}`,v,false,lab.mode==="delete"&&i===lab.index)).join("");
  const newNode=lab.mode==="insert"?pointerLabNodeHTML(lab,"new",lab.item,true,false):"";
@@ -7862,6 +8676,9 @@ function nextAlgorithmStep(id){
  s.active=st.active??-1;s.found=st.found??-1;s.view=st.view||{};
  if(st.recursionTree)s.recursionTree=cloneRecursionTree(st.recursionTree);
  renderAlgorithmModule(id,st);
+ const moduleKind=configs.find(x=>x.id===id)?.kind;
+ if(moduleKind==="sorting")renderSortingRoundTracking(id);
+ if(moduleKind==="searching")renderSearchingRoundTracking(id);
  requestAnimationFrame(()=>animateSortingMovement(id,st));
  if($(id+"Detail"))$(id+"Detail").textContent=st.detail||"";
  setStatus(id,(st.swap?"↔ กำลังสลับตำแหน่ง: ":st.move?"→ กำลังเลื่อนข้อมูล: ":st.keyMove?"↓ กำลังวาง Key: ":"")+st.text);
@@ -7953,6 +8770,86 @@ function renderQuickRoundResult(st){
      `<div class="sort-cell"><span class="sort-index">${index}</span>${value}</div>`
    ).join("")}</div>
  </div>`;
+}
+
+function buildSortingRoundSnapshots(id,steps){
+ const snapshots=[];
+ steps.forEach((st,stepIndex)=>{
+   let isRoundEnd=false;
+   if(id==="selection")isRoundEnd=Boolean(st.pass)&&(st.line===4||(st.line===5&&!String(st.text).startsWith("เรียงแบบ")));
+   else if(id==="insertion")isRoundEnd=st.line===4&&st.keyStatus==="Inserted";
+   else if(id==="bubble")isRoundEnd=st.roundEnd===true;
+   else if(id==="radix")isRoundEnd=(st.line===4&&String(st.text).startsWith("จบรอบ"))||String(st.text).startsWith("กลับลำดับ");
+   else if(id==="merge")isRoundEnd=st.line===4&&st.treeAction?.startsWith("Merge");
+   else if(id==="quick")isRoundEnd=Array.isArray(st.roundArray)&&String(st.text).startsWith("Partition");
+   else if(id==="heapsort")isRoundEnd=(st.line===5&&String(st.text).startsWith("ลดขนาด Heap"))||String(st.text).startsWith("กลับลำดับ");
+   if(!isRoundEnd)return;
+   let sortedIndices=Array.isArray(st.sorted)?[...st.sorted]:[];
+   if(id==="merge")sortedIndices=[...(st.data||[]).keys()];
+   if(id==="quick"&&Number.isInteger(st.pivot))sortedIndices=[st.pivot];
+   const previous=snapshots.at(-1);
+   const comparisons=st.comparisons||0;
+   const swaps=st.swaps||0;
+   snapshots.push({
+     stepIndex,
+     round:snapshots.length+1,
+     values:[...(st.roundArray||st.data||[])],
+     sortedIndices,
+     comparisons,
+     swaps,
+     roundComparisons:comparisons-(previous?.comparisons||0),
+     roundSwaps:swaps-(previous?.swaps||0),
+     note:st.text||`จบรอบ ${snapshots.length+1}`
+   });
+ });
+ return snapshots;
+}
+
+function renderSortingRoundTracking(id){
+ const box=$(id+"RoundTracking");
+ if(!box)return;
+ const s=states[id];
+ const completed=(s.roundSnapshots||[]).filter(item=>item.stepIndex<s.step);
+ const latest=completed.at(-1);
+ box.innerHTML=`<div class="sorting-round-tracking-title"><span>🔄 ผลลัพธ์การเรียงในแต่ละรอบ</span><span>${completed.length} รอบ</span></div>`+
+   (completed.length
+     ? `<div class="sorting-round-summary"><strong>สรุปสะสม: เปรียบเทียบ ${latest.comparisons} ครั้ง · สลับตำแหน่ง ${latest.swaps} ครั้ง</strong><div class="sorting-round-legend"><span><i class="done"></i>เรียงแล้ว</span><span><i class="pending"></i>ยังไม่ได้เรียง</span></div></div><div class="sorting-round-tracking-list">${completed.map(item=>`<div class="sorting-round-card"><div><div class="sorting-round-label">รอบที่ ${item.round}</div><span class="sorting-round-note" title="${escapeHTML(item.note)}">${escapeHTML(item.note)}</span></div><div class="sorting-round-values">${item.values.map((value,index)=>`<span class="sorting-round-value ${item.sortedIndices.includes(index)?"sorted":"pending"}">${escapeHTML(value)}</span>`).join("")}</div><div class="sorting-round-metrics"><span class="sorting-round-metric">รอบนี้เปรียบเทียบ ${item.roundComparisons} ครั้ง</span><span class="sorting-round-metric">รอบนี้สลับตำแหน่ง ${item.roundSwaps} ครั้ง</span></div></div>`).join("")}</div>`
+     : `<div class="sorting-round-empty">กด Next Step เพื่อบันทึกผลลัพธ์เมื่อจบแต่ละรอบ</div>`);
+}
+
+function buildSearchingRoundSnapshots(steps){
+ return steps.flatMap((st,stepIndex)=>Number.isInteger(st.active)?[{
+   stepIndex,
+   round:0,
+   values:[...(st.data||[])],
+   active:st.active,
+   found:st.found===st.active,
+   low:Number.isInteger(st.low)?st.low:null,
+   mid:Number.isInteger(st.mid)?st.mid:st.active,
+   high:Number.isInteger(st.high)?st.high:null,
+   comparisons:st.comparisons||0,
+   note:st.text||"เปรียบเทียบข้อมูล"
+ }]:[]).map((item,index)=>({...item,round:index+1}));
+}
+
+function renderSearchingRoundTracking(id){
+ const box=$(id+"RoundTracking");
+ if(!box)return;
+ const s=states[id];
+ const completed=(s.searchSnapshots||[]).filter(item=>item.stepIndex<s.step);
+ const latest=completed.at(-1);
+ const binary=id==="binary";
+ box.innerHTML=`<div class="sorting-round-tracking-title"><span>🔎 ผลการค้นหาในแต่ละรอบ</span><span>${completed.length} รอบ</span></div>`+
+   (completed.length
+     ? `<div class="sorting-round-summary"><strong>เปรียบเทียบสะสม ${latest.comparisons} ครั้ง</strong><div class="sorting-round-legend"><span><i class="pending"></i>กำลังตรวจ</span><span><i class="done"></i>พบข้อมูล</span></div></div><div class="sorting-round-tracking-list">${completed.map(item=>`<div class="sorting-round-card"><div><div class="sorting-round-label">รอบที่ ${item.round}</div><span class="sorting-round-note" title="${escapeHTML(item.note)}">${escapeHTML(item.note)}</span>${binary?`<div class="search-round-meta"><span>low=${item.low}</span><span>mid=${item.mid}</span><span>high=${item.high}</span></div>`:`<div class="search-round-meta"><span>index=${item.active}</span></div>`}</div><div class="sorting-round-values">${item.values.map((value,index)=>{
+       let state="candidate";
+       if(item.found&&index===item.active)state="found";
+       else if(index===item.active)state="current";
+       else if(binary&&(index<item.low||index>item.high))state="excluded";
+       else if(!binary&&index<item.active)state="excluded";
+       return `<span class="sorting-round-value search-round-value ${state}">${escapeHTML(value)}</span>`;
+     }).join("")}</div><div class="sorting-round-metrics"><span class="sorting-round-metric">เปรียบเทียบ ${item.comparisons} ครั้ง</span><span class="sorting-round-metric">${item.found?"พบข้อมูล":"ค้นหาต่อ"}</span></div></div>`).join("")}</div>`
+     : `<div class="sorting-round-empty">กด Next Step เพื่อบันทึกการค้นหาในแต่ละรอบ</div>`);
 }
 
 function renderRecursionTree(id,tree=[],st={}){
@@ -8079,8 +8976,8 @@ function renderAlgorithmModule(id,st={}){
      const indexElement=$("selectionSelectedIndex");
      const passElement=$("selectionPassInfo");
      if(valueElement)valueElement.textContent=st.selectedValue ?? "-";
-     if(indexElement)indexElement.textContent=`index ${st.selectedIndex ?? "-"}`;
-     if(passElement)passElement.textContent=`pass ${st.pass ?? "-"}`;
+     if(indexElement)indexElement.textContent=st.selectedIndex ?? "-";
+     if(passElement)passElement.textContent=st.pass ?? "-";
    }
    return;
  }
@@ -8697,6 +9594,7 @@ function prepareSorting(id){
  s.swaps=0;
  s.data=[...a];
  s.recursionTree=[];
+ s.roundSnapshots=[];
 
  setAlgorithmTrack(id,sortingTrack(cfg.algorithm));
 
@@ -8713,7 +9611,7 @@ function prepareSorting(id){
        selectedValue:arr[min_index],
        pass:i+1,
        line:1,
-       text:`เริ่ม pass ${i+1}: เลือก ${arr[min_index]} เป็นค่าเริ่มต้น`,
+       text:`เริ่มรอบที่ ${i+1}: เลือก ${arr[min_index]} เป็นค่าเริ่มต้น`,
        comparisons:c,
        swaps:w
      });
@@ -8832,6 +9730,17 @@ function prepareSorting(id){
          s.steps.push({data:[...arr],swap:[swapA,swapB],compare:[swapA,swapB],outerIndex:p,innerIndex:j,pass:p+1,line:3,text:`Swap index ${j} ↔ ${j+1}`,comparisons:c,swaps:w});
        }
      }
+     s.steps.push({
+       data:[...arr],
+       sorted:[...Array(p+1).keys()].map(x=>arr.length-1-x),
+       outerIndex:p,
+       pass:p+1,
+       roundEnd:true,
+       line:5,
+       text:`จบรอบ ${p+1}: ได้ [${arr.join(", ")}]`,
+       comparisons:c,
+       swaps:w
+     });
    }
  }
 
@@ -9368,7 +10277,9 @@ function prepareSorting(id){
    s.steps=[{data:[...arr],line:5,text:"ข้อมูลมีขนาดเล็กเกินไป"}];
  }
 
+ s.roundSnapshots=buildSortingRoundSnapshots(id,s.steps);
  renderAlgorithmModule(id,{});
+ renderSortingRoundTracking(id);
  updateAlgorithmDashboard(id);
  setStatus(id,`เตรียม Sorting แบบ ${ascending?"น้อยไปมาก":"มากไปน้อย"} แล้ว`);
 }
@@ -9379,16 +10290,40 @@ function searchingTrack(algo){
  :["กำหนด low และ high","คำนวณ mid","เปรียบเทียบ target กับ data[mid]","ปรับ low/high","พบหรือไม่พบ"];
 }
 function prepareSearching(id){
- stopAlgorithmAuto(id);const s=states[id],cfg=configs.find(x=>x.id===id),target=Number($(id+"Target").value),a=parseListValue(id);
+ stopAlgorithmAuto(id);
+ const s=states[id],cfg=configs.find(x=>x.id===id),target=Number($(id+"Target").value),a=parseListValue(id);
  setSelectedFunction(id,cfg.algorithm);
  s.steps=[];s.step=0;s.comparisons=0;s.swaps=0;s.data=cfg.algorithm==="binary"?[...a].sort((x,y)=>x-y):[...a];
- setAlgorithmTrack(id,searchingTrack(cfg.algorithm));let c=0;
+ s.searchSnapshots=[];
+ setAlgorithmTrack(id,searchingTrack(cfg.algorithm));
+ let c=0;
  if(cfg.algorithm==="sequential"){
-  let found=false;for(let i=0;i<s.data.length;i++){c++;const yes=s.data[i]===target;s.steps.push({data:[...s.data],active:i,found:yes?i:-1,line:yes?4:2,text:`เปรียบเทียบ ${s.data[i]} กับ ${target}`,comparisons:c});if(yes){found=true;break}}if(!found)s.steps.push({data:[...s.data],line:5,text:`ไม่พบ ${target}`,comparisons:c});
+  let found=false;
+  for(let i=0;i<s.data.length;i++){
+   c++;
+   const yes=s.data[i]===target;
+   s.steps.push({data:[...s.data],active:i,found:yes?i:-1,line:yes?4:2,text:`เปรียบเทียบ data[${i}] = ${s.data[i]} กับ target = ${target}`,comparisons:c});
+   if(yes){found=true;break}
+  }
+  if(!found)s.steps.push({data:[...s.data],line:5,text:`ไม่พบ ${target}`,comparisons:c});
  }else{
-  let l=0,r=s.data.length-1,found=false;while(l<=r){const m=Math.floor((l+r)/2);c++;const yes=s.data[m]===target;s.steps.push({data:[...s.data],active:m,found:yes?m:-1,line:2,text:`low=${l}, mid=${m}, high=${r}`,comparisons:c});if(yes){found=true;break}if(target<s.data[m])r=m-1;else l=m+1;s.steps.push({data:[...s.data],line:4,text:`ปรับช่วงเป็น low=${l}, high=${r}`,comparisons:c})}if(!found)s.steps.push({data:[...s.data],line:5,text:`ไม่พบ ${target}`,comparisons:c});
+  let l=0,r=s.data.length-1,found=false;
+  while(l<=r){
+   const m=Math.floor((l+r)/2);
+   c++;
+   const yes=s.data[m]===target;
+   s.steps.push({data:[...s.data],active:m,found:yes?m:-1,low:l,mid:m,high:r,line:yes?5:3,text:`เปรียบเทียบ target ${target} กับ data[mid] = ${s.data[m]}`,comparisons:c});
+   if(yes){found=true;break}
+   if(target<s.data[m])r=m-1;else l=m+1;
+   s.steps.push({data:[...s.data],low:l,mid:m,high:r,line:4,text:`ปรับช่วงเป็น low=${l}, high=${r}`,comparisons:c});
+  }
+  if(!found)s.steps.push({data:[...s.data],line:5,text:`ไม่พบ ${target}`,comparisons:c});
  }
- renderAlgorithmModule(id,{});updateAlgorithmDashboard(id);setStatus(id,"เตรียม Searching แล้ว");
+ s.searchSnapshots=buildSearchingRoundSnapshots(s.steps);
+ renderAlgorithmModule(id,{});
+ renderSearchingRoundTracking(id);
+ updateAlgorithmDashboard(id);
+ setStatus(id,"เตรียม Searching แล้ว");
 }
 
 
@@ -9871,6 +10806,10 @@ function arrangeAnimationControls(){
      badge.innerHTML=`ฟังก์ชันที่เลือก: <strong id="${cfg.id}SelectedFunction">${initialSelectedFunction(cfg)}</strong>`;
    }
    badge.classList.add("simulation-function-badge");
+   if(cfg.id==="dll"){
+     controlHost.insertAdjacentElement("afterend",badge);
+     return;
+   }
    const simulationTarget=panel.querySelector(":scope > .algo-layout")
      || panel.querySelector(":scope > .expr-grid")
      || panel.querySelector(`#${cfg.id}Visual`);
