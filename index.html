@@ -36,6 +36,7 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 .node{border:3px solid var(--g);background:#fff;border-radius:10px;padding:12px 16px;font-weight:800;transition:.35s}
 .node.active-node{border-color:var(--o);background:var(--o2);transform:translateY(-6px)}
 .node.new-node{border-color:var(--p);background:#f3e5f5;animation:nodeIn .45s ease}
+#sllVisual .sll-stable-nodes .node{animation:none!important;transition:none!important;transform:none!important}
 .node.delete-node{border-color:var(--r);background:#ffebee;opacity:.6}
 .link-arrow{font-size:24px;color:var(--o)}
 @keyframes nodeIn{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
@@ -185,6 +186,9 @@ button.green{background:var(--g)}button.blue{background:var(--b)}button.gray{bac
 .tree-svg-node circle{fill:#fff;stroke:#2e7d32;stroke-width:3}
 .tree-svg-node.active circle{fill:#fff3e0;stroke:#ef6c00;stroke-width:5}
 .tree-svg-node.found circle{fill:#e3f2fd;stroke:#1565c0}
+.tree-svg-node.visited circle{fill:#c8e6c9;stroke:#2e7d32;stroke-width:4}
+.tree-svg-node.visited.active circle{fill:#fff3e0;stroke:#ef6c00;stroke-width:5}
+.tree-svg-node.visiting circle{fill:#ffcc80;stroke:#ef6c00;stroke-width:5}
 .tree-svg-node text{text-anchor:middle;dominant-baseline:middle;font-weight:800}
 
 .link-arrow.creating{color:#7b1fa2;font-weight:900;animation:linkPulse .7s ease infinite}
@@ -1635,6 +1639,12 @@ aside .topic-popup-btn.active{
   min-height:180px;
   padding:102px 12px 24px 12px;
 }
+#dllVisual > .dll-stage{
+  width:max-content;
+  margin-left:auto;
+  margin-right:auto;
+  flex-wrap:nowrap;
+}
 .dll-stage .node-block{
   align-items:center;
 }
@@ -2200,6 +2210,79 @@ aside .topic-popup-btn.active{
 }
 @media(max-width:900px){.pointer-lab-stage{justify-content:flex-start}.pointer-lab-head{display:block}.pointer-lab-actions{margin-top:8px}}
 
+
+/* Keep the deleted node visible while the two links bypass it. */
+.dll-stage.dll-reconnecting{flex-wrap:nowrap;width:max-content;min-width:100%;padding-bottom:190px}
+.dll-reconnecting .node-block{flex-shrink:0}
+.dll-reconnect-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:50}
+.dll-reconnect-svg text{font:bold 14px Tahoma,Arial,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round}
+.dll-reconnecting .delete-node{opacity:.4;border-style:dashed;transform:none}
+.dll-reconnecting .dll-replaced-link{visibility:hidden}
+.dll-reconnecting .dll-detached-link{opacity:.25}
+
+.connection-preview{overflow:auto;max-width:100%;background:#fafcfb;border-radius:12px;padding:14px}
+.connection-preview svg{display:block;max-width:none;font-family:Tahoma,Arial,sans-serif;font-size:13px}
+.cp-static{fill:none;stroke:#90a4ae;stroke-width:1.5}
+.cp-label{font-size:13px;font-weight:bold;paint-order:stroke;stroke:white;stroke-width:5px;stroke-linejoin:round}
+.cp-node-label{font-weight:bold;fill:#546e7a}
+.cp-caption,.cp-progress{font-size:13px;color:#455a64;padding:8px;position:sticky;left:0}
+.cp-progress{background:#e8f5e9;border-radius:8px}
+
+/* Original node markup and sizes; only the connector overlay is new. */
+.connection-preview.original-node-preview{position:relative;display:block;overflow:visible;background:transparent;border:0;border-radius:0;padding:0;min-width:100%;width:max-content}
+.original-node-preview > .linked-stage,.original-node-preview > .dll-stage{flex-wrap:nowrap}
+.original-node-preview .node-block{flex-shrink:0}
+.original-link-overlay{position:absolute;left:0;top:0;width:100%;overflow:visible;pointer-events:none;z-index:50}
+.original-node-preview > .cp-progress{position:absolute;left:0;bottom:0;background:transparent;font-size:12px;padding:4px}
+.dll-stage.dll-reconnecting{padding-top:102px;padding-bottom:190px}
+#sllVisual .sll-none-value{font-size:14px;font-weight:800;color:#1565c0;background:#e3f2fd;padding:3px;border-radius:4px}
+
+/* Route SLL next links through the space between wrapped rows. */
+#sllVisual > .linked-stage{row-gap:64px}
+#sllVisual .sll-row-links{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:4}
+#sllVisual .sll-link.sll-wrap-link{visibility:hidden}
+
+/* Keep deletion node groups centered in normal and connection-preview frames. */
+#sllVisual.delete-first-centered .linked-stage,
+#dllVisual.delete-first-centered .dll-stage{
+ width:max-content;max-width:100%;margin-left:auto;margin-right:auto;
+ justify-content:flex-start!important;
+}
+#sllVisual.delete-first-centered .node,
+#dllVisual.delete-first-centered .node{
+ animation:none!important;transition:none!important;transform:none!important;
+}
+
+.controls .list-function-dropdown{display:flex;align-items:flex-end;gap:12px;width:100%;grid-template-columns:none}
+.list-function-dropdown label{display:flex;flex-direction:column;gap:6px;flex:1;max-width:520px;font-weight:700}
+.list-function-dropdown select{width:100%;min-height:44px;padding:10px 12px;border:1px solid #a9bdb0;border-radius:8px;background:white;color:#263238;font:inherit}
+.list-function-dropdown .action{min-height:44px}
+@media(max-width:600px){.controls .list-function-dropdown{flex-wrap:wrap}.list-function-dropdown label{min-width:100%;max-width:none}}
+
+.tree-family-guide{margin:14px 0;padding:14px 18px;border:1px solid #c8dccd;border-radius:12px;background:#f8fcf9;color:#263238}
+.tree-family-guide summary{cursor:pointer;font-weight:700;color:#2e7d32}
+.tree-family-guide svg{display:block;width:100%;max-width:650px;margin:12px auto}
+.tree-family-guide p{line-height:1.7}.tree-family-table{overflow-x:auto}
+.tree-family-table table{width:100%;border-collapse:collapse;font-size:15px}
+.tree-family-table th,.tree-family-table td{padding:10px 12px;border:1px solid #d8e5dc;text-align:left;vertical-align:top}
+.tree-family-table th{background:#e8f5e9}
+#bstFunctionSelect{min-width:220px;min-height:44px;border-radius:8px;padding:10px;background:white;color:#263238;font:inherit}
+
+#dllPointerLab .pointer-lab-node .pointer-handle{min-width:24px;width:24px;height:24px;box-sizing:border-box;padding:0}
+#dllPointerLab .dll-before-badge{color:#00695c;border-color:#00897b;background:#e0f2f1;white-space:nowrap}
+#dllPointerLab .dll-after-badge{color:#ad1457;border-color:#c2185b;background:#fce4ec;white-space:nowrap}
+
+.dll-delete-practice .sll-list-row,.dll-insert-practice .sll-list-row{padding-top:112px}
+.dll-insert-practice .sll-list-row{width:max-content;min-width:0;margin-inline:auto;padding-left:120px;padding-right:120px;gap:18px}
+.dll-insert-practice .sll-new-lane{margin-top:40px;padding-bottom:170px;min-width:100%;border-top:0}
+.dll-insert-practice .sll-new-title{margin-bottom:32px;text-align:center}
+.dll-insert-practice .sll-new-lane .sll-activity-node{transition:none}
+.dll-insert-practice .pointer-lab-svg{z-index:3;pointer-events:none}
+.dll-delete-end-pointer{position:absolute;top:-96px;left:50%;transform:translateX(-50%);display:flex;gap:8px;white-space:nowrap}
+#dllPointerLab .dll-delete-end-pointer .pointer-handle{width:auto;min-width:54px;height:auto;padding:5px 12px}
+.dll-lab-new-label{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);color:#7b1fa2;font-weight:900;font-size:15px;white-space:nowrap}
+.bst-code-line{display:block;min-height:1.5em;white-space:pre}.bst-code-line.active{background:#ef6c00;color:white;border-radius:4px}.bst-code{overflow-x:auto}
+.bst-pointer-fields{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:10px 0;font-size:14px}.bst-pointer-fields span{padding:6px 10px;background:#e8f5e9;border-radius:8px}.bst-pointer-fields.current span{background:#fff3e0}
 </style>
 </head>
 <body>
@@ -2254,7 +2337,7 @@ const configs=[
 const states={};
 
 function makeState(id){
- const defaultData=(id==="sll"||id==="dll"||id==="arraylist")?[10,20,30,40]:[];
+ const defaultData=id==="dll"?[10,20,30]:(id==="sll"||id==="arraylist")?[10,20,30,40]:[];
  const defaultCapacity=id==="arraylist"?5:6;
  return {id,data:[...defaultData],capacity:defaultCapacity,front:id==="circularq"?0:-1,rear:-1,count:0,top:-1,steps:[],step:0,pending:null,view:{},timer:null,comparisons:0,swaps:0,active:-1,found:-1,dllCurrentPos:id==="dll"&&defaultData.length?defaultData.length-1:-1};
 }
@@ -2265,7 +2348,7 @@ function setStatus(id,t){$(id+"Status").textContent=t}
 function updateInfo(id){
  const s=states[id],cfg=configs.find(x=>x.id===id);
  let size=cfg.id==="circularq"?s.count:cfg.id==="linearq"?s.data.filter(v=>v!==null).length:s.data.length;
- if($(id+"Size"))$(id+"Size").textContent=size;
+ if($(id+"Size"))$(id+"Size").textContent=s.view?.displaySize??size;
  if($(id+"State"))$(id+"State").textContent=size===0?"Empty":"Ready";
  if($(id+"Pointer")){
    if(id==="stack")$(id+"Pointer").textContent=`top = ${s.top}`;
@@ -2330,6 +2413,7 @@ function arrayHTML(a,o={}){
  }).join("")+"</div>";
 }
 function linkedHTML(a,double=false,o={}){
+ if(o.connectionPreview)return connectionPreviewHTML(o.connectionPreview);
  const headIndex=!double ? (o.headIndex ?? 0) : 0;
  const headStyle=!double && a.length ? ` style="left:calc(${Math.max(0,headIndex)} * 154px + 56px)"` : "";
  const head=a.length
@@ -2341,13 +2425,13 @@ function linkedHTML(a,double=false,o={}){
 
  if(!double){
    const currentPointer=Number.isInteger(o.currentIndex) && o.currentIndex>=0
-     ? `<div class="sll-pointer current" style="left:calc(${o.currentIndex} * 154px + 68px)">current</div>`
+     ? `<div class="sll-pointer current" data-current-index="${o.currentIndex}" style="left:calc(${o.currentIndex} * 154px + 68px)">current</div>`
      : "";
    const delPointer=Number.isInteger(o.delIndex) && o.delIndex>=0
-     ? `<div class="sll-pointer del" style="left:calc(${o.delIndex} * 154px + 68px)">del</div>`
+     ? `<div class="sll-pointer del" data-del-index="${o.delIndex}" style="left:calc(${o.delIndex} * 154px + 68px)">delnode</div>`
      : "";
    const newNodePointer=Number.isInteger(o.newNodeIndex) && o.newNodeIndex>=0
-     ? `<div class="sll-pointer newnode" style="left:calc(${o.newNodeIndex} * 154px + 56px)">newNode</div>`
+     ? `<div class="sll-pointer newnode" data-newnode-index="${o.newNodeIndex}" style="left:calc(${o.newNodeIndex} * 154px + 56px)">newNode</div>`
      : "";
    const itemPanel=o.itemValue!==undefined
      ? `<div class="sll-item-panel">item = ${o.itemValue}</div>`
@@ -2368,7 +2452,8 @@ function linkedHTML(a,double=false,o={}){
      if(o.newIndex===i)cls+=" new-node";
      if(o.deleteIndex===i)cls+=" delete-node";
 
-     const connector=i<a.length-1
+     const nextIsNone=o.nullNextIndices?.includes(i);
+     const connector=nextIsNone ? '<span style="display:inline-block;width:32px"></span>' : i<a.length-1
        ? `<span class="sll-link ${o.linkCreating===i?"creating":""} ${o.linkRemoving===i?"removing":""} ${o.linkPending===i?"pending":""}"></span>`
        : `<span class="sll-null">NULL</span>`;
 
@@ -2379,7 +2464,7 @@ function linkedHTML(a,double=false,o={}){
              <span class="sll-data-value">${v}</span>
            </div>
            <div class="sll-next-part">
-             <span class="sll-next-dot"></span>
+             ${nextIsNone?'<span class="sll-none-value">None</span>':'<span class="sll-next-dot"></span>'}
            </div>
          </div>
          <div class="node-label sll-node-label-bottom">node ${i}</div>
@@ -2388,13 +2473,14 @@ function linkedHTML(a,double=false,o={}){
      </div>`;
    }).join("");
 
-   return `<div class="linked-stage">${head}${currentPointer}${delPointer}${newNodePointer}${bypass}${itemPanel}${comparePanel}${resultPanel}${nodes}</div>`;
+   return `<div class="linked-stage${o.sllStableNodes?' sll-stable-nodes':''}">${head}${currentPointer}${delPointer}${newNodePointer}${bypass}${itemPanel}${comparePanel}${resultPanel}${nodes}</div>`;
  }
 
- const dllStart=a.length
-   ? `<div class="dll-start-pointer"><span>head</span><span class="start-arrow">↓</span></div>`
-   : `<div class="head-pointer sll-head-empty dll-empty-pointers"><span>head → NULL</span><span>tail → NULL</span><span>current → NULL</span></div>`;
- const dllTailIndex=Number.isInteger(o.tailIndex) && o.tailIndex>=0
+ const dllHeadIndex=o.headIndex??0;
+ const dllStart=a.length&&dllHeadIndex>=0
+   ? `<div class="dll-start-pointer" style="left:calc(${dllHeadIndex} * 182px + 63px)"><span>head</span><span class="start-arrow">↓</span></div>`
+   : `<div class="dll-start-pointer"><span>head → NULL</span></div>`;
+ const dllTailIndex=Number.isInteger(o.tailIndex)
    ? o.tailIndex
    : a.length-1;
  const dllTail=a.length && dllTailIndex>=0
@@ -2413,7 +2499,7 @@ function linkedHTML(a,double=false,o={}){
       </div>`
    : "";
  const dllDelPointer=Number.isInteger(o.delIndex) && o.delIndex>=0
-   ? `<div class="dll-del-pointer" style="left:calc(${o.delIndex} * 182px + 63px)">
+   ? `<div class="dll-del-pointer" style="left:calc(${o.delIndex} * 182px + 63px);${o.currentIndex===o.delIndex?'top:58px!important':''}">
         <span>delnode</span><span class="pointer-arrow">↓</span>
       </div>`
    : "";
@@ -2454,7 +2540,8 @@ function linkedHTML(a,double=false,o={}){
  const floatingData=o.floatingNewNode
    ? ` data-prev-to="${Number.isInteger(o.floatingPrevTarget)?o.floatingPrevTarget:""}" data-next-to="${Number.isInteger(o.floatingNextTarget)?o.floatingNextTarget:""}" data-prev-from="${Number.isInteger(o.floatingPrevFromTarget)?o.floatingPrevFromTarget:""}" data-next-from="${Number.isInteger(o.floatingNextFromTarget)?o.floatingNextFromTarget:""}"`
    : "";
- return `<div class="dll-stage"${floatingData}>${floatingLinkSvg}${dllStart}${dllTail}${dllCurrentPointer}${dllPPointer}${dllPreviousNodePointer}${dllNextNodePointer}`+a.map((v,i)=>{
+ const reconnect=Number.isInteger(o.reconnectIndex);
+ return `<div class="dll-stage${reconnect?" dll-reconnecting":""}"${reconnect?` data-reconnect="${o.reconnectIndex}"`:""}${floatingData}>${reconnect?'<svg class="dll-reconnect-svg" role="img" aria-label="before.next ชี้ไป after และ after.prev ชี้กลับ before ข้ามโหนดที่ลบ"></svg>':""}${floatingLinkSvg}${dllStart}${dllTail}${dllCurrentPointer}${dllDelPointer}${dllPPointer}${dllPreviousNodePointer}${dllNextNodePointer}`+a.map((v,i)=>{
    let cls="node";
    if(o.active===i)cls+=" active-node";
    if(o.newIndex===i)cls+=" new-node";
@@ -2462,8 +2549,8 @@ function linkedHTML(a,double=false,o={}){
 
    const prevHighlight=o.pointerField==="prev" && o.pointerNode===i;
    const nextHighlight=o.pointerField==="next" && o.pointerNode===i;
-   const prevText=i===0 ? "NULL" : "prev";
-   const nextText=i===a.length-1 ? "NULL" : "next";
+   const prevText=o.newNodeIndex===i ? (o.dllNewPrevConnected?"prev":"None") : o.clearedHeadPrev&&i===o.headIndex ? "None" : reconnect&&i===o.reconnectIndex+1 ? "before" : i===0 ? "NULL" : "prev";
+   const nextText=o.dllInsertPreview&&i===o.newNodeIndex ? (o.dllNewNextConnected?"next":"None") : o.dllNewLast&&i===o.newNodeIndex ? "None" : o.clearedTailNext&&i===o.tailIndex ? "None" : reconnect&&i===o.reconnectIndex-1 ? "after" : i===a.length-1 ? "NULL" : "next";
    const body=`<div class="dll-node-row data">${v}</div>
      <div class="dll-node-row pointer ${prevHighlight?"highlight-pointer":""}"><span>${prevText}</span><span class="dll-pointer-dot"></span></div>
      <div class="dll-node-row pointer ${nextHighlight?"highlight-pointer":""}"><span>${nextText}</span><span class="dll-pointer-dot"></span></div>`;
@@ -2473,23 +2560,80 @@ function linkedHTML(a,double=false,o={}){
    const prevRemoving=o.prevRemoving===i;
    const connector=i<a.length-1
      ? `<span class="dll-link-wrap">
-          <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
-          <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→</span>
+          <span style="${o.clearedHeadPrev&&i===o.headIndex-1?'visibility:hidden':''}" class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
+          <span style="${o.clearedTailNext&&i===o.tailIndex?'visibility:hidden':''}" class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→</span>
         </span>`
      : `<span class="dll-link-wrap">
-          <span class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
-          <span class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→ NULL</span>
+          <span style="${o.clearedHeadPrev&&i===o.headIndex-1?'visibility:hidden':''}" class="dll-prev ${prevCreating?"creating":""} ${prevRemoving?"removing":""}">←</span>
+          <span style="${o.clearedTailNext&&i===o.tailIndex?'visibility:hidden':''}" class="dll-next ${nextCreating?"creating":""} ${nextRemoving?"removing":""}">→ NULL</span>
         </span>`;
 
    return `<div class="node-block">
      <div class="node-col">
        <div class="${cls} dll-vertical-node" data-dll-index="${i}">${body}</div>
-       <div class="node-label dll-node-label-bottom">node ${i}</div>
+       <div class="node-label dll-node-label-bottom">${o.dllInsertPreview&&i===o.newNodeIndex?"newnode":`node ${i}`}</div>
      </div>
      ${connector}
    </div>`;
  }).join("")+dllFloatingNewNode+dllPointerDetail+"</div>";
 }
+
+function drawDllReconnectLinks(){
+ const stage=document.querySelector('#dllVisual .dll-stage[data-reconnect]');
+ if(!stage)return;
+ const svg=stage.querySelector('.dll-reconnect-svg'),index=Number(stage.dataset.reconnect);
+ const before=stage.querySelector(`[data-dll-index="${index-1}"]`),after=stage.querySelector(`[data-dll-index="${index+1}"]`);
+ if(!before||!after)return;
+ const rect=stage.getBoundingClientRect();
+ const started=Number(stage.dataset.drawStarted)||performance.now();
+ stage.dataset.drawStarted=String(started);
+ const point=el=>{const r=el.getBoundingClientRect();return {x:r.left-rect.left+r.width/2,y:r.top-rect.top+r.height/2}};
+ const b=before.getBoundingClientRect(),a=after.getBoundingClientRect();
+ const bottom=Math.max(b.bottom,a.bottom)-rect.top;
+ const links=[
+ {id:'Next',color:'#ef6c00',label:'before.next → after',from:point(before.querySelectorAll('.dll-pointer-dot')[1]),to:{x:a.left-rect.left+24,y:a.bottom-rect.top},lane:bottom+70},
+ {id:'Prev',color:'#1565c0',label:'after.prev → before',from:point(after.querySelectorAll('.dll-pointer-dot')[0]),to:{x:b.left-rect.left+24,y:b.bottom-rect.top},lane:bottom+145}
+ ];
+ svg.setAttribute('viewBox',`0 0 ${stage.offsetWidth} ${stage.offsetHeight}`);
+ svg.innerHTML='<defs>'+links.map(l=>`<marker id="dllReconnect${l.id}" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="${l.color}"/></marker>`).join('')+'</defs>'+links.map(l=>{
+ const {from:f,to:t,lane:y}=l;
+ const direction=t.x>f.x?1:-1;
+ const span=Math.abs(t.x-f.x),midX=(f.x+t.x)/2;
+ const low=y-12;
+ const path=l.id==='Next'
+   ? `M ${f.x} ${f.y} C ${f.x+span*.25} ${low+18}, ${t.x-span*.28} ${low+18}, ${t.x} ${t.y}`
+   : `M ${f.x} ${f.y} C ${f.x+48} ${f.y+85}, ${f.x+35} ${low}, ${midX} ${low} C ${t.x+span*.12} ${low}, ${t.x+direction*35} ${low}, ${t.x} ${t.y}`;
+ return `<g class="dll-reconnect-line" data-arrow="dllReconnect${l.id}" style="opacity:0"><path d="${path}" fill="none" stroke="${l.color}" stroke-width="2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/><circle cx="${f.x}" cy="${f.y}" r="5" fill="${l.color}"/><text x="${midX}" y="${y+14}" text-anchor="middle" fill="${l.color}">${l.label}</text></g>`;
+
+ }).join('');
+ const blocks=stage.querySelectorAll('.node-block');
+ const groups=[...svg.querySelectorAll('.dll-reconnect-line')];
+ // Draw next first, pause briefly, then draw prev. Preserve progress on resize.
+ const duration=1500,gap=350,total=duration*2+gap;
+ const animate=now=>{
+   if(!stage.isConnected||svg.firstElementChild?.nextElementSibling!==groups[0])return;
+   const elapsed=now-started;
+   groups.forEach((group,i)=>{
+     const progress=Math.max(0,Math.min(1,(elapsed-i*(duration+gap))/duration));
+     const path=group.querySelector('path');
+     group.style.opacity=elapsed>=i*(duration+gap)?'1':'0';
+     path.setAttribute('stroke-dashoffset',String(1-progress));
+     group.querySelector('text').style.opacity=String(Math.min(1,progress*3));
+     if(progress===1)path.setAttribute('marker-end',`url(#${group.dataset.arrow})`);
+   });
+   blocks[index-1]?.querySelector('.dll-next')?.classList.add('dll-replaced-link');
+   if(elapsed>=duration+gap)blocks[index]?.querySelector('.dll-prev')?.classList.add('dll-replaced-link');
+   if(elapsed>=total){
+     delete stage.dataset.drawing;
+     blocks[index-1]?.querySelector('.dll-prev')?.classList.add('dll-detached-link');
+     blocks[index]?.querySelector('.dll-next')?.classList.add('dll-detached-link');
+   }else requestAnimationFrame(animate);
+ };
+ stage.dataset.drawing='true';
+ animate(performance.now());
+}
+window.addEventListener('resize',drawDllReconnectLinks);
+
 function drawDllFloatingLinks(){
  const stage=document.querySelector("#dllVisual .dll-stage"),svg=stage?.querySelector(".dll-floating-links"),floating=stage?.querySelector(".dll-floating-node");
  if(!stage||!svg||!floating)return;
@@ -2517,9 +2661,11 @@ function render(id){
      ? {headIndex:s.data.length?0:-1,tailIndex:s.data.length?s.data.length-1:-1,currentIndex:Number.isInteger(s.dllCurrentPos)?s.dllCurrentPos:-1,...s.view}
      : s.view;
    $(id+"Visual").innerHTML=linkedHTML(s.data,cfg.double,linkedView);
+   if(id==="sll")alignSllDelPointer();
+   requestAnimationFrame(()=>{animateConnectionPreview(id);if(id==="sll")alignSllDelPointer()});
    if(id==="dll" && $("dllCurrentPos")){
      const shownPos=Number.isInteger(linkedView.currentIndex)?linkedView.currentIndex:-1;
-     $("dllCurrentPos").textContent=shownPos;
+     $("dllCurrentPos").textContent=linkedView.displayCurrentPos??shownPos;
    }
    if(id==="dll"){
      const activeOp=s.dllActiveOp||$("dllSelectedFunction")?.textContent||"create";
@@ -2527,7 +2673,7 @@ function render(id){
        ? (Number.isInteger(linkedView.pIndex)?linkedView.pIndex:s.dllIndexValue)
        : undefined;
      updateDllIndexCard(activeOp,walkingIndex);
-     requestAnimationFrame(drawDllFloatingLinks);
+     requestAnimationFrame(()=>{drawDllFloatingLinks();drawDllReconnectLinks()});
    }
  }
  else{
@@ -2571,10 +2717,12 @@ function render(id){
 }
 
 function algorithmControls(id){
+ const isBst=configs.find(x=>x.id===id)?.structure==="bst";
  return `<div class="tools">
+   ${isBst?`<button class="action gray" id="${id}Back" onclick="backAlgorithmStep('${id}')" disabled>Back Step</button>`:""}
    <button class="action" onclick="nextAlgorithmStep('${id}')">Next Step</button>
    <button class="action blue" id="${id}Auto" onclick="toggleAlgorithmAuto('${id}')">Auto Play</button>
-   <label>Speed<input id="${id}Speed" type="range" min="250" max="1600" step="100" value="800"></label>
+   <label>Speed<input id="${id}Speed" type="range" min="${isBst?800:250}" max="${isBst?4000:1600}" step="100" value="${isBst?1800:800}"></label>
    <button class="action gray" onclick="resetAlgorithm('${id}')">Reset</button>
  </div>
  <div class="progress"><div id="${id}Progress"></div></div>`;
@@ -3921,8 +4069,8 @@ class DoublyLinkedList:
   newNode ← Node(item)
   newNode.prev ← before
   newNode.next ← after
-  before.next ← newNode
   after.prev ← newNode
+  before.next ← newNode
   size ← size + 1
   current ← newNode
   currentpos ← index`,c:`def add_index(self, index, item):
@@ -3936,8 +4084,10 @@ class DoublyLinkedList:
     after = self.current
     before = after.prev
     new_node = Node(item)
-    new_node.prev, new_node.next = before, after
-    before.next = after.prev = new_node
+    new_node.prev = before
+    new_node.next = after
+    after.prev = new_node
+    before.next = new_node
     self.size += 1
     self.current, self.currentpos = new_node, index`},
  delete_first:{a:["ตรวจสอบ List ว่าง","เก็บโหนด head และ item","ถ้ามีโหนดเดียว ล้าง Pointer ทั้งหมด","มิฉะนั้นเลื่อน head และกำหนด head.prev = None","ลด size","กำหนด current และ currentpos"],p:`DELETE_FIRST()
@@ -4703,6 +4853,41 @@ function highlightSortingCode(id,trackLine){
  renderHighlightedCode($(id+"PythonCode"),code.c,map.c[trackLine]||[]);
 }
 
+function runListFunction(id){
+ const select=$(id+'FunctionSelect');
+ if(!select?.value){setStatus(id,'กรุณาเลือกฟังก์ชันก่อนดำเนินการ');select?.focus();return}
+ operate(id,select.value);
+}
+
+function runBstFunction(id){
+ const select=$(id+'FunctionSelect'),op=select?.value;
+ if(!op){setStatus(id,'กรุณาเลือกฟังก์ชันก่อนดำเนินการ');select?.focus();return}
+ if(['inorder','preorder','postorder'].includes(op))showTraversal(id,op);
+ else prepareStructureOperation(id,op);
+}
+function treeFamilyGuide(){
+ const nodes=[['A',300,30],['B',160,100],['C',440,100],['D',90,180],['E',230,180],['F',370,180],['G',510,180]];
+ const edges=[[0,1],[0,2],[1,3],[1,4],[2,5],[2,6]];
+ return `<details class="tree-family-guide"><summary>โครงสร้าง Tree: ลูกหลานและความสัมพันธ์ระหว่างโหนด</summary>
+ <p>ต้นไม้ประกอบด้วยโหนดและเส้นเชื่อมจากพ่อแม่ไปยังลูก โหนดรากไม่มีพ่อแม่ ส่วนโหนดอื่นมีพ่อแม่หนึ่งโหนด ภาพนี้เป็นตัวอย่างความสัมพันธ์ทั่วไป ไม่ใช่ค่าข้อมูลใน BST ที่กำลังจำลอง</p>
+ <svg viewBox="0 0 600 215" role="img" aria-label="A เป็นราก มีลูก B และ C; B มีลูก D และ E; C มีลูก F และ G">
+ ${edges.map(([a,b])=>`<line x1="${nodes[a][1]}" y1="${nodes[a][2]+18}" x2="${nodes[b][1]}" y2="${nodes[b][2]-18}" stroke="#789789" stroke-width="2"/>`).join('')}
+ ${nodes.map(([n,x,y])=>`<circle cx="${x}" cy="${y}" r="20" fill="${n==='B'?'#fff0d9':'#e8f5e9'}" stroke="#2e7d32" stroke-width="2"/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">${n}</text>`).join('')}
+ </svg>
+ <div class="tree-family-table"><table><thead><tr><th>ความสัมพันธ์</th><th>ความหมาย</th><th>ตัวอย่างจากภาพ</th></tr></thead><tbody>
+ <tr><td>ราก (Root)</td><td>โหนดเริ่มต้นที่ไม่มีพ่อแม่</td><td>A</td></tr>
+ <tr><td>พ่อแม่ (Parent)</td><td>โหนดที่อยู่เหนือขึ้นไปหนึ่งเส้นเชื่อม</td><td>B เป็นพ่อแม่ของ D และ E</td></tr>
+ <tr><td>ลูก (Child)</td><td>โหนดที่เชื่อมลงมาโดยตรงหนึ่งระดับ</td><td>B และ C เป็นลูกของ A</td></tr>
+ <tr><td>พี่น้อง (Siblings)</td><td>โหนดต่างกันที่มีพ่อแม่เดียวกัน</td><td>D กับ E เป็นพี่น้องกัน</td></tr>
+ <tr><td>บรรพบุรุษ (Ancestors)</td><td>โหนดบนเส้นทางย้อนขึ้นไปถึงราก ไม่นับตัวเอง</td><td>บรรพบุรุษของ D คือ B และ A</td></tr>
+ <tr><td>ลูกหลาน (Descendants)</td><td>โหนดทุกระดับที่เดินลงไปถึงได้ ไม่นับตัวเอง</td><td>ลูกหลานของ B คือ D, E; ของ A คือ B, C, D, E, F, G</td></tr>
+ <tr><td>ญาติร่วมปู่ย่า/ตายาย (Cousins)</td><td>ใช้เปรียบเทียบเครือญาติ: มีพ่อแม่ต่างกัน แต่พ่อแม่เป็นพี่น้องกัน</td><td>D กับ F มี A เป็นบรรพบุรุษร่วมที่ใกล้ที่สุด</td></tr>
+ <tr><td>ใบ (Leaf)</td><td>โหนดที่ไม่มีลูก</td><td>D, E, F, G</td></tr>
+ <tr><td>ต้นไม้ย่อย (Subtree)</td><td>โหนดหนึ่งพร้อมลูกหลานทั้งหมดและเส้นเชื่อม</td><td>ต้นไม้ย่อยที่ราก B ประกอบด้วย B, D, E</td></tr>
+ </tbody></table></div>
+ <p><strong>ลูก ≠ ลูกหลาน:</strong> D เป็นลูกหลานของ A แต่ไม่ใช่ลูกโดยตรงของ A และการอยู่ระดับเดียวกันไม่ได้แปลว่าเป็นพี่น้องกัน เช่น D กับ F</p></details>`;
+}
+
 function panel(cfg){
  if(cfg.kind==="stackapp"){
    return `<section id="${cfg.id}" class="panel">
@@ -4800,16 +4985,23 @@ function panel(cfg){
     <div class="controls">
       <label>Data / Key<input id="${cfg.id}Data" value="30"></label>
       ${extra}
+      ${cfg.structure==="bst"?`<label>ฟังก์ชัน<select id="${cfg.id}FunctionSelect">
+        <option value="">— เลือกฟังก์ชัน —</option>
+        <optgroup label="จัดการและค้นหาข้อมูล"><option value="create">create</option><option value="add">add</option><option value="delete">delete</option><option value="search">search</option><option value="find_min">find min</option><option value="find_max">find max</option><option value="count_node">count node</option></optgroup>
+        <optgroup label="การท่องต้นไม้"><option value="inorder">inorder</option><option value="preorder">preorder</option><option value="postorder">postorder</option></optgroup>
+      </select></label><button type="button" class="action green" onclick="runBstFunction('${cfg.id}')">ดำเนินการ</button>`:`
       <button class="action green" onclick="prepareStructureOperation('${cfg.id}','create')">create</button>
       <button class="action" onclick="prepareStructureOperation('${cfg.id}','add')">add</button>
       <button class="action blue" onclick="prepareStructureOperation('${cfg.id}','delete')">delete</button>
       <button class="action gray" onclick="prepareStructureOperation('${cfg.id}','search')">search</button>
       ${["bst","avl"].includes(cfg.structure)?`<button class="action gray" onclick="showTraversal('${cfg.id}','inorder')">inorder</button><button class="action gray" onclick="showTraversal('${cfg.id}','preorder')">preorder</button><button class="action gray" onclick="showTraversal('${cfg.id}','postorder')">postorder</button>`:""}
+      `}
       ${cfg.structure==="heap"?`<button class="action gray" onclick="prepareStructureOperation('${cfg.id}','peek')">peek</button><button class="action gray" onclick="prepareStructureOperation('${cfg.id}','extract')">extractMax</button>`:""}
       ${cfg.structure==="hash"?`<button class="action gray" onclick="prepareStructureOperation('${cfg.id}','print')">print_table</button>`:""}
     </div>
     ${algorithmControls(cfg.id)}
     ${algorithmDashboard(cfg.id)}
+    ${["bst","avl","heap"].includes(cfg.structure)?treeFamilyGuide():""}
     ${cfg.structure==="heap"?`<div class="heap-search-guide">
       <strong>หลักการค้นหาใน Max Heap</strong>
       <span>Heap ไม่ได้เรียงซ้าย–ขวาแบบ BST จึงต้องตรวจหลายโหนด แต่สามารถตัด subtree ได้เมื่อ target มากกว่าค่าโหนดปัจจุบัน เพราะค่าลูกหลานจะไม่มากกว่า parent</span>
@@ -4821,8 +5013,7 @@ function panel(cfg){
     <div class="algo-layout">
       <div id="${cfg.id}Visual" class="algo-visual"></div>
       <div>
-        <strong>Algorithm Track</strong>
-        <div id="${cfg.id}Track" class="algorithm-track"></div>
+        ${cfg.structure==="bst"?bstCodeTabs(cfg.id):`<strong>Algorithm Track</strong><div id="${cfg.id}Track" class="algorithm-track"></div>`}
         <div id="${cfg.id}Detail" class="graph-detail">ยังไม่เริ่ม</div>
         <div id="${cfg.id}Status" class="status">พร้อมใช้งาน</div>
       </div>
@@ -5002,16 +5193,16 @@ function panel(cfg){
  };
  const grouped=listGroupOps[cfg.id];
  const buttons=grouped
-   ? `<div class="sll-operation-groups">
-       <div class="sll-operation-group">
-         <span class="sll-operation-group-title">การจัดการข้อมูล</span>
-         <div class="list-operation-row add-row">${grouped.create.map(buttonHTML).join("")}</div>
-         <div class="list-operation-row delete-row">${grouped.remove.map(buttonHTML).join("")}</div>
-       </div>
-       <div class="sll-operation-group">
-         <span class="sll-operation-group-title">การตรวจสอบและแสดงผล</span>
-         ${grouped.inspect.map(buttonHTML).join("")}
-       </div>
+   ? `<div class="sll-operation-groups list-function-dropdown">
+       <label for="${cfg.id}FunctionSelect">ฟังก์ชัน
+         <select id="${cfg.id}FunctionSelect">
+           <option value="">— เลือกฟังก์ชัน —</option>
+           <optgroup label="สร้างและเพิ่มข้อมูล">${grouped.create.map(op=>`<option value="${op}">${opLabel(op)}</option>`).join("")}</optgroup>
+           <optgroup label="ลบข้อมูล">${grouped.remove.map(op=>`<option value="${op}">${opLabel(op)}</option>`).join("")}</optgroup>
+           <optgroup label="ตรวจสอบและแสดงผล">${grouped.inspect.map(op=>`<option value="${op}">${opLabel(op)}</option>`).join("")}</optgroup>
+         </select>
+       </label>
+       <button type="button" class="action green" onclick="runListFunction('${cfg.id}')">ดำเนินการ</button>
      </div>`
    : cfg.ops.map(buttonHTML).join("");
  const linkedTools=cfg.kind==="linked"
@@ -5200,7 +5391,7 @@ function build(){
  configs.forEach((c,i)=>{
    states[c.id]=makeState(c.id);
    if(c.kind==="array"||c.kind==="arraylist"||c.kind==="linked")operate(c.id,"create");
-   if(c.kind==="nonlinear")prepareStructureOperation(c.id,"create");
+   if(c.kind==="nonlinear"){if(c.structure==="bst")initializeBstExample(c.id);else prepareStructureOperation(c.id,"create");}
    if(c.kind==="sorting")prepareSorting(c.id);
    if(c.kind==="searching")prepareSearching(c.id);
    if(c.kind==="graph")prepareGraphOperation("create");
@@ -5649,10 +5840,10 @@ function operate(id,op){
      states[id].view={headIndex:0};
      setStatus(id,"create: 10 → 20 → 30 → 40");
    }else if(id==="dll"){
-     states[id].data=[10,20,30,40];
-     states[id].dllCurrentPos=3;
-     states[id].view={headIndex:0,tailIndex:3,currentIndex:3};
-     setStatus(id,"create: head → 10 ↔ 20 ↔ 30 ↔ 40 ← tail | size = 4 | currentpos = 3");
+     states[id].data=[10,20,30];
+     states[id].dllCurrentPos=2;
+     states[id].view={headIndex:0,tailIndex:2,currentIndex:2};
+     setStatus(id,"create: head → 10 ↔ 20 ↔ 30 ← tail | size = 3 | currentpos = 2");
    }else{
      setStatus(id,cfg.kind==="linked"?"create: head → NULL":`สร้างอาร์เรย์ขนาด ${cap} ช่องแล้ว`);
    }
@@ -6216,12 +6407,14 @@ function highlightLinkedTrack(id,line){
 function dllV3Step(data,text,trackLine,options={}){
  return {
    ...snap(data,text,options.active??-1,options.newIndex??-1,options.deleteIndex??-1,options.final===true),
+   ...options,
    trackLine,
-   headIndex:data.length?0:-1,
-   tailIndex:data.length?data.length-1:-1,
+   headIndex:options.headIndex??(data.length?0:-1),
+   tailIndex:options.tailIndex??(data.length?data.length-1:-1),
    currentIndex:options.currentIndex,
    pIndex:options.pIndex,
    delIndex:options.delIndex,
+   reconnectIndex:options.reconnectIndex,
    previousNodeIndex:options.previousNodeIndex,
    nextNodeIndex:options.nextNodeIndex,
    pointerNode:options.pointerNode,
@@ -6233,6 +6426,40 @@ function dllV3Step(data,text,trackLine,options={}){
    caption:text
  };
 }
+
+
+functionCodeLibrary.dll.delete_first={
+ a:["delnode = head","head = head.next","ถ้า head ไม่เป็น None: head.prev = None มิฉะนั้น tail = None","size = size - 1","current = head; currentpos = 0 (ลิสต์ว่างใช้ -1)","item = delnode.data","delete delnode; return item"],
+ p:`DELETE_FIRST()
+  IF head = NULL RETURN "List is empty"
+  delnode ← head
+  head ← head.next
+  IF head ≠ NULL
+    head.prev ← NULL
+  ELSE
+    tail ← NULL
+  size ← size - 1
+  current ← head
+  currentpos ← 0 IF head ≠ NULL ELSE -1
+  item ← delnode.data
+  DELETE delnode
+  RETURN item`,
+ c:`def delete_first(self):
+    if self.head is None:
+        return "List is empty"
+    delnode = self.head
+    self.head = self.head.next
+    if self.head is not None:
+        self.head.prev = None
+    else:
+        self.tail = None
+    self.size -= 1
+    self.current = self.head
+    self.currentpos = 0 if self.head is not None else -1
+    item = delnode.data
+    del delnode
+    return item`
+};
 
 function dllV3ShortestPath(size,currentpos,target){
  const choices=[{name:"head",pos:0,distance:target},{name:"tail",pos:size-1,distance:size-1-target}];
@@ -6270,26 +6497,30 @@ function prepareDLLV3(op,item,index){
 
  if(op==="add_first"){
    result=[item,...old];finalPos=0;
-   push(old,`สร้าง newNode(data=${item}) ด้านล่าง`,1,{floatingNewNode:true,floatingNewNodeValue:item,pointerDetail:`newNode.data = ${item}`});
-   if(!size)push(result,"List ว่าง: ย้าย newNode ขึ้นมา แล้วให้ head และ tail ชี้ newNode",2,{active:0,newIndex:0,currentIndex:0,pointerDetail:"head = tail = newNode"});
-   else{
-     push(old,"newNode.next = head เดิม",3,{floatingNewNode:true,floatingNewNodeValue:item,floatingNextTarget:0,currentIndex:oldCurrent,pointerNode:0,pointerField:"next",pointerDetail:"ลูกศรสีเขียว: newNode.next → head"});
-     push(old,"head เดิม.prev = newNode",3,{floatingNewNode:true,floatingNewNodeValue:item,floatingNextTarget:0,floatingPrevFromTarget:0,currentIndex:oldCurrent,pointerNode:0,pointerField:"prev",pointerDetail:"ลูกศรสีส้ม: head.prev → newNode"});
-     push(result,"head = newNode",4,{active:0,newIndex:0,currentIndex:0});
-   }
+   const nextEdge={from:'new',field:'next',to:0,label:'newNode.next = head',color:'#7b1fa2',route:'insert-below'};
+   const prevEdge={from:0,field:'prev',to:'new',label:'head.prev = newNode',color:'#7b1fa2',route:'insert-below'};
+   const headEdge={from:'head',field:'head',to:'new',label:'head = newNode',color:'#7b1fa2',route:'head-over-top'};
+   const preview=edges=>({old,at:0,add:true,double:true,item,floatingFirst:true,edges,
+     view:{headIndex:size?1:-1,tailIndex:size?size:0,currentIndex:oldCurrent<0?-1:oldCurrent+1,newNodeIndex:0}});
+   push(old,`1. สร้าง newNode(data=${item})`,1,{connectionPreview:preview([])});
+   push(old,size?'2. newNode.next = head':'2. newNode.next = None',3,{connectionPreview:preview(size?[nextEdge]:[])});
+   push(old,size?'3. head.prev = newNode':'3. List ว่าง: tail = newNode',3,{connectionPreview:preview(size?[{...nextEdge,complete:true},prevEdge]:[])});
+   push(old,'4. head = newNode',4,{connectionPreview:preview(size?[{...nextEdge,complete:true},{...prevEdge,complete:true},headEdge]:[])});
    push(result,`size = ${size+1}; currentpos = 0`,5,{active:0,currentIndex:0,resultValue:`size = ${size+1}`});
    return finish();
  }
 
  if(op==="add_last"){
-   result=[...old,item];finalPos=result.length-1;
-   push(old,`สร้าง newNode(data=${item}) ด้านล่าง`,1,{floatingNewNode:true,floatingNewNodeValue:item});
-   if(!size)push(result,"List ว่าง: ย้าย newNode ขึ้นมา แล้วให้ head และ tail ชี้ newNode",2,{active:0,newIndex:0,currentIndex:0});
-   else{
-     push(old,"newNode.prev = tail",3,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:size-1,currentIndex:oldCurrent,pointerNode:size-1,pointerField:"prev",pointerDetail:"ลูกศรสีส้ม: newNode.prev → tail"});
-     push(old,"tail.next = newNode",4,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:size-1,floatingNextFromTarget:size-1,currentIndex:oldCurrent,pointerNode:size-1,pointerField:"next",pointerDetail:"ลูกศรสีเขียว: tail.next → newNode"});
-     push(result,"tail = newNode",5,{active:finalPos,newIndex:finalPos,currentIndex:finalPos});
-   }
+   result=[...old,item];finalPos=size;
+   const prevEdge={from:'new',field:'prev',to:size-1,label:'newNode.prev = tail',color:'#7b1fa2',route:'insert-below'};
+   const nextEdge={from:size-1,field:'next',to:'new',label:'tail.next = newNode',color:'#7b1fa2',route:'insert-below'};
+   const tailEdge={from:'tail',field:'tail',to:'new',label:'tail = newNode',color:'#7b1fa2',route:'tail-over-top'};
+   const preview=edges=>({old,at:size,add:true,double:true,item,floatingLast:true,edges,
+     view:{headIndex:size?0:-1,tailIndex:size?size-1:-1,currentIndex:oldCurrent,newNodeIndex:size,dllNewLast:true,dllNewPrevConnected:edges.length>0}});
+   push(old,`1. สร้าง newNode(data=${item}); newNode.next = None`,1,{connectionPreview:preview([])});
+   push(old,size?'2. newNode.prev = tail':'2. newNode.prev = None',3,{connectionPreview:preview(size?[prevEdge]:[])});
+   push(old,size?'3. tail.next = newNode':'3. List ว่าง: head = newNode',4,{connectionPreview:preview(size?[{...prevEdge,complete:true},nextEdge]:[])});
+   push(old,'4. tail = newNode',5,{connectionPreview:preview(size?[{...prevEdge,complete:true},{...nextEdge,complete:true},tailEdge]:[])});
    push(result,`size = ${size+1}; currentpos = ${finalPos}`,6,{active:finalPos,currentIndex:finalPos,resultValue:`size = ${size+1}`});
    return finish();
  }
@@ -6320,21 +6551,42 @@ function prepareDLLV3(op,item,index){
    addPath(index,3);
    result.splice(index,0,item);finalPos=index;
    push(old,"กำหนด after = current และ before = current.prev",4,{currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index});
-   push(old,`สร้าง newNode(data=${item}) ด้านล่าง`,5,{floatingNewNode:true,floatingNewNodeValue:item,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerDetail:"เตรียมแทรกระหว่าง before และ after"});
-   push(old,"newNode.prev = before",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index-1,pointerField:"prev"});
-   push(old,"newNode.next = after",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,floatingNextTarget:index,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index,pointerField:"next"});
-   push(old,"before.next = newNode",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,floatingNextTarget:index,floatingNextFromTarget:index-1,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index-1,pointerField:"next"});
-   push(old,"after.prev = newNode",5,{floatingNewNode:true,floatingNewNodeValue:item,floatingPrevTarget:index-1,floatingNextTarget:index,floatingNextFromTarget:index-1,floatingPrevFromTarget:index,currentIndex:index,previousNodeIndex:index-1,nextNodeIndex:index,pointerNode:index,pointerField:"prev"});
+   const links=[
+     {from:'new',field:'prev',to:index-1,label:'2. newNode.prev = before',color:'#1565c0',route:'insert-below'},
+     {from:'new',field:'next',to:index,label:'3. newNode.next = after',color:'#ef6c00',route:'insert-below'},
+     {from:index,field:'prev',to:'new',label:'4. after.prev = newNode',color:'#1565c0',route:'insert-below'},
+     {from:index-1,field:'next',to:'new',label:'5. before.next = newNode',color:'#ef6c00',route:'insert-below'}
+   ];
+   for(let phase=0;phase<5;phase++){
+     const edges=links.slice(0,phase).map((edge,i)=>({...edge,complete:i<phase-1}));
+     const connectionPreview={old,at:index,add:true,double:true,item,floatingInsert:true,edges,
+       view:{headIndex:0,tailIndex:size,currentIndex:index+1,newNodeIndex:index,
+         dllInsertPreview:true,previousNodeIndex:index-1,nextNodeIndex:index+1,dllNewPrevConnected:phase>=1,dllNewNextConnected:phase>=2}};
+     push(old,phase?links[phase-1].label:`1. สร้าง newNode(data=${item}) ระหว่าง before และ after`,5,{connectionPreview});
+   }
    push(result,`size = ${size+1}; currentpos = ${index}`,6,{active:index,currentIndex:index,resultValue:`size = ${size+1}`});
    return finish();
  }
 
  if(op==="delete_first"){
    if(!size){push(old,"List is empty",1,{resultValue:"Output: List is empty"});return finish(old,-1)}
-   const removed=old[0];result=old.slice(1);finalPos=result.length?0:-1;
-   push(old,"deleteNode = head",2,{active:0,delIndex:0,itemValue:removed});
-   push(result,result.length?"head = head.next; head.prev = None":"ล้าง head, tail และ current",3,{currentIndex:finalPos,itemValue:removed});
-   push(result,`size = ${result.length}; currentpos = ${finalPos}`,5,{currentIndex:finalPos,itemValue:removed,resultValue:`return ${removed}`});
+   const removed=old[0],single=size===1;result=old.slice(1);finalPos=single?-1:0;
+   const view={headIndex:0,tailIndex:size-1,currentIndex:oldCurrent,delIndex:0,displaySize:size,displayCurrentPos:oldCurrent};
+   push(old,"delnode = head",1,{...view});
+   view.headIndex=single?-1:1;
+   const headEdge={from:'head',field:'head',to:single?null:1,label:'head = head.next',color:'#ef6c00',route:'head-over-top'};
+   push(old,single?"head = head.next → None":"head = head.next",2,{...view,connectionPreview:{old,at:0,add:false,double:true,edges:[headEdge],view:{...view,headIndex:0}}});
+   view.clearedHeadPrev=true;
+   if(single){view.tailIndex=-1;push(old,"head เป็น None: ข้าม head.prev และตั้ง tail = None",3,{...view})}
+   else{
+     push(old,"head.prev = None",3,{...view,pointerNode:1,pointerField:"prev"});
+   }
+   view.displaySize=size-1;
+   push(old,`size = size - 1 → ${size-1}`,4,{...view});
+   view.currentIndex=single?-1:1;view.displayCurrentPos=single?-1:0;
+   push(old,single?"current = head = None; currentpos = -1":"current = head; currentpos = 0",5,{...view});
+   push(old,`item = delnode.data → ${removed}`,6,{...view,itemValue:removed});
+   push(result,"delete delnode",7,{currentIndex:finalPos,displayCurrentPos:finalPos,displaySize:result.length,itemValue:removed,resultValue:`return ${removed}`});
    return finish();
  }
 
@@ -6343,7 +6595,11 @@ function prepareDLLV3(op,item,index){
    if(size===1){result=[];finalPos=-1;push(old,"มีโหนดเดียว: deleteNode = tail = head",2,{active:0,delIndex:0,itemValue:old[0]});push(result,"ล้าง head, tail, current; size = 0",5,{resultValue:`return ${old[0]}`});return finish()}
    const removed=old.at(-1);result=old.slice(0,-1);finalPos=result.length-1;
    push(old,"deleteNode = tail",3,{active:size-1,delIndex:size-1,itemValue:removed});
-   push(result,"tail = tail.prev; tail.next = None",4,{active:finalPos,currentIndex:finalPos,pointerNode:finalPos,pointerField:"next",itemValue:removed});
+   push(old,"tail = tail.prev",4,{tailIndex:finalPos,delIndex:size-1,itemValue:removed,
+     connectionPreview:{old,at:size-1,add:false,double:true,
+       edges:[{from:"tail",field:"tail",to:finalPos,label:"tail = tail.prev",color:"#d32f2f",route:"tail-over-top"}],
+       view:{tailIndex:size-1,currentIndex:s.dllCurrentPos,delIndex:size-1,itemValue:removed}}});
+   push(old,"tail.next = None",5,{tailIndex:finalPos,delIndex:size-1,pointerNode:finalPos,pointerField:"next",clearedTailNext:true,itemValue:removed});
    push(result,`size = ${result.length}; currentpos = ${finalPos}`,6,{currentIndex:finalPos,itemValue:removed,resultValue:`return ${removed}`});
    return finish();
  }
@@ -6355,7 +6611,7 @@ function prepareDLLV3(op,item,index){
    addPath(target,pathLine,mode==="delete_item"?3:2);
    const removed=old[target];result=[...old];result.splice(target,1);finalPos=target;
    push(old,"เก็บ before = current.prev และ after = current.next",detailLine,{active:target,currentIndex:target,delIndex:target,previousNodeIndex:target-1,nextNodeIndex:target+1,itemValue:removed});
-   push(result,"before.next = after และ after.prev = before",linkLine,{active:target,currentIndex:target,previousNodeIndex:target-1,nextNodeIndex:target,itemValue:removed});
+   push(old,"before.next = after และ after.prev = before",linkLine,{reconnectIndex:target,deleteIndex:target,currentIndex:target,delIndex:target,previousNodeIndex:target-1,nextNodeIndex:target+1,itemValue:removed});
    push(result,`size = ${result.length}; current ชี้ after ที่ index ${target}`,finishLine,{currentIndex:target,itemValue:removed,resultValue:`return ${removed}`});
    return finish();
  };
@@ -6440,7 +6696,390 @@ function prepareDLLV3(op,item,index){
  return false;
 }
 
+// Shared connection preview for insertion/deletion, using stable node indices.
 function prepareLinked(id,op,item,index){
+ $(id+"Visual").classList.toggle("delete-first-centered",op==="delete_first" || (id==="dll" && ["delete_last","delete_index","delete_item"].includes(op)));
+ const old=[...states[id].data];
+ prepareLinkedOriginal(id,op,item,index);
+ const s=states[id],pending=s.pending;
+ if(!['sll','dll'].includes(id)||!pending||!s.steps.length)return;
+ if(id==='dll'&&['add_first','add_index','add_last','delete_first','delete_last'].includes(op))return;
+ if(id==='sll'&&op==='delete_last')return;
+ if(id==='sll'&&op==='add_last'){
+   const at=old.length;
+   const create=s.steps.findIndex(st=>st.newNodeIndex===at&&st.trackLine===3);
+   if(create>=0){
+     const base=s.steps[create];
+     base.nullNextIndices=old.length?[at-1]:[];
+     s.steps.splice(create+1,0,{...base,text:'newNode.next = None',caption:'newNode.next = None',
+       nullNextIndices:old.length?[at-1,at]:[at],linkCreating:-1});
+     const connect=s.steps.find(st=>st.text==='current.next = newnode');
+     if(connect){
+       connect.text=connect.caption='current.next = newNode';
+       connect.connectionPreview={old,at,add:true,double:false,item,
+         view:{currentIndex:at-1,newNodeIndex:at,nullNextIndices:[at]},
+         edges:[{from:at-1,field:'next',to:'new',label:'current.next = newNode',color:'#ef6c00',route:'straight'}]};
+     }
+     for(const st of s.steps.slice(create+2))if(!st.connectionPreview)st.nullNextIndices=[at];
+     for(const st of s.steps.slice(create)){st.sllStableNodes=true;if(st.connectionPreview)st.connectionPreview.view.sllStableNodes=true}
+   }
+   return;
+ }
+ if(id==='sll'&&op==='delete_first'&&old.length){
+   const st=s.steps.find(step=>step.text==='head = head.next');
+   if(st){
+     st.data=[...old];st.active=-1;st.headIndex=0;st.delIndex=0;
+     st.connectionPreview={old,at:0,add:false,double:false,
+       edges:[{from:'head',field:'head',to:old.length>1?1:null,label:'head = head.next',color:'#ef6c00',route:'head-over-top'}],
+       view:{headIndex:0,currentIndex:-1,delIndex:0,itemValue:st.itemValue}};
+   }
+   return;
+ }
+
+ const add=pending.length===old.length+1,remove=pending.length===old.length-1;
+ if(!add&&!remove)return;
+ if(s.steps.some(st=>Number.isInteger(st.reconnectIndex)))return; // existing middle DLL deletion
+ let at=op.endsWith('first')?0:op.endsWith('last')||op==='append'? (add?old.length:old.length-1):op==='delete_item'?old.indexOf(item):index;
+ if(!Number.isInteger(at)||at<0||at>(add?old.length:old.length-1))return;
+ const descriptor={old,at,add,double:id==='dll',item,sllDeleteIndex:id==='sll'&&op==='delete_index'&&at>0};
+ if(id==='sll'&&add&&at===0&&old.length){
+   descriptor.view={headIndex:1,currentIndex:-1};
+   descriptor.edges=[
+     {from:'new',field:'next',to:0,label:'newNode.next = head',color:'#ef6c00',route:'straight'},
+     {from:'head',field:'head',to:'new',label:'head = newNode',color:'#ef6c00',route:'head-over-top'}
+   ];
+   if(op==='add_first'){
+     const nextStep=s.steps.find(st=>st.trackLine===2);
+     const headStep=s.steps.find(st=>st.trackLine===3);
+     nextStep.connectionPreview={...descriptor,edges:[descriptor.edges[0]]};
+     nextStep.text=nextStep.caption='newNode.next = head';
+     headStep.connectionPreview={...descriptor,edges:[descriptor.edges[1]]};
+     headStep.text=headStep.caption='head = newNode';
+     return;
+   }
+ }
+ if(id==='sll'&&op==='insert_index'&&add&&at>0){
+   const first={from:'new',field:'next',to:at<old.length?at:null,label:'newNode.next = current.next',color:'#7b1fa2',route:'insert-below'};
+   const second={from:at-1,field:'next',to:'new',label:'current.next = newNode',color:'#7b1fa2',route:'insert-below'};
+   for(const st of s.steps){
+     if(st.trackLine<4||st.trackLine>6)continue;
+     st.connectionPreview={...descriptor,floatingInsert:true,view:{currentIndex:at-1,newNodeIndex:at},
+       edges:st.trackLine===4?[]:st.trackLine===5?[first]:[{...first,complete:true},second]};
+     if(st.trackLine===5)st.text=st.caption=first.label;
+     if(st.trackLine===6)st.text=st.caption=second.label;
+   }
+   return;
+ }
+ if(descriptor.sllDeleteIndex){
+   const connectionStep=s.steps.find(st=>st.text.includes('current.next ชี้ไป del.next'));
+   if(connectionStep){
+     if(at===old.length-1){
+       connectionStep.nullNextIndices=[at-1,at];
+       connectionStep.text='current.next = del.next = None';
+       connectionStep.caption=connectionStep.text;
+       connectionStep.linkCreating=-1;connectionStep.linkRemoving=-1;
+       delete connectionStep.bypassFrom;delete connectionStep.bypassTo;
+       return;
+     }
+     connectionStep.connectionPreview=descriptor;
+     connectionStep.text='current.next = del.next — เชื่อมข้าม del'+(at===old.length-1?' ไปยัง NULL':'');
+     connectionStep.caption=connectionStep.text;
+     delete connectionStep.bypassFrom;delete connectionStep.bypassTo;
+     return;
+   }
+ }
+ const change=s.steps.findIndex(st=>st.data.length!==old.length);
+ if(change<0)return;
+ const next=s.steps[change];
+ s.steps.splice(change,0,{...snap(old,'แสดงการปรับการเชื่อมโยงทีละเส้น — รอเส้นครบแล้วกด Next Step'),trackLine:next.trackLine||1,connectionPreview:descriptor});
+}
+function connectionPreviewHTML(d){
+ const {old,at,add,double,item,sllDeleteIndex}=d,n=old.length;
+ const edges=[];
+ const link=(from,field,to,label)=>edges.push({from,field,to,label,color:field==='prev'?'#1565c0':'#ef6c00'});
+ if(add){
+   if(double)link('new','prev',at>0?at-1:null,'newNode.prev = '+(at>0?'before':'NULL'));
+   link('new','next',at<n?at:null,'newNode.next = '+(at<n?'after':'NULL'));
+   link(at>0?at-1:'head',at>0?'next':'head','new',at>0?'before.next = newNode':'head = newNode');
+   if(double)link(at<n?at:'tail',at<n?'prev':'tail','new',at<n?'after.prev = newNode':'tail = newNode');
+ }else{
+   link(at>0?at-1:'head',at>0?'next':'head',at+1<n?at+1:null,sllDeleteIndex?'current.next = del.next'+(at+1<n?'':' = NULL'):at>0?'before.next = '+(at+1<n?'after':'NULL'):'head = '+(n>1?'after':'NULL'));
+   if(double)link(at+1<n?at+1:'tail',at+1<n?'prev':'tail',at>0?at-1:null,at+1<n?'after.prev = '+(at>0?'before':'NULL'):'tail = '+(n>1?'before':'NULL'));
+ }
+
+ if(d.edges)edges.splice(0,edges.length,...d.edges);
+ const data=[...old];if(add)data.splice(at,0,item);
+ const view={headIndex:data.length?0:-1,tailIndex:data.length-1,
+   currentIndex:at>0?at-1:0,delIndex:add?undefined:at,
+   newIndex:add?at:undefined,newNodeIndex:add?at:undefined,...d.view};
+ const encoded=encodeURIComponent(JSON.stringify({edges,at,add,double,floatingInsert:d.floatingInsert,floatingFirst:d.floatingFirst,floatingLast:d.floatingLast}));
+ return `<div class="connection-preview original-node-preview" data-links="${encoded}" data-drawing="true">${linkedHTML(data,double,view)}<svg class="original-link-overlay" aria-label="แสดงการปรับเส้นเชื่อมทีละเส้น"><defs></defs></svg><div class="cp-progress">กำลังวาดเส้นเชื่อม…</div></div>`;
+}
+function layoutOriginalConnectionLinks(panel){
+ const {edges,at,add,double,floatingInsert,floatingFirst,floatingLast}=JSON.parse(decodeURIComponent(panel.dataset.links));
+ const stage=panel.querySelector(double?'.dll-stage':'.linked-stage');
+ const headOverTop=edges.every(e=>['head-over-top','tail-over-top','straight'].includes(e.route));
+ if(!headOverTop&&!floatingInsert&&!floatingFirst&&!floatingLast)stage.style.paddingTop=(parseFloat(getComputedStyle(stage).paddingTop)+100+edges.length*65)+'px';
+ const nodes=[...stage.querySelectorAll(double?'.dll-vertical-node':'.node')];
+ if(floatingFirst||floatingLast){
+   for(const node of nodes){node.style.animation='none';node.style.transform='none'}
+   const block=nodes[floatingLast?at:0].closest('.node-block');
+   block.style.transform='translateY(80px)';
+   stage.style.paddingBottom='125px';
+   for(const link of block.querySelectorAll('.dll-link-wrap'))link.style.visibility='hidden';
+   const label=document.createElement('div');label.textContent='newNode ↓';
+   label.style.cssText='position:absolute;top:-28px;left:12px;color:#7b1fa2;font-weight:bold';
+   block.style.position='relative';block.append(label);
+   if(floatingLast&&at>0){const oldNext=nodes[at-1].closest('.node-block').querySelector('.dll-next');if(oldNext)oldNext.style.visibility='hidden'}
+ }
+ if(floatingInsert){
+   if(double)for(const node of nodes){node.style.animation='none';node.style.transform='none';node.style.transition='none'}
+   const block=nodes[at].closest('.node-block');
+   block.style.position='absolute';
+   stage.style.paddingBottom='220px';
+   const sr=stage.getBoundingClientRect(),before=nodes[at-1].getBoundingClientRect();
+   const after=nodes[at+1]?.getBoundingClientRect();
+   const center=after?(before.right+after.left)/2:before.right+70;
+   block.style.left=(center-sr.left-nodes[at].getBoundingClientRect().width/2)+'px';
+   block.style.top=(before.bottom-sr.top+90)+'px';
+   const connector=block.querySelector('.sll-link,.sll-null,.dll-link-wrap');if(connector)connector.style.visibility='hidden';
+   if(double){
+     const positionPointer=(selector,index)=>{
+       const pointer=stage.querySelector(selector);if(!pointer)return;
+       const nr=nodes[index].getBoundingClientRect();
+       pointer.style.setProperty('left',(nr.left-sr.left+nr.width/2)+'px','important');
+       pointer.style.setProperty('transition','none','important');
+       if(selector==='.dll-newnode-pointer')pointer.style.setProperty('top',(nr.bottom-sr.top+30)+'px','important');
+     };
+     positionPointer('.dll-start-pointer',0);positionPointer('.dll-tail-pointer',nodes.length-1);
+     positionPointer('.dll-current-pointer',at+1);
+     positionPointer('.dll-previous-node-pointer',at-1);positionPointer('.dll-next-node-pointer',at+1);
+     stage.querySelector('.dll-current-pointer')?.style.setProperty('top','58px','important');
+     for(const selector of ['.dll-previous-node-pointer','.dll-next-node-pointer'])stage.querySelector(selector)?.style.setProperty('top','8px','important');
+     const newPointer=stage.querySelector('.dll-newnode-pointer');if(newPointer)newPointer.style.display='none';
+     if(at+1===nodes.length-1){
+       stage.querySelector('.dll-current-pointer')?.style.setProperty('margin-left','-28px','important');
+       stage.querySelector('.dll-tail-pointer')?.style.setProperty('margin-left','28px','important');
+     }
+   }
+ }
+ const map=key=>key==='new'?at:(add&&key>=at?key+1:key);
+ const rect=panel.getBoundingClientRect();
+ const local=el=>{const r=el.getBoundingClientRect();return {x:r.left-rect.left,y:r.top-rect.top,width:r.width,height:r.height}};
+ const bottom=Math.max(...nodes.map(el=>{const r=local(el);return r.y+r.height}),120);
+ const height=bottom+(floatingInsert&&double?135:85);
+ panel.style.minHeight=height+'px';
+ const svg=panel.querySelector('.original-link-overlay');
+ svg.setAttribute('viewBox',`0 0 ${panel.offsetWidth} ${height}`);svg.style.height=height+'px';
+ if(!double&&add&&at===0&&nodes.length>1){
+   const pointer=stage.querySelector('.sll-head-vertical');
+   const target=nodes[1],sr=stage.getBoundingClientRect(),nr=target.getBoundingClientRect();
+   pointer.style.left=(nr.left-sr.left+nr.width/2)+'px';
+   const newPointer=stage.querySelector('.sll-pointer.newnode');
+   if(newPointer){const first=nodes[0].getBoundingClientRect();newPointer.style.left=(first.left-sr.left+first.width/2)+'px'}
+ }
+ const paths=edges.map((e,i)=>{
+   let f;
+   if(e.from==='head'||e.from==='tail'){
+     const pointer=stage.querySelector(e.from==='head'?'.dll-start-pointer,.head-pointer':'.dll-tail-pointer');
+     const r=pointer?local(pointer):{x:20,y:10,width:30,height:20};f={x:r.x+r.width/2,y:r.y+r.height};
+   }else{
+     const node=nodes[map(e.from)],dot=double?node.querySelectorAll('.dll-pointer-dot')[e.field==='prev'?0:1]:node.querySelector('.sll-next-dot');
+     const r=local(dot||node);f={x:r.x+r.width/2,y:r.y+r.height/2};
+     // Remove only the old connector whose pointer is being reassigned.
+     const block=node.closest('.node-block');
+     if(!double){const oldLink=block?.querySelector('.sll-link,.sll-null');if(oldLink)oldLink.style.visibility='hidden'}
+     else if(!(floatingInsert&&e.from==='new')){
+       const fromIndex=map(e.from);
+       const holder=e.field==='prev'?nodes[floatingInsert&&double&&e.from!=='new'&&fromIndex===at+1?at-1:fromIndex-1]?.closest('.node-block'):block;
+       const oldLink=holder?.querySelector(e.field==='prev'?'.dll-prev':'.dll-next');if(oldLink)oldLink.style.visibility='hidden';
+     }
+   }
+   const top=Math.min(...nodes.map(el=>local(el).y));
+   const lane=top-60-i*65;
+   const r=e.to===null?null:local(nodes[map(e.to)]);
+   const t=r?{x:r.x+r.width/2,y:r.y-2}:{x:Math.min(panel.offsetWidth-35,f.x+50),y:lane-20};
+   const bend=Math.min(panel.offsetWidth-12,f.x+25);
+   let path=`M${f.x} ${f.y} C${bend} ${f.y},${bend} ${lane},${bend} ${lane} C${bend} ${lane-15},${t.x} ${lane-15},${t.x} ${lane} L${t.x} ${t.y}`;
+   if(e.route==='insert-below'&&r){
+     t.x=r.x+r.width*.3;t.y=e.from==='new'?r.y+r.height+3:r.y-3;
+     if(floatingFirst&&e.field==='prev'){t.x=r.x+r.width;t.y=r.y+r.height*.55;}
+     const bendY=(f.y+t.y)/2;
+     path=`M${f.x} ${f.y} C${f.x+40} ${f.y},${t.x} ${bendY},${t.x} ${t.y}`;
+   }
+   if(e.route==='straight'&&r){
+     t.x=r.x;t.y=r.y+r.height/2;
+     path=`M${f.x} ${f.y} L${t.x} ${t.y}`;
+   }
+   if(['head-over-top','tail-over-top'].includes(e.route)&&r){
+     const arrow=stage.querySelector(e.route==='tail-over-top'?'.dll-tail-pointer .tail-arrow':'.dll-start-pointer .start-arrow,.sll-head-vertical .head-arrow');
+     if(arrow){const ar=local(arrow);f={x:ar.x+ar.width/2,y:ar.y+ar.height};arrow.style.visibility='hidden'}
+     t.x=r.x+r.width/2;t.y=r.y-3;
+     const arch=Math.max(8,Math.min(f.y,t.y)-45);
+     path=`M${f.x} ${f.y} C${f.x+(t.x<f.x?-35:35)} ${arch},${t.x} ${arch},${t.x} ${t.y}`;
+   }
+   let labelPosition='';
+   if(floatingInsert&&double&&r){
+     let lx,ly,anchor;
+     if(e.from==='new'){
+       const left=e.field==='prev';
+       t.x=r.x+r.width*(left?.6:.4);t.y=r.y+r.height;
+       if(left){const nr=local(nodes[at]);f.x=nr.x;}
+       // Broad curved sides avoid the former long vertical legs.
+       const spread=Math.max(70,Math.abs(t.x-f.x)*.7),rise=f.y-t.y;
+       path=`M${f.x} ${f.y} C${f.x+(left?-spread:spread)} ${f.y+35},${t.x+(left?-spread*.55:spread*.55)} ${t.y+rise*.4},${t.x} ${t.y}`;
+       lx=left?r.x:local(nodes[at]).x+local(nodes[at]).width+18;ly=f.y+48;anchor='start';
+     }else{
+       const left=e.field==='next';
+       t.x=r.x+r.width*(left?.25:.75);t.y=r.y;
+       const drop=t.y-f.y;
+       path=`M${f.x} ${f.y} C${f.x+(left?55:-75)} ${f.y+drop*.12},${t.x+(left?-42:42)} ${t.y-drop*.22},${t.x} ${t.y}`;
+       lx=left?local(nodes[at-1]).x:t.x+24;ly=t.y-30;anchor='start';
+     }
+     // Keep all four assignment captions in two clear rows below the curves.
+     const newRect=local(nodes[at]),leftX=Math.max(12,local(nodes[at-1]).x);
+     lx=e.field==='prev'?leftX:Math.max(leftX+260,newRect.x+newRect.width+20);
+     ly=newRect.y+newRect.height+(e.from==='new'?66:94);anchor='start';
+     labelPosition=` data-label-x="${lx}" data-label-y="${ly}" data-label-anchor="${anchor}"`;
+   }
+   if(floatingFirst&&r){
+     let lx,ly,anchor='start';
+     if(e.field==='next'){
+       t.x=r.x+r.width*.7;t.y=r.y+r.height;
+       path=`M${f.x} ${f.y} C${f.x+55} ${f.y},${t.x} ${f.y},${t.x} ${t.y}`;
+       lx=t.x-12;ly=r.y+r.height+38;anchor='end';
+     }else if(e.field==='prev'){
+       t.x=r.x+r.width;t.y=r.y+r.height*.16;
+       path=`M${f.x} ${f.y} C${f.x} ${f.y+28},${t.x+45} ${t.y-5},${t.x} ${t.y}`;
+       lx=r.x+r.width+16;ly=t.y+28;
+     }else{
+       const headLabel=stage.querySelector('.dll-start-pointer > span:first-child');
+       if(headLabel){const hr=local(headLabel);f={x:hr.x-3,y:hr.y+hr.height/2}}
+       t.y=r.y;
+       const arch=Math.max(8,Math.min(f.y,t.y)-55);
+       path=`M${f.x} ${f.y} C${f.x-35} ${arch},${t.x} ${arch},${t.x} ${t.y}`;
+       lx=Math.min(f.x,t.x)+12;ly=arch-12;
+     }
+     labelPosition=` data-label-x="${lx}" data-label-y="${ly}" data-label-anchor="${anchor}"`;
+   }
+   if(floatingLast&&r){
+     let lx,ly,anchor='start';
+     if(e.from==='new'){
+       t.x=r.x+r.width*.3;t.y=r.y+r.height;
+       path=`M${f.x} ${f.y} C${f.x-45} ${f.y+35},${t.x} ${f.y+35},${t.x} ${t.y}`;
+       lx=t.x+12;ly=Math.max(f.y,t.y)+34;
+     }else if(e.field==='next'){
+       t.x=r.x;t.y=r.y+r.height*.16;
+       path=`M${f.x} ${f.y} C${f.x+40} ${f.y},${t.x-35} ${t.y},${t.x} ${t.y}`;
+       lx=t.x-12;ly=t.y-20;anchor='end';
+     }else{
+       const tailLabel=stage.querySelector('.dll-tail-pointer > span:first-child');
+       if(tailLabel){const tr=local(tailLabel);f={x:tr.x+tr.width+3,y:tr.y+tr.height/2}}
+       t.x=r.x+r.width/2;t.y=r.y;
+       const arch=Math.max(8,Math.min(f.y,t.y)-55);
+       path=`M${f.x} ${f.y} C${f.x+35} ${arch},${t.x} ${arch},${t.x} ${t.y}`;
+       lx=f.x+12;ly=arch-12;
+     }
+     labelPosition=` data-label-x="${lx}" data-label-y="${ly}" data-label-anchor="${anchor}"`;
+   }
+   return `<g class="cp-curve"${labelPosition} data-label-right="${e.route==='insert-below'&&e.from==='new'?'true':'false'}" data-complete="${e.complete?'true':'false'}" data-color="${e.color}" style="opacity:0"><path class="cp-line" d="${path}" fill="none" stroke="${e.color}" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/><text class="cp-label" fill="${e.color}" text-anchor="middle">${escapeHTML(e.label)}</text>${e.to===null?`<text x="${t.x}" y="${t.y+20}" text-anchor="middle" fill="${e.color}">NULL</text>`:''}</g>`;
+ }).join('');
+ svg.innerHTML='<defs></defs>'+paths;
+}
+function drawSllWrappedLinks(){
+ const stage=document.querySelector('#sllVisual > .linked-stage');
+ if(!stage)return;
+ stage.querySelector('.sll-row-links')?.remove();
+ stage.querySelectorAll('.sll-wrap-link').forEach(link=>link.classList.remove('sll-wrap-link'));
+ const nodes=[...stage.querySelectorAll('.node')],sr=stage.getBoundingClientRect(),paths=[];
+ for(let i=0;i<nodes.length-1;i++){
+   const source=nodes[i],target=nodes[i+1],link=source.closest('.node-block').querySelector('.sll-link');
+   if(!link||link.classList.contains('pending')||link.classList.contains('removing')||link.style.visibility==='hidden')continue;
+   const a=source.getBoundingClientRect(),b=target.getBoundingClientRect();
+   if(b.top<a.bottom+12)continue;
+   const dot=source.querySelector('.sll-next-dot');if(!dot)continue;
+   const d=dot.getBoundingClientRect(),label=source.closest('.node-col').querySelector('.node-label').getBoundingClientRect();
+   const f={x:d.left-sr.left+d.width/2,y:d.top-sr.top+d.height/2};
+   const t={x:b.left-sr.left+b.width*.65,y:b.top-sr.top};
+   const lane=(Math.max(a.bottom,label.bottom)+b.top)/2-sr.top;
+   const right=Math.min(stage.clientWidth-8,a.right-sr.left+34),radius=Math.min(16,(t.y-lane)/2);
+   const path=`M ${f.x} ${f.y} C ${right} ${f.y}, ${right} ${lane-radius}, ${right} ${lane-radius} Q ${right} ${lane}, ${right-radius} ${lane} L ${t.x+radius} ${lane} Q ${t.x} ${lane}, ${t.x} ${lane+radius} L ${t.x} ${t.y}`;
+   link.classList.add('sll-wrap-link');
+   paths.push(`<path d="${path}" fill="none" stroke="#f57c00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sllRowArrow)"/>`);
+ }
+ if(paths.length){
+   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+   svg.setAttribute('class','sll-row-links');svg.setAttribute('viewBox',`0 0 ${stage.clientWidth} ${stage.clientHeight}`);
+   svg.setAttribute('aria-label','เส้น next เชื่อมต่อโหนดข้ามแถว');
+   svg.innerHTML='<defs><marker id="sllRowArrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#f57c00"/></marker></defs>'+paths.join('');
+   stage.append(svg);
+ }
+ if(!stage.dataset.wrapLinkEvents){stage.dataset.wrapLinkEvents='true';stage.addEventListener('animationend',drawSllWrappedLinks);stage.addEventListener('transitionend',drawSllWrappedLinks)}
+}
+function alignSllDelPointer(){
+ drawSllWrappedLinks();
+ const stage=document.querySelector('#sllVisual .linked-stage');
+ const newPointer=stage?.querySelector('.sll-pointer.newnode');
+ if(newPointer){
+   newPointer.style.setProperty('transition','none','important');
+   const node=stage.querySelectorAll('.node')[Number(newPointer.dataset.newnodeIndex)];
+   if(node){
+     const sr=stage.getBoundingClientRect(),nr=node.getBoundingClientRect();
+     newPointer.style.setProperty('left',(nr.left-sr.left+nr.width*.16)+'px','important');
+     newPointer.style.setProperty('margin-left','0','important');
+     newPointer.style.setProperty('transform','translateX(-50%)','important');
+     newPointer.style.setProperty('top',(nr.top-sr.top-newPointer.getBoundingClientRect().height-13)+'px','important');
+   }
+ }
+ const current=stage?.querySelector('.sll-pointer.current');
+ if(current){
+   current.style.setProperty('transition','none','important');
+   const node=stage.querySelectorAll('.node')[Number(current.dataset.currentIndex)];
+   if(node){
+     const sr=stage.getBoundingClientRect(),nr=node.getBoundingClientRect();
+     const port=(node.querySelector('.sll-next-part')||node).getBoundingClientRect();
+     current.style.setProperty('left',(port.left-sr.left+port.width/2)+'px','important');
+     current.style.setProperty('margin-left','0','important');
+     current.style.setProperty('transform','translateX(-50%)','important');
+     current.style.setProperty('top',(nr.top-sr.top-current.getBoundingClientRect().height-5)+'px','important');
+   }
+ }
+ const pointer=stage?.querySelector('.sll-pointer.del');if(!pointer)return;
+ const node=stage.querySelectorAll('.node')[Number(pointer.dataset.delIndex)];if(!node)return;
+ const sr=stage.getBoundingClientRect(),nr=node.getBoundingClientRect();
+ pointer.style.setProperty('left',(nr.left-sr.left+nr.width/2)+'px','important');
+ pointer.style.setProperty('margin-left','0','important');
+ pointer.style.setProperty('transform','translateX(-50%)','important');
+ pointer.style.setProperty('top',(nr.top-sr.top-pointer.getBoundingClientRect().height-5)+'px','important');
+}
+window.addEventListener('resize',alignSllDelPointer);
+
+function animateConnectionPreview(id){
+ const panel=document.querySelector(`#${id}Visual .connection-preview`);if(!panel||panel.dataset.started)return;
+ panel.dataset.started='true';
+ layoutOriginalConnectionLinks(panel);
+ const groups=[...panel.querySelectorAll('.cp-curve')],start=performance.now(),duration=1500,gap=350;
+ groups.forEach((g,i)=>{
+   const path=g.querySelector('.cp-line'),mid=path.getPointAtLength(path.getTotalLength()*.55),label=g.querySelector('.cp-label');
+   label.setAttribute('x',mid.x+(g.dataset.labelRight==='true'?18:0));label.setAttribute('y',mid.y-9);
+   if(g.dataset.labelRight==='true')label.setAttribute('text-anchor','start');
+   if(g.dataset.labelX!==undefined){label.setAttribute('x',g.dataset.labelX);label.setAttribute('y',g.dataset.labelY);label.setAttribute('text-anchor',g.dataset.labelAnchor||'start')}
+   const marker=document.createElementNS('http://www.w3.org/2000/svg','marker');marker.id=`cp-${id}-${i}`;
+   for(const [k,v] of Object.entries({viewBox:'0 0 10 10',refX:10,refY:5,markerWidth:6,markerHeight:6,orient:'auto'}))marker.setAttribute(k,v);
+   marker.innerHTML=`<path d="M0 0 L10 5 L0 10Z" fill="${g.dataset.color}"/>`;panel.querySelector('defs').append(marker);
+ });
+ function frame(now){
+   if(!panel.isConnected)return;
+   const elapsed=now-start;
+   let animatedIndex=0;
+   groups.forEach((g,i)=>{const done=g.dataset.complete==='true',delay=done?0:animatedIndex++*(duration+gap),p=done?1:Math.max(0,Math.min(1,(elapsed-delay)/duration)),path=g.querySelector('.cp-line');g.style.opacity=done||elapsed>=delay?1:0;path.setAttribute('stroke-dashoffset',1-p);g.querySelector('.cp-label').style.opacity=Math.min(1,p*3);if(p===1)path.setAttribute('marker-end',`url(#cp-${id}-${i})`)});
+   if(elapsed<(groups.filter(g=>g.dataset.complete!=='true').length-1)*(duration+gap)+duration)requestAnimationFrame(frame);
+   else{delete panel.dataset.drawing;panel.querySelector('.cp-progress').textContent='เชื่อมโยงครบแล้ว · กด Next Step เพื่อดำเนินการต่อ'}
+ }
+ requestAnimationFrame(frame);
+}
+
+function prepareLinkedOriginal(id,op,item,index){
  const s=states[id],old=[...s.data],steps=[],result=[...old];
  if(id==="dll" && prepareDLLV3(op,item,index))return;
  updateFunctionCode(id,op);
@@ -7080,7 +7719,7 @@ function prepareLinked(id,op,item,index){
      }
      steps.push({...snap(old,"delnode = current.next",currentIndex,-1,target),trackLine:4,headIndex:0,currentIndex,delIndex:target});
      steps.push({...snap(old,`item = delnode.data = ${itemValue}`,currentIndex,-1,target),trackLine:5,headIndex:0,currentIndex,delIndex:target,itemValue});
-     steps.push({...snap(old,"current.next = None",currentIndex,-1,target,false,currentIndex,-1),trackLine:6,headIndex:0,currentIndex,delIndex:target,itemValue});
+     steps.push({...snap(old,"current.next = None",currentIndex,-1,target,false),trackLine:6,headIndex:0,currentIndex,delIndex:target,itemValue,nullNextIndices:[currentIndex]});
      result.pop();
      steps.push({...snap(result,"count = count - 1",currentIndex,-1,-1,false),trackLine:7,headIndex:0,currentIndex,itemValue});
      steps.push({...snap(result,"ลบ delnode",currentIndex,-1,-1,true),trackLine:8,headIndex:0,currentIndex,itemValue});
@@ -7695,6 +8334,7 @@ function prepareLinked(id,op,item,index){
  s.steps=steps;s.step=0;s.pending=result;s.view={};$(id+"Progress").style.width="0%";setStatus(id,`เตรียม ${op} แล้ว กด Next Step`);addLog(id,`prepare ${op}`);render(id);
 }
 function nextLinkedStep(id){
+ if(document.querySelector(`#${id}Visual [data-drawing]`))return;
  const s=states[id];
  if(!s.steps.length)return setStatus(id,"กรุณาเลือกฟังก์ชันที่รองรับ Algorithm Track ก่อน");
  const st=s.steps[s.step];if(!st)return setStatus(id,"Animation เสร็จสิ้น");
@@ -7729,6 +8369,14 @@ function nextLinkedStep(id){
    pointerDetail:st.pointerDetail,
    tailIndex:st.tailIndex,
    pIndex:st.pIndex,
+   nullNextIndices:st.nullNextIndices,
+   sllStableNodes:st.sllStableNodes,
+   clearedHeadPrev:st.clearedHeadPrev,
+   clearedTailNext:st.clearedTailNext,
+   displaySize:st.displaySize,
+   displayCurrentPos:st.displayCurrentPos,
+   connectionPreview:st.connectionPreview,
+   reconnectIndex:st.reconnectIndex,
    previousNodeIndex:st.previousNodeIndex,
    nextNodeIndex:st.nextNodeIndex,
    floatingNewNode:st.floatingNewNode,
@@ -7886,7 +8534,7 @@ function sllDeleteActivitySteps(position){
 function dllInsertActivitySteps(position){
  if(position==="first")return [
    sllActivityAction("create","create newNode"),
-   pointerLabStep("new.prev","NULL","newNode.previous = NULL"),
+   {...pointerLabStep("new.prev","NULL","newNode.prev = None"),type:"value"},
    pointerLabStep("new.next","n0","newNode.next = head"),
    pointerLabStep("n0.prev","new","head.previous = newNode"),
    pointerLabStep("head","new","head = newNode"),
@@ -7925,8 +8573,8 @@ function dllDeleteActivitySteps(position){
    sllActivityAction("check","ตรวจสอบว่า index 2 อยู่ในช่วงข้อมูล"),
    sllActivityAction("find","ค้นหาโหนด index 1 และให้ pointer p ชี้โหนดนั้น"),
    sllActivityAction("setDel","del = p.next"),
-   pointerLabStep("p.next","n3","p.next = del.next"),
-   pointerLabStep("n3.prev","n1","del.next.previous = p"),
+   pointerLabStep("before.next","n3","before.next = after"),
+   pointerLabStep("after.prev","n1","after.prev = before"),
    sllActivityAction("item","item = del.data"),
    pointerLabStep("n2","TRASH","delete del"),
    sllActivityAction("count","size-- และ current = โหนดถัดไป")
@@ -8074,11 +8722,14 @@ function renderSllDeleteActivity(){
 function dllActivityNodeHTML(lab,key,value,index,isNew=false){
  const current=lab.steps[lab.done.length],pVisible=lab.done.some(step=>step.action==="find"),delVisible=lab.done.some(step=>step.action==="setDel");
  const isPNode=pVisible&&index===lab.pIndex,isDelNode=delVisible&&index===lab.delIndex;
- const nextSource=isPNode?"p.next":`${key}.next`,prevSource=`${key}.prev`;
  const nodeSourceClass=current?.source===key?" expected-source":"",targetClass=current?.target===key?" expected-target":"";
+ const showFamily=lab.mode==='delete'&&!!lab.position&&delVisible&&!lab.completed;
+ const isBefore=showFamily&&index===lab.index-1,isAfter=showFamily&&index===lab.index+1;
+ const nextSource=isBefore&&lab.position==="middle"?"before.next":isPNode?"p.next":`${key}.next`,prevSource=isAfter&&lab.position==="middle"?"after.prev":`${key}.prev`;
+ const familyBadge=isBefore?'<span class="sll-p-badge dll-before-badge">before ↓</span>':isAfter?'<span class="sll-p-badge dll-after-badge">after ↓</span>':isPNode?'<span class="sll-p-badge">p ↓</span>':'';
  const joining=isNew&&lab.completed?" joining":"";
  const nodeAttrs=lab.mode==="delete"?`draggable="true" data-source="${key}" ondragstart="pointerLabDragStart(event,'dll','${key}')"`:"";
- return `<div class="pointer-lab-node sll-activity-node pointer-target${isNew?" new":""}${joining}${isDelNode?" to-delete":""}${targetClass}${nodeSourceClass}" ${nodeAttrs} data-target="${key}" onclick="${lab.mode==="delete"?`pointerLabNodeClick(event,'dll','${key}')`:`pointerLabSelectTarget(event,'dll','${key}')`}" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'dll','${key}')">${isPNode?'<span class="sll-p-badge">p ↓</span>':""}${isDelNode?'<span class="sll-del-badge">del ↓</span>':""}<div class="pointer-lab-node-title">${isNew?"newNode · ":""}data = ${escapeHTML(value)}</div><div class="pointer-lab-node-field"><span>prev</span>${pointerSourceHTML("dll",prevSource,"prev",current?.source===prevSource?"prev expected-source":"prev")}</div><div class="pointer-lab-node-field"><span>next</span>${pointerSourceHTML("dll",nextSource,isPNode?"p.next":"next",current?.source===nextSource?"expected-source":"")}</div></div>`;
+ return `<div class="pointer-lab-node sll-activity-node pointer-target${isNew?" new":""}${joining}${isDelNode?" to-delete":""}${targetClass}${nodeSourceClass}" ${nodeAttrs} data-target="${key}" onclick="${lab.mode==="delete"?`pointerLabNodeClick(event,'dll','${key}')`:`pointerLabSelectTarget(event,'dll','${key}')`}" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'dll','${key}')">${isNew?'<span class="dll-lab-new-label">newNode</span>':""}${familyBadge}${isDelNode?'<span class="sll-del-badge">del ↓</span>':""}<div class="pointer-lab-node-title">${escapeHTML(value)}</div><div class="pointer-lab-node-field"><span>prev</span>${pointerSourceHTML("dll",prevSource,"",current?.source===prevSource?"prev expected-source":"prev")}</div><div class="pointer-lab-node-field"><span>next</span>${pointerSourceHTML("dll",nextSource,"",current?.source===nextSource?"expected-source":"")}</div></div>`;
 }
 function renderDllPointerActivity(){
  const id="dll",lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box)return;
@@ -8092,24 +8743,43 @@ function renderDllPointerActivity(){
    if(lab.mode==="insert")entries.splice(lab.index,0,{key:"new",value:lab.item,index:lab.index,isNew:true});
    else entries=entries.filter(entry=>entry.index!==lab.index);
  }
- const nodes=entries.map(entry=>dllActivityNodeHTML(lab,entry.key,entry.value,entry.index,entry.isNew)).join('<span class="sll-fixed-arrow">⇄</span>');
- const listContent=`${pointerBox}<span class="sll-fixed-arrow">→</span>${nodes}<span class="sll-fixed-arrow">→</span>${nullTarget}`;
+ const nodes=entries.map((entry,i)=>{
+   let node=dllActivityNodeHTML(lab,entry.key,entry.value,entry.index,entry.isNew);
+   {
+     const pointers=(i===0?pointerSourceHTML(id,"head","head",current?.source==="head"?"expected-source":""):"")+(i===entries.length-1?pointerSourceHTML(id,"tail","tail",current?.source==="tail"?"expected-source":""):"");
+     if(pointers)node=node.replace('<div class="pointer-lab-node-title">',`<div class="dll-delete-end-pointer">${pointers}</div><div class="pointer-lab-node-title">`);
+   }
+   return node;
+ }).join('<span class="sll-fixed-arrow">⇄</span>');
+ const listContent=`${nodes}<span class="sll-fixed-arrow">→</span>${nullTarget}`;
  const createDone=lab.done.some(step=>step.action==="create");
  const newLanePosition=lab.position||"first";
- const newLane=lab.mode==="insert"&&!lab.completed?`<div class="sll-new-lane new-position-${newLanePosition}"><p class="sll-new-title">โหนดใหม่ที่ต้องนำไปเชื่อม</p>${createDone?dllActivityNodeHTML(lab,"new",lab.item,lab.index,true):'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`:"";
+ const newLane=lab.mode==="insert"&&!lab.completed?`<div class="sll-new-lane new-position-${newLanePosition}">${createDone?dllActivityNodeHTML(lab,"new",lab.item,lab.index,true):'<div class="sll-new-placeholder">newNode ยังไม่ถูกสร้าง — ทำคำสั่ง create newNode ก่อน</div>'}</div>`:"";
  const choiceButtons=["first","middle","last"].map(p=>`<button class="sll-choice${lab.position===p?" active":""}" onclick="chooseDllActivityPosition('${p}')">${lab.mode==="insert"?"เพิ่มที่":"ลบ "}${labels[p]}</button>`).join("");
- const instruction=!lab.position?`เลือกกรณีการ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด`:lab.completed?`สำเร็จ — ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนดและปรับ previous/next ครบแล้ว`:current.type==="action"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current.label}`:`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ลากเพื่อทำคำสั่ง ${current.label}`;
+ const instruction=!lab.position?`เลือกกรณีการ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด`:lab.completed?`สำเร็จ — ${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนดและปรับ previous/next ครบแล้ว`:current.type==="value"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ดับเบิลคลิกช่อง prev ของ newNode เพื่อกำหนด newNode.prev = None`:current.type==="action"?`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ${current.label}`:`ขั้นตอน ${lab.done.length+1}/${lab.steps.length}: ลากเพื่อทำคำสั่ง ${current.label}`;
  const chips=lab.done.map((step,i)=>`<span class="pointer-lab-link-chip">✓ ${i+1}. ${step.label}</span>`).join("");
  const actionButton=lab.position&&!lab.completed&&current.type==="action"?`<button class="sll-step-action" onclick="completeDllActivityAction()">ดำเนินการ: ${current.label}</button>`:"";
  const shownCount=lab.completed?lab.data.length+(lab.mode==="insert"?1:-1):lab.data.length,itemReady=lab.done.some(step=>step.action==="item");
  const finalValues=lab.completed?entries.map(entry=>entry.value):[];
  const result=lab.completed?`<div class="sll-result">${lab.mode==="delete"?`ลบ item = ${escapeHTML(lab.data[lab.index])} | `:""}ผลลัพธ์: NULL ⇄ ${finalValues.map(escapeHTML).join(" ⇄ ")} ⇄ NULL</div>`:"";
- box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรม${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด · Doubly Linked List</h3><p>ดำเนินการทีละขั้นและลาก prev/next ไปยังเป้าหมายตามคำสั่ง</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('dll')">Undo</button><button class="action gray" onclick="showPointerLabHint('dll')">Hint</button>`:""}<button class="action gray" onclick="startDllPointerActivity('${lab.mode}')">Reset</button><button class="action gray" onclick="closePointerLab('dll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">size = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">currentpos = ${lab.pIndex}</span>`:""}${lab.done.some(step=>step.action==="setDel")?`<span class="sll-state-badge">del = node index ${lab.delIndex}</span>`:""}${itemReady?`<span class="sll-state-badge">item = ${escapeHTML(lab.data[lab.index])}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer ต้นทาง</span><span><i class="sll-dot target"></i>โหนด/NULL เป้าหมาย</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังดำเนินการ":"รายการเริ่มต้น"}</p><div class="sll-list-row">${listContent}</div>${newLane}${lab.mode==="delete"?`<div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div>`:""}</div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
+ box.innerHTML=`<div class="pointer-lab-head"><div><h3>กิจกรรม${lab.mode==="insert"?"เพิ่ม":"ลบ"}โหนด · Doubly Linked List</h3><p>ดำเนินการทีละขั้นและลาก prev/next ไปยังเป้าหมายตามคำสั่ง</p></div><div class="pointer-lab-actions">${lab.position&&!lab.completed?`<button class="action gray" onclick="undoPointerLab('dll')">Undo</button><button class="action gray" onclick="showPointerLabHint('dll')">Hint</button>`:""}<button class="action gray" onclick="startDllPointerActivity('${lab.mode}')">Reset</button><button class="action gray" onclick="closePointerLab('dll')">Close</button></div></div><div class="sll-choice-row">${choiceButtons}</div><div class="sll-state-strip"><span class="sll-state-badge">size = ${shownCount}</span>${lab.done.some(step=>step.action==="find")?`<span class="sll-state-badge">currentpos = ${lab.pIndex}</span>`:""}${lab.done.some(step=>step.action==="setDel")?`<span class="sll-state-badge">del = node index ${lab.delIndex}</span>`:""}${itemReady?`<span class="sll-state-badge">item = ${escapeHTML(lab.data[lab.index])}</span>`:""}${actionButton}</div><div class="pointer-lab-progress"><span style="width:${lab.steps.length?lab.done.length/lab.steps.length*100:0}%"></span></div><div class="pointer-lab-instruction ${lab.completed?"ok":""}">${instruction}</div><div class="sll-legend"><span><i class="sll-dot source"></i>Pointer ต้นทาง</span><span><i class="sll-dot target"></i>โหนด/NULL เป้าหมาย</span></div>${lab.hint&&current?`<div class="pointer-lab-message success">${current.type==="value"?"ดับเบิลคลิกวงกลม prev ของ newNode เพื่อเปลี่ยนค่าเป็น None":current.type==="action"?`คำใบ้: กดปุ่มดำเนินการ <b>${current.label}</b>`:`คำใบ้: ทำคำสั่ง <b>${current.label}</b>`}</div>`:""}<div class="pointer-lab-stage sll-activity-stage${lab.mode==="delete"?" dll-delete-practice":" dll-insert-practice"}"><svg class="pointer-lab-svg" aria-hidden="true"></svg><p class="sll-existing-title">${lab.completed?"โครงสร้างหลังดำเนินการ":"รายการเริ่มต้น"}</p><div class="sll-list-row">${listContent}</div>${newLane}${lab.mode==="delete"?`<div ${pointerTargetAttrs(id,"TRASH")} class="pointer-lab-special pointer-target trash">🗑️ Delete</div>`:""}</div><div class="pointer-lab-links">${chips}</div>${result}<div class="pointer-lab-message ${lab.messageType}">${lab.message}</div>`;
  if(lab.selected){[...box.querySelectorAll("[data-source]")].find(el=>el.dataset.source===lab.selected)?.classList.add("selected")}
  if(!lab.completed)requestAnimationFrame(()=>drawPointerLabConnections(id));
 }
+function completeDllNullValue(event){
+ event.preventDefault();event.stopPropagation();
+ const lab=pointerLabStates.dll,step=lab?.steps[lab.done.length];
+ if(!lab||lab.completed||step?.type!=="value"||step.source!=="new.prev")return;
+ lab.done.push(step);lab.selected=null;lab.hint=false;lab.message="กำหนด newNode.prev = None แล้ว";lab.messageType="success";renderPointerLab("dll");
+}
 function pointerSourceHTML(id,key,label,extra=""){
- return `<span class="pointer-handle pointer-source ${extra}" draggable="true" data-source="${key}" onclick="pointerLabSelectSource(event,'${id}','${key}')" ondragstart="pointerLabDragStart(event,'${id}','${key}')">${label}</span>`;
+ const lab=pointerLabStates[id];
+ if(id==="dll"&&lab?.mode==="insert"&&lab.position==="first"&&key==="new.prev"){
+   const done=lab.done.some(step=>step.type==="value"&&step.source===key);
+   return `<span class="pointer-handle pointer-source ${extra}" data-source="${key}" title="ดับเบิลคลิกเพื่อกำหนด None" aria-label="newNode.prev${done?' = None':''}" onclick="event.stopPropagation()" ondblclick="completeDllNullValue(event)" style="${done?'width:auto;min-width:38px;font-size:11px':''}">${done?'None':''}</span>`;
+ }
+
+ return `<span class="pointer-handle pointer-source ${extra}" draggable="true" data-source="${key}" aria-label="${key}" title="${key}" onclick="pointerLabSelectSource(event,'${id}','${key}')" ondragstart="pointerLabDragStart(event,'${id}','${key}')">${label}</span>`;
 }
 function pointerTargetAttrs(id,key){return `data-target="${key}" onclick="pointerLabSelectTarget(event,'${id}','${key}')" ondragover="pointerLabDragOver(event)" ondragleave="pointerLabDragLeave(event)" ondrop="pointerLabDrop(event,'${id}','${key}')"`}
 function pointerLabNodeHTML(lab,key,value,isNew=false,isDelete=false){
@@ -8148,6 +8818,7 @@ function pointerLabNodeClick(event,id,key){const source=event.target.closest("[d
 function attemptPointerLabLink(id,source,target){
  const lab=pointerLabStates[id];if(!lab||lab.completed||!source)return;
  const expected=lab.steps[lab.done.length];
+ if(expected?.type==="value"){lab.selected=null;lab.message="ดับเบิลคลิกช่อง prev ของ newNode เพื่อกำหนด None";renderPointerLab(id);return}
  if(source===expected.source&&target===expected.target){
    lab.done.push(expected);lab.selected=null;lab.hint=false;lab.message=`ถูกต้อง: ${expected.label}`;lab.messageType="success";
    if(lab.done.length===lab.steps.length){
@@ -8168,17 +8839,133 @@ function closePointerLab(id){const box=$(id+"PointerLab");if(box)box.hidden=true
 function drawPointerLabConnections(id){
  const lab=pointerLabStates[id],box=$(id+"PointerLab");if(!lab||!box||box.hidden)return;
  const stage=box.querySelector(".pointer-lab-stage"),svg=box.querySelector(".pointer-lab-svg");if(!stage||!svg)return;
+ const middleDelete=id==='dll'&&lab.mode==='delete'&&lab.index>0&&lab.index<lab.data.length-1;
+ const trash=stage.querySelector('.trash');if(id==='dll'&&lab.mode==='delete'&&trash)trash.style.marginTop='180px';
+ if(id==='dll'&&lab.mode==='insert'){
+   const newNode=stage.querySelector('.sll-new-lane .pointer-lab-node');
+   const oldNodes=[...stage.querySelectorAll('.sll-list-row .pointer-lab-node')];
+   if(newNode&&oldNodes.length){
+     const lane=newNode.parentElement.getBoundingClientRect();
+     const before=oldNodes[Math.max(0,lab.index-1)].getBoundingClientRect();
+     const after=oldNodes[Math.min(oldNodes.length-1,lab.index)].getBoundingClientRect();
+     const center=lab.position==='middle'?(before.right+after.left)/2:lab.position==='last'?before.right+65:after.left-65;
+     newNode.style.marginLeft=Math.max(0,center-lane.left-newNode.getBoundingClientRect().width/2)+'px';
+   }
+ }
  const sr=stage.getBoundingClientRect();
  const find=(attr,key)=>[...stage.querySelectorAll(`[${attr}]`)].find(el=>el.dataset[attr.replace("data-","")]===key);
  const paths=lab.done.map((step,i)=>{
+   if(step.type==="value")return "";
    const from=find("data-source",step.source),to=find("data-target",step.target);if(!from||!to)return "";
    const a=from.getBoundingClientRect(),b=to.getBoundingClientRect();
    const x1=a.left+a.width/2-sr.left+stage.scrollLeft,y1=a.top+a.height/2-sr.top+stage.scrollTop;
    const x2=b.left+b.width/2-sr.left+stage.scrollLeft,y2=b.top+b.height/2-sr.top+stage.scrollTop;
+   if(id==='dll'&&lab.mode==='insert'){
+     const local=r=>({left:r.left-sr.left+stage.scrollLeft,right:r.right-sr.left+stage.scrollLeft,top:r.top-sr.top+stage.scrollTop,bottom:r.bottom-sr.top+stage.scrollTop,width:r.width,height:r.height});
+     const target=local(b),source=local((from.closest('.pointer-lab-node')||from).getBoundingClientRect());
+     let d,color='#2e7d32';
+     if(lab.position==='last'&&step.source==='new.prev'){
+       color='#1565c0';
+       const sx=x1-a.width/2,sy=y1,tx=target.left+target.width*.4,ty=target.bottom;
+       d=`M ${sx} ${sy} C ${sx-55} ${sy-12}, ${tx+25} ${sy}, ${tx+15} ${sy-22} C ${tx-8} ${sy-60}, ${tx} ${ty+40}, ${tx} ${ty}`;
+     }else if(lab.position==='last'&&step.source==='new.next'&&step.target==='NULL'){
+       const sx=x1+a.width/2,sy=y1,outer=Math.max(source.right,target.right)+24,tx=target.left+target.width*.7,ty=target.bottom;
+       d=`M ${sx} ${sy} C ${outer} ${sy}, ${outer} ${sy-30}, ${outer} ${sy-65} C ${outer} ${ty+55}, ${tx} ${ty+45}, ${tx} ${ty}`;
+     }else if(lab.position==='last'&&step.source==='n3.next'){
+       color='#ef6c00';
+       const sx=x1+a.width/2,sy=y1,tx=target.left+target.width*.18,ty=target.top;
+       d=`M ${sx} ${sy} C ${sx+38} ${sy+5}, ${tx-12} ${ty-38}, ${tx} ${ty}`;
+     }else if(lab.position==='last'&&step.source==='tail'){
+       const sx=a.right-sr.left+stage.scrollLeft,sy=y1,tx=target.left+target.width*.52,ty=target.top;
+       d=`M ${sx} ${sy} C ${sx+65} ${sy+5}, ${tx} ${sy+85}, ${tx} ${ty}`;
+     }else if(lab.position==='middle'&&step.source==='new.prev'){
+       color='#1565c0';
+       const sx=x1-a.width/2,sy=y1,tx=target.left+target.width*.6,ty=target.bottom;
+       const lane=Math.min(source.left-38,tx-15);
+       d=`M ${sx} ${sy} C ${sx-35} ${sy}, ${lane} ${sy-15}, ${lane} ${sy-28} C ${lane} ${ty+70}, ${tx} ${ty+55}, ${tx} ${ty}`;
+     }else if(lab.position==='middle'&&step.source==='new.next'){
+       color='#ef6c00';
+       const sx=x1+a.width/2,sy=y1,tx=target.left+target.width*.62,ty=target.bottom;
+       const lane=Math.max(source.right+32,tx);
+       d=`M ${sx} ${sy} C ${lane} ${sy}, ${lane} ${sy-25}, ${lane} ${sy-55} C ${lane} ${ty+70}, ${tx} ${ty+48}, ${tx} ${ty}`;
+     }else if(lab.position==='middle'&&step.source==='p.next'){
+       color='#ef6c00';
+       const sx=x1+a.width*.35,sy=y1+a.height*.35,tx=target.left+target.width*.3,ty=target.top;
+       d=`M ${sx} ${sy} C ${sx+38} ${sy+28}, ${tx} ${ty-55}, ${tx} ${ty}`;
+     }else if(lab.position==='middle'&&step.source==='n2.prev'){
+       color='#1565c0';
+       const sx=x1-a.width*.35,sy=y1+a.height*.35,tx=target.left+target.width*.8,ty=target.top;
+       d=`M ${sx} ${sy} C ${sx-55} ${sy+28}, ${tx} ${ty-65}, ${tx} ${ty}`;
+     }else if(lab.position==='first'&&step.source==='head'){
+       const sx=x1,sy=a.bottom-sr.top+stage.scrollTop,tx=target.left+target.width*.28;
+       const left=source.left-55;
+       d=`M ${sx} ${sy} C ${sx-55} ${sy+70}, ${left} ${sy+55}, ${left} ${target.top-45} Q ${left} ${target.top-15}, ${tx} ${target.top}`;
+     }else if(lab.position==='first'&&step.source==='n0.prev'){
+       color='#1565c0';const tx=target.left+target.width*.82,sx=x1-a.width*.35,sy=y1+a.height*.35;
+       d=`M ${sx} ${sy} C ${sx-65} ${sy+35}, ${tx+15} ${target.top-55}, ${tx} ${target.top}`;
+     }else if(lab.position==='first'&&step.source==='new.next'){
+       color='#ef6c00';const tx=target.left+target.width*.7;
+       d=`M ${x1} ${y1} C ${tx+15} ${y1}, ${tx-10} ${target.bottom+65}, ${tx} ${target.bottom}`;
+     }else if(step.source==='head'||step.source==='tail'){
+       const right=step.source==='tail',sx=right?a.right-sr.left:a.left-sr.left,sy=y1;
+       const outer=right?Math.max(source.right,target.right)+105:Math.min(source.left,target.left)-18;
+       const tx=target.left+target.width*(right?.8:.2);
+       d=`M ${sx} ${sy} C ${outer} ${sy-35}, ${outer} ${target.top-55}, ${tx} ${target.top}`;
+     }else if(step.target==='NULL'){
+       const exit=source.right+20,outer=Math.max(source.right,target.right)+85,bottom=source.bottom+125;
+       d=`M ${x1} ${y1} C ${exit} ${y1}, ${exit} ${bottom}, ${source.right+60} ${bottom} C ${outer} ${bottom}, ${outer} ${target.bottom+95}, ${target.left+target.width*.75} ${target.bottom}`;
+     }else if(step.source.startsWith('new.')){
+       const prev=step.source.endsWith('.prev');color=prev?'#1565c0':'#ef6c00';
+       if(prev){
+         const exit=source.right+22,bottom=source.bottom+70,left=Math.min(source.left,target.left)-18;
+         d=`M ${x1} ${y1} C ${exit} ${y1}, ${exit} ${bottom}, ${source.left+source.width/2} ${bottom} C ${left} ${bottom}, ${left} ${target.bottom+50}, ${target.left+target.width*.18} ${target.bottom}`;
+       }else{
+         const outer=Math.max(source.right,target.right)+48;
+         d=`M ${x1} ${y1} C ${outer} ${y1+30}, ${outer} ${target.bottom+70}, ${target.left+target.width*.82} ${target.bottom}`;
+       }
+     }else{
+       const prev=step.source.endsWith('.prev');color=prev?'#1565c0':'#ef6c00';
+       const exit=source.right+18,ty=target.top+target.height*(prev?.3:.55),tx=prev?target.right:target.left;
+       const side=prev?Math.max(source.right,target.right)+95:Math.min(source.left,target.left)-18;
+       d=`M ${x1} ${y1} L ${exit} ${y1} C ${exit} ${source.bottom+35}, ${side} ${source.bottom+45}, ${side} ${ty-24} Q ${side} ${ty}, ${tx} ${ty}`;
+     }
+     return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" marker-end="url(#labInsertArrow${id}${color==='#1565c0'?'Prev':color==='#ef6c00'?'Next':'Head'})"/>`;
+   }
+   if(id==='dll'&&lab.mode==='delete'&&(step.source==='head'||step.source==='tail')){
+     const sx=x1,sy=a.bottom-sr.top+stage.scrollTop;
+     const tx=b.left+b.width*.2-sr.left+stage.scrollLeft,ty=b.top-sr.top+stage.scrollTop;
+     const lane=Math.min(sy,ty)-48;
+     const d=`M ${sx} ${sy} C ${sx} ${lane}, ${tx} ${lane}, ${tx} ${ty}`;
+     return `<path d="${d}" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#labCurveArrow${id})"/><text x="${(sx+tx)/2}" y="${lane-8}" fill="#2e7d32" font-size="11">${i+1}</text>`;
+   }
+   if(id==='dll'&&lab.mode==='delete'&&step.target==='NULL'){
+     const nr=from.closest('.pointer-lab-node').getBoundingClientRect();
+     const exitX=nr.right-sr.left+stage.scrollLeft+18;
+     const lane=nr.bottom-sr.top+stage.scrollTop+65;
+     const tx=x2,ty=b.bottom-sr.top+stage.scrollTop;
+     const d=`M ${x1} ${y1} L ${exitX-10} ${y1} Q ${exitX} ${y1}, ${exitX} ${y1+14} C ${exitX} ${lane}, ${tx} ${lane}, ${tx} ${ty}`;
+     return `<path d="${d}" fill="none" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#labCurveArrow${id})"/>`;
+   }
+   if(id==='dll'&&lab.mode==='delete'&&step.target==='TRASH'){
+     const sy=a.bottom-sr.top+stage.scrollTop,ty=b.top-sr.top+stage.scrollTop;
+     const tx=Math.max(b.left-sr.left+24,Math.min(x1,b.right-sr.left-24));
+     return `<path d="M ${x1} ${sy} C ${x1+35} ${sy+45}, ${tx+35} ${ty-45}, ${tx} ${ty}" fill="none" stroke="#c62828" stroke-width="2.5" marker-end="url(#labDeleteArrow${id})"/>`;
+   }
+   if(middleDelete&&step.target!=='TRASH'&&/\.(next|prev)$/.test(step.source||'')&&/^n\d+$/.test(step.target||'')){
+     const backward=step.source.endsWith('.prev');
+     const sourceNode=from.closest('.pointer-lab-node').getBoundingClientRect();
+     const bottom=Math.max(sourceNode.bottom,b.bottom)-sr.top+stage.scrollTop;
+     const tx=b.left+b.width*.45-sr.left+stage.scrollLeft,ty=b.bottom-sr.top+stage.scrollTop;
+     const lane=bottom+(backward?140:88),mid=(x1+tx)/2;
+     const d=backward
+       ? `M ${x1} ${y1} C ${x1+65} ${y1+60}, ${x1+65} ${lane}, ${mid} ${lane} C ${tx-24} ${lane}, ${tx-24} ${lane}, ${tx} ${ty}`
+       : `M ${x1} ${y1} C ${x1+25} ${lane+15}, ${tx-30} ${lane+15}, ${tx} ${ty}`;
+     return `<path d="${d}" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linecap="round" marker-end="url(#labCurveArrow${id})"/><text x="${mid}" y="${lane+20}" text-anchor="middle" fill="#2e7d32" font-size="11" font-weight="800">${i+1}</text>`;
+   }
    const bend=Math.max(36,Math.abs(x2-x1)*.38),color=step.target==="TRASH"?"#c62828":"#2e7d32";
    return `<path d="M ${x1} ${y1} C ${x1+bend} ${y1-34}, ${x2-bend} ${y2-34}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="3" marker-end="url(#labArrow${id})"/><text x="${(x1+x2)/2}" y="${Math.min(y1,y2)-18}" fill="${color}" font-size="11" font-weight="800">${i+1}</text>`;
   }).join("");
-  svg.innerHTML=`<defs><marker id="labArrow${id}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2e7d32"/></marker></defs>${paths}`;
+  svg.innerHTML=`<defs>${[['Prev','#1565c0'],['Next','#ef6c00'],['Head','#2e7d32']].map(([name,color])=>`<marker id="labInsertArrow${id}${name}" viewBox="0 0 10 10" markerWidth="6" markerHeight="6" refX="10" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="${color}"/></marker>`).join('')}<marker id="labDeleteArrow${id}" viewBox="0 0 10 10" markerWidth="6" markerHeight="6" refX="10" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#c62828"/></marker><marker id="labCurveArrow${id}" viewBox="0 0 10 10" markerWidth="6" markerHeight="6" refX="10" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2e7d32"/></marker><marker id="labArrow${id}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2e7d32"/></marker></defs>${paths}`;
 }
 
 
@@ -8563,11 +9350,13 @@ function setAlgorithmTrack(id,lines){
  $(id+"Track").innerHTML=lines.map((x,i)=>`<span class="track-line" data-line="${i+1}">${i+1}. ${x}</span>`).join("");
 }
 function highlightAlgorithmLine(id,line){
+ document.querySelectorAll(`#${id} .bst-code-line`).forEach(el=>el.classList.toggle('active',Number(el.dataset.phase)===line));
  document.querySelectorAll(`#${id}Track .track-line`).forEach(x=>x.classList.remove("active"));
  document.querySelector(`#${id}Track [data-line="${line}"]`)?.classList.add("active");
 }
 function updateAlgorithmDashboard(id){
  const s=states[id];
+ if($(id+"Back"))$(id+"Back").disabled=s.step===0;
  $(id+"Step").textContent=s.step;
  $(id+"Comparisons").textContent=s.comparisons||0;
  $(id+"Swaps").textContent=s.swaps||0;
@@ -8671,6 +9460,14 @@ function animateSortingMovement(id,st){
 function nextAlgorithmStep(id){
  const s=states[id],st=s.steps[s.step];
  if(!st){setStatus(id,"Algorithm เสร็จสิ้น");stopAlgorithmAuto(id);updateAlgorithmDashboard(id);return}
+ if(configs.find(x=>x.id===id)?.structure==="bst"){
+   if(s.step===0)s.backHistory=[];
+   s.backHistory[s.step]=JSON.parse(JSON.stringify({
+     data:s.data,active:s.active,found:s.found,view:s.view||{},
+     comparisons:s.comparisons||0,swaps:s.swaps||0,
+     status:$(id+"Status")?.textContent||"",detail:$(id+"Detail")?.textContent||""
+   }));
+ }
  s.step++;s.comparisons=st.comparisons??s.comparisons;s.swaps=st.swaps??s.swaps;
  if(st.data)s.data=JSON.parse(JSON.stringify(st.data));
  s.active=st.active??-1;s.found=st.found??-1;s.view=st.view||{};
@@ -8683,6 +9480,23 @@ function nextAlgorithmStep(id){
  if($(id+"Detail"))$(id+"Detail").textContent=st.detail||"";
  setStatus(id,(st.swap?"↔ กำลังสลับตำแหน่ง: ":st.move?"→ กำลังเลื่อนข้อมูล: ":st.keyMove?"↓ กำลังวาง Key: ":"")+st.text);
  highlightAlgorithmLine(id,st.line||1);
+ updateAlgorithmDashboard(id);
+}
+
+function backAlgorithmStep(id){
+ const s=states[id];
+ stopAlgorithmAuto(id);
+ if(s.step<=0)return;
+ const previous=s.backHistory?.[s.step-1];
+ if(!previous)return;
+ s.step--;
+ const restored=JSON.parse(JSON.stringify(previous));
+ for(const key of ["data","active","found","view","comparisons","swaps"])s[key]=restored[key];
+ const st=s.step>0?s.steps[s.step-1]:{};
+ renderAlgorithmModule(id,st);
+ if($(id+"Detail"))$(id+"Detail").textContent=restored.detail;
+ setStatus(id,restored.status);
+ highlightAlgorithmLine(id,s.step>0?(st.line||1):0);
  updateAlgorithmDashboard(id);
 }
 
@@ -9022,9 +9836,42 @@ function renderAlgorithmModule(id,st={}){
      x2="${positions[i].x}" y2="${positions[i].y}"/>`;
  });
 
+ let subtreeFrames="";
+ if(st.subtreeRoots?.length){
+   const colors=["#5c6bc0","#8e24aa","#00897b","#c07816"];
+   st.subtreeRoots.forEach((rootIndex,depth)=>{
+     const members=validIndices.filter(i=>{
+       let ancestor=i;
+       while(ancestor>rootIndex)ancestor=Math.floor((ancestor-1)/2);
+       return ancestor===rootIndex;
+     }).map(i=>positions[i]);
+     if(!members.length)return;
+     const pad=34+(st.subtreeRoots.length-depth-1)*7;
+     const left=Math.max(3,Math.min(...members.map(p=>p.x))-pad);
+     const top=Math.max(2,Math.min(...members.map(p=>p.y))-pad-10);
+     const right=Math.min(width-3,Math.max(...members.map(p=>p.x))+pad);
+     const bottom=Math.min(height-3,Math.max(...members.map(p=>p.y))+pad);
+     const color=colors[depth%colors.length];
+     subtreeFrames+=`<g class="bst-subtree-frame"><rect x="${left}" y="${top}" width="${right-left}" height="${bottom-top}" rx="15" fill="${color}" fill-opacity="0.035" stroke="${color}" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${left+10}" y="${top+14}" fill="${color}" font-size="11" font-weight="700">subtree ${values[rootIndex]}</text></g>`;
+   });
+ }
+
+ let travelPaths="";
+ if(st.traveled?.length){
+   const segment=(from,to,current)=>{
+     const a=positions[from],b=positions[to];if(!a||!b)return "";
+     const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy);if(!len)return "";
+     const x1=a.x+dx/len*30,y1=a.y+dy/len*30,x2=b.x-dx/len*30,y2=b.y-dy/len*30;
+     return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="white" stroke-width="7"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${current?'#ef6c00':'#7b1fa2'}" stroke-width="${current?3:2}" stroke-dasharray="7 6" ${current?`marker-end="url(#${id}TravelArrow)"`:''}/>`;
+   };
+   travelPaths=`<defs><marker id="${id}TravelArrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ef6c00"/></marker></defs>`;
+   st.traveled.forEach(([from,to])=>travelPaths+=segment(from,to,false));
+   if(st.travelFrom!==undefined)travelPaths+=segment(st.travelFrom,st.travelTo,true);
+ }
+
  let nodes="";
  validIndices.forEach(i=>{
-   const cls=`tree-svg-node ${st.active===i?"active":""} ${st.found===i?"found":""}`;
+   const cls=`tree-svg-node ${st.active===i?"active":""} ${st.found===i?"found":""} ${st.visited?.includes(i)?"visited":""} ${st.visited&&st.found===i?"visiting":""}`;
    nodes+=`<g class="${cls}">
      <circle cx="${positions[i].x}" cy="${positions[i].y}" r="26"/>
      <text x="${positions[i].x}" y="${positions[i].y}">${values[i]}</text>
@@ -9038,7 +9885,12 @@ function renderAlgorithmModule(id,st={}){
         <polygon points="${positions[0].x-6},${positions[0].y-45} ${positions[0].x+6},${positions[0].y-45} ${positions[0].x},${positions[0].y-34}"/>
       </g>`
    : "";
- $(id+"Visual").innerHTML=initialDataLabel+`<svg class="tree-svg" viewBox="0 0 ${width} ${height}">${rootPointer}${edges}${nodes}</svg>`;
+ let rootFields="";
+ if(cfg.structure==="bst"&&positions[0]){
+   rootFields=`<div class="bst-pointer-fields"><span>root.key = <b>${values[0]}</b></span></div>`;
+   if(st.active>=0&&positions[st.active])rootFields+=`<div class="bst-pointer-fields current"><span>current.key = <b>${values[st.active]}</b></span><span>current.left → <b>${values[2*st.active+1]??'None'}</b></span><span>current.right → <b>${values[2*st.active+2]??'None'}</b></span></div>`;
+ }
+ $(id+"Visual").innerHTML=initialDataLabel+`<svg class="tree-svg" viewBox="0 0 ${width} ${height}">${subtreeFrames}${rootPointer}${edges}${travelPaths}${nodes}</svg>`+rootFields+(st.visited?'<div class="bst-pointer-fields"><span style="background:#ffcc80;color:#713800">สีส้ม: โหนดปัจจุบัน</span><span style="background:#c8e6c9;color:#1b5e20">สีเขียว: เยี่ยมชมแล้ว</span></div>':"");
 }
 
 function bstInsert(root,value){
@@ -9068,7 +9920,10 @@ function bstDelete(root,key){
 function structureTrackLines(structure,op){
  const tracks={
    bst:{
-     create:["กำหนด root = NULL","สร้างโครงสร้าง BST ว่าง","พร้อมรับข้อมูล"],
+     find_min:["current = root — ตรวจต้นไม้ว่าง","ตรวจ current.left","current = current.left","คืนค่าต่ำสุด หรือ None"],
+     find_max:["current = root — ตรวจต้นไม้ว่าง","ตรวจ current.right","current = current.right","คืนค่าสูงสุด หรือ None"],
+     count_node:["count = 0; stack = [root] หากมี root","นำโหนดออกจาก stack","count = count + 1","ใส่ลูกขวา แล้วลูกซ้ายลง stack","คืนจำนวนโหนดทั้งหมด"],
+     create:["กำหนด root = NULL"],
      add:["เริ่มที่ root","เปรียบเทียบ key กับ current node","key น้อยกว่า → ไปซ้าย","key มากกว่า → ไปขวา","พบตำแหน่งว่าง → เพิ่มโหนด"],
      delete:["ค้นหาโหนดเป้าหมาย","กรณีไม่มีลูก → ลบได้ทันที","กรณีมีลูกหนึ่งโหนด → เชื่อมลูกแทน","กรณีมีลูกสองโหนด → หา inorder successor","ปรับโครงสร้าง BST"],
      search:["เริ่มที่ root","เปรียบเทียบ key กับ current node","key น้อยกว่า → ไปซ้าย","key มากกว่า → ไปขวา","พบหรือไม่พบข้อมูล"],
@@ -9103,7 +9958,20 @@ function structureTrackLines(structure,op){
  return tracks[structure]?.[op] || ["เตรียมโครงสร้าง","ดำเนินการ","แสดงผล"];
 }
 
+const bstCodeExamples={"create": {"p": "1|root ← NULL", "c": "1|root = None"}, "add": {"p": "1|FUNCTION add(root, key)\n1|    IF root = NULL: RETURN new Node(key)\n2|    IF key = root.key: RETURN root\n3|    IF key < root.key:\n3|        root.left ← add(root.left, key)\n4|    ELSE:\n4|        root.right ← add(root.right, key)\n5|    RETURN root", "c": "1|class Node:\n1|    def __init__(self, key):\n1|        self.key = key\n1|        self.left = self.right = None\n1|\n1|def add(root, key):\n5|    if root is None:\n5|        return Node(key)\n2|    if key == root.key:\n2|        return root\n3|    if key < root.key:\n3|        root.left = add(root.left, key)\n4|    else:\n4|        root.right = add(root.right, key)\n5|    return root\n5|\n5|root = add(root, key)"}, "search": {"p": "1|current ← root\n2|WHILE current ≠ NULL:\n2|    IF key = current.key: RETURN current\n3|    IF key < current.key: current ← current.left\n4|    ELSE: current ← current.right\n5|RETURN NULL", "c": "1|def search(root, key):\n1|    current = root\n2|    while current is not None:\n2|        if key == current.key:\n5|            return current\n3|        if key < current.key:\n3|            current = current.left\n4|        else:\n4|            current = current.right\n5|    return None"}, "delete": {"p": "1|FUNCTION delete(root, key)\n1|    IF root = NULL: RETURN NULL\n1|    IF key < root.key: root.left ← delete(root.left, key)\n1|    ELSE IF key > root.key: root.right ← delete(root.right, key)\n2|    ELSE IF root.left = NULL AND root.right = NULL: RETURN NULL\n3|    ELSE IF root.left = NULL: RETURN root.right\n3|    ELSE IF root.right = NULL: RETURN root.left\n4|    ELSE:\n4|        successor ← minimum(root.right)\n4|        root.key ← successor.key\n5|        root.right ← delete(root.right, successor.key)\n5|    RETURN root", "c": "1|def delete(root, key):\n1|    if root is None:\n1|        return None\n1|    if key < root.key:\n1|        root.left = delete(root.left, key)\n1|    elif key > root.key:\n1|        root.right = delete(root.right, key)\n2|    elif root.left is None and root.right is None:\n2|        return None\n3|    elif root.left is None:\n3|        return root.right\n3|    elif root.right is None:\n3|        return root.left\n4|    else:\n4|        successor = root.right\n4|        while successor.left is not None:\n4|            successor = successor.left\n4|        root.key = successor.key\n5|        root.right = delete(root.right, successor.key)\n5|    return root\n5|\n5|root = delete(root, key)"}, "inorder": {"p": "1|FUNCTION inorder(node)\n1|    IF node = NULL: RETURN\n1|    inorder(node.left)\n2|    OUTPUT node.key\n3|    inorder(node.right)", "c": "1|def inorder(node):\n1|    if node is None:\n1|        return []\n1|    left = inorder(node.left)\n2|    visit = [node.key]\n3|    right = inorder(node.right)\n4|    return left + visit + right"}, "preorder": {"p": "1|FUNCTION preorder(node)\n1|    IF node = NULL: RETURN\n1|    OUTPUT node.key\n2|    preorder(node.left)\n3|    preorder(node.right)", "c": "1|def preorder(node):\n1|    if node is None:\n1|        return []\n1|    visit = [node.key]\n2|    left = preorder(node.left)\n3|    right = preorder(node.right)\n4|    return visit + left + right"}, "postorder": {"p": "1|FUNCTION postorder(node)\n1|    IF node = NULL: RETURN\n1|    postorder(node.left)\n2|    postorder(node.right)\n3|    OUTPUT node.key", "c": "1|def postorder(node):\n1|    if node is None:\n1|        return []\n1|    left = postorder(node.left)\n2|    right = postorder(node.right)\n3|    visit = [node.key]\n4|    return left + right + visit"}, "find_min": {"p": "1|current ← root\n1|IF current = NULL: RETURN None\n2|WHILE current.left ≠ NULL:\n3|    current ← current.left\n4|RETURN current.key", "c": "1|def find_min(root):\n1|    current = root\n1|    if current is None:\n4|        return None\n2|    while current.left is not None:\n3|        current = current.left\n4|    return current.key"}, "find_max": {"p": "1|current ← root\n1|IF current = NULL: RETURN None\n2|WHILE current.right ≠ NULL:\n3|    current ← current.right\n4|RETURN current.key", "c": "1|def find_max(root):\n1|    current = root\n1|    if current is None:\n4|        return None\n2|    while current.right is not None:\n3|        current = current.right\n4|    return current.key"}, "count_node": {"p": "1|count ← 0\n1|stack ← [root] IF root ≠ NULL ELSE []\n2|WHILE stack is not empty:\n2|    current ← POP(stack)\n3|    count ← count + 1\n4|    IF current.right ≠ NULL: PUSH(stack, current.right)\n4|    IF current.left ≠ NULL: PUSH(stack, current.left)\n5|RETURN count", "c": "1|def count_node(root):\n1|    count = 0\n1|    stack = [root] if root is not None else []\n2|    while stack:\n2|        current = stack.pop()\n3|        count += 1\n4|        if current.right is not None:\n4|            stack.append(current.right)\n4|        if current.left is not None:\n4|            stack.append(current.left)\n5|    return count"}};
+function bstCodeTabs(id){
+ return `<div class="code-tabs"><div class="code-tab-buttons"><button class="code-tab-btn active" onclick="switchCodeTab(this,'${id}TabAlgorithm')">Algorithm Track</button><button class="code-tab-btn" onclick="switchCodeTab(this,'${id}TabPseudocode')">Pseudo Code</button><button class="code-tab-btn" onclick="switchCodeTab(this,'${id}TabPython')">Python Code</button></div><div id="${id}TabAlgorithm" class="code-tab-panel active"><div id="${id}Track" class="algorithm-track"></div></div><div id="${id}TabPseudocode" class="code-tab-panel"><pre id="${id}BstPseudo" class="code-block bst-code"></pre></div><div id="${id}TabPython" class="code-tab-panel"><pre id="${id}BstPython" class="code-block bst-code"></pre></div></div>`;
+}
+function updateBstCode(id,op){
+ const example=bstCodeExamples[op]||bstCodeExamples.create;
+ for(const [suffix,key] of [['BstPseudo','p'],['BstPython','c']]){
+   const el=$(id+suffix);if(!el)continue;
+   el.innerHTML=example[key].split('\n').map(row=>{const split=row.indexOf('|');return `<span class="bst-code-line" data-phase="${row.slice(0,split)}">${escCode(row.slice(split+1))||' '}</span>`}).join('');
+ }
+}
+
 function setStructureTrack(id,structure,op){
+ if(structure==="bst")updateBstCode(id,op);
  const lines=structureTrackLines(structure,op);
  setAlgorithmTrack(id,lines);
  if($(id+"Status")){
@@ -9168,6 +10036,48 @@ function showHashCalculation(calc){
  `;
 }
 
+function initializeBstExample(id){
+ prepareStructureOperation(id,"create");
+ const sorted=randomUniqueNumbers(3).sort((a,b)=>a-b),s=states[id];
+ s.data=[sorted[1],sorted[0],sorted[2]];
+ s.steps=[];s.step=0;
+ updateAlgorithmDashboard(id);renderAlgorithmModule(id,{});
+ setSelectedFunction(id,"BST เริ่มต้น");
+ setStatus(id,"ข้อมูลตัวอย่างเริ่มต้น 3 ค่า — เลือกคำสั่งเพื่อดำเนินการ");
+}
+
+function prepareBstQuerySteps(s,op){
+ const data=[...s.data],has=i=>data[i]!==null&&data[i]!==undefined;
+ const push=(line,text,active=-1,extra={})=>s.steps.push({data:[...data],line,text,active,comparisons:0,swaps:0,...extra});
+ if(op==="count_node"){
+   let count=0;const stack=has(0)?[0]:[];
+   push(1,"เริ่ม count = 0",-1,{detail:"count = 0"});
+   while(stack.length){
+     const i=stack.pop();
+     push(2,`นำโหนด ${data[i]} ออกจาก stack`,i,{detail:`count = ${count}`});
+     count++;
+     push(3,`นับโหนด ${data[i]}: count = ${count}`,i,{detail:`count = ${count}`});
+     if(has(2*i+2))stack.push(2*i+2);
+     if(has(2*i+1))stack.push(2*i+1);
+     push(4,"ใส่โหนดลูกขวา แล้วลูกซ้ายที่มีอยู่ลง stack",i,{detail:`count = ${count} | stack (บนสุดทางขวา): [${stack.map(j=>data[j]).join(', ')}]`});
+   }
+   push(5,`จำนวนโหนดทั้งหมด = ${count}`,-1,{detail:`count = ${count}`});
+ }else{
+   const left=op==="find_min",side=left?"left":"right",label=left?"ต่ำสุด":"สูงสุด";
+   push(1,has(0)?`current = root (${data[0]})`:"root = None — ต้นไม้ว่าง",has(0)?0:-1);
+   if(!has(0)){push(4,`ค่า${label} = None`);return}
+   let i=0,checks=0;
+   while(true){
+     const child=2*i+(left?1:2);checks++;
+     push(2,`ตรวจ current.${side}: ${has(child)?data[child]:'None'}`,i,{comparisons:checks});
+     if(!has(child))break;
+     i=child;
+     push(3,`current = current.${side} → ${data[i]}`,i,{comparisons:checks});
+   }
+   push(4,`ค่า${label} = ${data[i]}`,i,{found:i,comparisons:checks,detail:`${op} = ${data[i]}`});
+ }
+}
+
 function prepareStructureOperation(id,op){
  stopAlgorithmAuto(id);
  setSelectedFunction(id,op);
@@ -9176,18 +10086,25 @@ function prepareStructureOperation(id,op){
  if(cfg.structure==="bst"){
    setStructureTrack(id,"bst",op);
    if(op==="create"){
-     const values=randomUniqueNumbers(4);
-     s.data=[...values];
-     s.steps=[
-       {data:[],line:1,text:"กำหนด root = NULL"},
-       {data:[...values],line:2,text:`สุ่มข้อมูลเริ่มต้น 4 จำนวน: ${values.join(", ")}`},
-       {data:[...values],line:3,text:"สร้าง BST จากข้อมูลเริ่มต้น"}
-     ];
+     s.data=[];
+     s.steps=[{data:[],line:1,text:"กำหนด root = NULL — สร้าง BST ว่าง"}];
    }
+   else if(["find_min","find_max","count_node"].includes(op))prepareBstQuerySteps(s,op);
    else{
     let root=arrayToBST(s.data),path=[],node=root,index=0,comparisons=0;
     while(node){comparisons++;path.push({value:node.value,index});if(value===node.value)break;if(value<node.value){node=node.left;index=2*index+1}else{node=node.right;index=2*index+2}}
-    path.forEach((p,k)=>{
+    if(op==="add"){
+     s.steps.push({data:[...s.data],active:root?0:-1,line:1,text:root?`เริ่มที่ root: current.key = ${root.value}`:"เริ่มที่ root = NULL",comparisons:0,swaps:0});
+     path.forEach((p,k)=>{
+       const relation=value<p.value?"<":value>p.value?">":"=";
+       s.steps.push({data:[...s.data],active:p.index,line:2,text:`เปรียบเทียบ key ${value} กับ current.key ${p.value}: ${value} ${relation} ${p.value}`,comparisons:k+1,swaps:0});
+       if(value!==p.value){
+         const left=value<p.value;
+         s.steps.push({data:[...s.data],active:p.index,line:left?3:4,text:`${value} ${relation} ${p.value} → ไป${left?"ซ้าย (current.left)":"ขวา (current.right)"}${k===path.length-1?" พบตำแหน่งว่าง":""}`,comparisons:k+1,swaps:0});
+       }
+     });
+    }
+    else path.forEach((p,k)=>{
      let line=2;
      if(op==="add"||op==="search"||op==="delete"){
        if(k===0)line=1;
@@ -9208,8 +10125,8 @@ function prepareStructureOperation(id,op){
      s.steps.push({
        data:arr,
        found:arr.indexOf(value),
-       line:5,
-       text:`เพิ่ม ${value} ลง BST`,
+       line:node?2:5,
+       text:node?`key ${value} เท่ากับ current.key — มีค่านี้แล้ว ไม่เพิ่มโหนดซ้ำ`:`เพิ่ม ${value} ลง BST`,
        comparisons:path.length
      });
    }
@@ -9488,13 +10405,19 @@ function showTraversal(id,type){
    if(node.left){
      s.steps.push({
        data:[...s.data],
-       active:index,
+       active:2*index+1,
+       travelFrom:index,travelTo:2*index+1,
        line:type==="preorder"?2:1,
        text:`เดินจาก ${node.value} ไป Left child ${node.left.value}`,
        detail:`Output: ${output.join(" → ")}`
      });
    }
    walk(node.left,2*index+1);
+   if(node.left)s.steps.push({
+     data:[...s.data],active:index,travelFrom:2*index+1,travelTo:index,
+     line:type==="preorder"?2:1,text:`ย้อนจาก ${node.left.value} กลับไป ${node.value}`,
+     detail:`Output: ${output.join(" → ")}`
+   });
 
    if(type==="inorder"){
      output.push(node.value);
@@ -9511,13 +10434,19 @@ function showTraversal(id,type){
    if(node.right){
      s.steps.push({
        data:[...s.data],
-       active:index,
+       active:2*index+2,
+       travelFrom:index,travelTo:2*index+2,
        line:type==="postorder"?2:3,
        text:`เดินจาก ${node.value} ไป Right child ${node.right.value}`,
        detail:`Output: ${output.join(" → ")}`
      });
    }
    walk(node.right,2*index+2);
+   if(node.right)s.steps.push({
+     data:[...s.data],active:index,travelFrom:2*index+2,travelTo:index,
+     line:type==="postorder"?2:3,text:`ย้อนจาก ${node.right.value} กลับไป ${node.value}`,
+     detail:`Output: ${output.join(" → ")}`
+   });
 
    if(type==="postorder"){
      output.push(node.value);
@@ -9538,9 +10467,23 @@ function showTraversal(id,type){
    data:[...s.data],
    line:4,
    text:`${type}: ${output.join(" → ")}`,
-   detail:`Traversal complete`
+   detail:`Output: ${output.join(" → ")} — Traversal complete`
  });
 
+ const visited=[],traveled=[],subtreeStack=root?[0]:[];
+ s.steps.forEach(st=>{
+   if(st.found>=0&&!visited.includes(st.found))visited.push(st.found);
+   if(st.travelFrom!==undefined){
+     const edge=[st.travelFrom,st.travelTo];
+     if(st.travelTo>st.travelFrom)subtreeStack.push(st.travelTo);
+     else if(subtreeStack.at(-1)===st.travelFrom)subtreeStack.pop();
+     if(!traveled.some(e=>e[0]===edge[0]&&e[1]===edge[1]))traveled.push(edge);
+   }
+   if(st.line===4)subtreeStack.length=0;
+   st.subtreeRoots=[...subtreeStack];
+   st.traveled=traveled.map(e=>[...e]);
+   st.visited=[...visited];
+ });
  updateAlgorithmDashboard(id);
  renderAlgorithmModule(id,{});
  setStatus(id,`เตรียม ${type} traversal แล้ว — กด Next Step`);
